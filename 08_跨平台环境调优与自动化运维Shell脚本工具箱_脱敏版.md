@@ -22,6 +22,9 @@ devops-shell-toolbox/
 ├── osx_tune/
 │   ├── disable_macos_animations.sh    # 零延迟：一键关闭 macOS 冗余 UI 窗口动画
 │   └── restore_macos_animations.sh    # 一键恢复默认动画
+├── proxy_and_tools/
+│   ├── mac_proxy_config.sh            # MAC 代理与本地网络中继自动化切换脚本
+│   └── fanyi721_runner.sh             # \fanyi721 多语言自动化文本清洗与翻译调用链
 ├── cross_platform_env/
 │   ├── install_env.sh                 # 自动化安装与环境初始化一键脚本
 │   ├── diagnose_system.sh             # 系统与网络联通性自动诊断脚本
@@ -66,6 +69,12 @@ echo "✅ 调优完成！系统 UI 动画延迟已彻底消除。"
 在环境异常或端口被占用时，无需手动执行繁琐命令，直接运行诊断脚本：
 - **诊断脚本 (`diagnose_system.sh`)**：自动检查端口占用（如 Redis 6379 / MySQL 3306）、代理变量状态及文件权限。
 - **快速修复 (`quick_fix.sh`)**：一键清理僵尸进程、重置代理白名单并修复 Unix 文件执行权限 (`chmod +x`)。
+
+---
+
+### 3. MAC 代理配置与 \fanyi721 工具运行器 (`fanyi721_runner.sh`)
+- **MAC 代理环境一键开关**：`mac_proxy_config.sh` 支持在终端中快速配置/切断 HTTP/HTTPS 及 SOCKS5 本地中继代理，解决网络阻隔与爬虫 IP 映射问题。
+- **\fanyi721 自动化管道**：整合多语言翻译接口与正则清洗脚本，一键传入待翻译的旧数据或外部资讯，自动批处理并导出标准化文本。
 
 ---
 
