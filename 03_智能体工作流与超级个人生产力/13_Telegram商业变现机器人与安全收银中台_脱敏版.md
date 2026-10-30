@@ -1,46 +1,46 @@
-# Telegram 商业变现机器人与安全收银中台架构（脱敏版）
+# 高并发即时通讯服务与自动化会员交付中台架构（脱敏版）
 
 > **作者/架构师**：QuantDev / AI Full-Stack Team  
 > **版本**：v2.1 (Production Ready)  
-> **适用场景**：海外独立开发者、Telegram 付费社区交付、实时资产订阅、跨平台数字商品全自动交付
+> **适用场景**：高并发异步消息网关、私域高价值服务交付、实时数据订阅推送、企业级自动化准入与生命周期治理
 
 ---
 
 ## 一、 系统架构总览
 
-本项目提供了一套面向 Telegram 平台的高可用、生产就绪型自动化商业变现中台。系统解决的核心问题是：**从高价值数字资产（如量化信号、实时数据行情、私域知识）到自动化收费拦截（Paywall）、会员准入/剔除与交互交付的全链路无人值守闭环**。
+本项目提供了一套面向高并发即时通讯平台（如 Telegram / 企微 Webhook）的高可用、生产就绪型自动化交互与交付中台。系统解决的核心问题是：**从高价值实时数据服务与企业知识库，到自动化权益校验、动态鉴权准入与交互交付的全链路无人值守闭环**。
 
 在安全架构上，彻底抛弃业内常见的明文 `.env` 配置文件模式，全面接入操作系统级安全凭据保管库（macOS Keychain），杜绝任何 API Token 泄漏与被攻击风险。
 
-### 商业中台核心交互与支付闭环流转图
+### 中台核心交互与权限闭环流转图
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as Telegram 最终用户
-    participant TG as Telegram Bot API
-    participant Engine as Bot 调度引擎 (Python AsyncIO)
+    actor User as 最终交互用户
+    participant TG as 即时通讯网关 (Bot API)
+    participant Engine as 异步调度引擎 (Python AsyncIO)
     participant Sec as 安全凭据中枢 (OS Keychain)
-    participant Pay as 支付/收银聚合中台
-    participant Channel as VIP 专属私密频道
+    participant Pay as 支付与授权中台 (Stripe/合规网关)
+    participant Channel as VIP 专属服务通道
 
-    Engine->>Sec: 1. 级联检索并安全装载 Bot Token (非明文)
+    Engine->>Sec: 1. 级联检索并安全装载服务 Token (非明文)
     Engine->>TG: 2. 建立长轮询 / 生产 Webhook 通道
-    User->>TG: 3. 发送 /start 或点击 Inline Keyboard
+    User->>TG: 3. 发送 /start 或触发交互卡片
     TG-->>Engine: 4. 路由分发指令与回调 Query
     
-    alt 资产与行情查询
-        User->>TG: 点击「实时资产卡片」
-        Engine->>Engine: 异步拉取实时行情与量化模型
-        Engine-->>TG: 渲染富文本格式化资产卡片
-    else 付费会员准入拦截 (Paywall)
-        User->>TG: 点击「订阅 VIP 私密频道」
-        Engine-->>TG: 下发商品订单与动态支付链接 (Stripe/Crypto/卡密)
-        User->>Pay: 完成支付
-        Pay-->>Engine: 支付成功 Webhook 回调
-        Engine->>TG: 生成单次有效专属邀请链接 (One-Time Invite Link)
-        Engine-->>User: 私发入群链接并设定有效期
-        Engine->>Channel: 记录用户 Chat ID 并纳入守护监控
+    alt 实时数据与指标查询
+        User->>TG: 点击「实时系统卡片」
+        Engine->>Engine: 异步拉取实时状态与计算结果
+        Engine-->>TG: 渲染富文本格式化状态卡片
+    else 专属权限准入校验 (Access Gate)
+        User->>TG: 点击「开通专属服务通道」
+        Engine-->>TG: 下发合规订单与动态签约链接 (Stripe/聚合支付)
+        User->>Pay: 完成授权或履约
+        Pay-->>Engine: 履约成功 Webhook 安全回调
+        Engine->>TG: 生成单次有效专属访问令牌 (One-Time Invite Link)
+        Engine-->>User: 私发安全访问链接并设定生命周期
+        Engine->>Channel: 记录用户身份并纳入守护监控
     end
 ```
 

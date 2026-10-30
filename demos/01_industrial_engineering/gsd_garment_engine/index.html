@@ -1,0 +1,1945 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Y3 服装GSD快速工序拆解·智能报价·产线SOT与Layout智造系统</title>
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --accent: #f97316;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #0f172a;
+      --gray-900: #111827;
+      --gray-800: #1f2937;
+      --gray-700: #374151;
+      --gray-600: #4b5563;
+      --gray-500: #6b7280;
+      --gray-300: #d1d5db;
+      --gray-200: #e5e7eb;
+      --gray-100: #f3f4f6;
+      --gray-50: #f9fafb;
+      --white: #ffffff;
+      --radius-sm: 6px;
+      --radius: 10px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px 0 rgba(0,0,0,0.05);
+      --shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: var(--gray-800);
+      line-height: 1.5;
+      font-size: 14px;
+      overflow-x: hidden;
+    }
+
+    /* 顶部导航与 Header */
+    header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      color: var(--white);
+      padding: 16px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      background: linear-gradient(135deg, #2563eb, #f97316);
+      color: white;
+      font-weight: 900;
+      font-size: 18px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      letter-spacing: 1px;
+    }
+
+    .brand-title h1 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-title p {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .header-badges {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .badge-pill {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      color: #cbd5e1;
+    }
+
+    .badge-pill strong {
+      color: #38bdf8;
+    }
+
+    /* 选项卡导航 */
+    .tabs-bar {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      padding: 0 28px;
+      gap: 8px;
+      position: sticky;
+      top: 68px;
+      z-index: 90;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .tab-btn {
+      padding: 14px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-600);
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .tab-btn:hover {
+      color: var(--primary);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .tab-btn .tab-count {
+      background: var(--gray-100);
+      color: var(--gray-600);
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 11px;
+    }
+
+    .tab-btn.active .tab-count {
+      background: var(--primary-light);
+      color: var(--primary);
+    }
+
+    /* 容器布局 */
+    .app-main {
+      padding: 24px 28px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+      animation: fadeIn 0.25s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 概览 Banner 区域 */
+    .style-banner {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: 280px 1fr 340px;
+      gap: 24px;
+      align-items: center;
+      border: 1px solid var(--gray-200);
+    }
+
+    .style-preview {
+      width: 100%;
+      height: 220px;
+      border-radius: var(--radius);
+      background: #f8fafc;
+      border: 1px solid var(--gray-200);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .style-preview img {
+      max-height: 100%;
+      max-width: 100%;
+      object-fit: contain;
+      cursor: zoom-in;
+      transition: transform 0.2s;
+    }
+
+    .style-preview img:hover {
+      transform: scale(1.04);
+    }
+
+    .style-info h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 6px;
+    }
+
+    .style-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .tag {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--gray-100);
+      color: var(--gray-700);
+      font-weight: 500;
+    }
+
+    .tag-red { background: #fee2e2; color: #b91c1c; border: 1px solid #fecaca; }
+    .tag-blue { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+    .tag-green { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .tag-dark { background: #1e293b; color: #f8fafc; }
+
+    .style-features {
+      font-size: 13px;
+      color: var(--gray-600);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 14px;
+    }
+
+    .feature-item strong {
+      color: var(--gray-800);
+    }
+
+    .kpi-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .kpi-card {
+      background: #f8fafc;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      padding: 12px;
+      text-align: center;
+    }
+
+    .kpi-label {
+      font-size: 11px;
+      color: var(--gray-500);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .kpi-value {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--gray-900);
+    }
+
+    .kpi-value.blue { color: var(--primary); }
+    .kpi-value.orange { color: var(--accent); }
+    .kpi-value.green { color: var(--success); }
+
+    /* 通用面板与表格卡片 */
+    .panel {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fafafa;
+    }
+
+    .panel-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-outline {
+      background: white;
+      border-color: var(--gray-300);
+      color: var(--gray-700);
+    }
+
+    .btn-outline:hover {
+      background: var(--gray-50);
+      border-color: var(--gray-400);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+    }
+
+    .btn-success:hover {
+      filter: brightness(0.95);
+    }
+
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    /* 表格样式 */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    table.data-table th {
+      background: #f8fafc;
+      color: var(--gray-600);
+      font-weight: 600;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--gray-200);
+      white-space: nowrap;
+    }
+
+    table.data-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--gray-100);
+      color: var(--gray-700);
+    }
+
+    table.data-table tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    table.data-table tr.section-row {
+      background-color: #f1f5f9;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .badge-machine {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 11px;
+    }
+
+    .mach-SN { background: #dbeafe; color: #1e40af; } /* 平车 */
+    .mach-4T { background: #fef3c7; color: #92400e; } /* 四线包缝 */
+    .mach-5T { background: #fce7f3; color: #9d174d; } /* 五线包缝 */
+    .mach-BT { background: #e0e7ff; color: #3730a3; } /* 打枣 */
+    .mach-IR { background: #fee2e2; color: #991b1b; } /* 大烫/小烫 */
+    .mach-HM { background: #f3f4f6; color: #374151; } /* 手工质检 */
+    .mach-QC { background: #dcfce7; color: #166534; } /* 质检 */
+
+    /* 报价器布局与卡片 */
+    .quote-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 24px;
+    }
+
+    .quote-config-box {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .form-group-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .form-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-item label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-700);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .form-item input, .form-item select {
+      padding: 8px 12px;
+      border: 1px solid var(--gray-300);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      background: #ffffff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-item input:focus, .form-item select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    }
+
+    /* 报价侧边汇总卡 */
+    .quote-summary-card {
+      background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-lg);
+      position: sticky;
+      top: 130px;
+    }
+
+    .quote-price-big {
+      text-align: center;
+      margin: 16px 0 24px 0;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed rgba(255,255,255,0.2);
+    }
+
+    .quote-price-big .currency {
+      font-size: 20px;
+      color: #fb923c;
+    }
+
+    .quote-price-big .val {
+      font-size: 44px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .quote-price-big .unit {
+      font-size: 13px;
+      color: #94a3b8;
+    }
+
+    .cost-breakdown-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+
+    .cost-row {
+      display: flex;
+      justify-content: space-between;
+      color: #cbd5e1;
+    }
+
+    .cost-row.total-cost {
+      font-weight: 700;
+      color: #38bdf8;
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding-top: 8px;
+    }
+
+    .cost-row .val {
+      font-weight: 600;
+    }
+
+    .tier-box {
+      background: rgba(255,255,255,0.06);
+      border-radius: var(--radius);
+      padding: 12px;
+      margin-top: 16px;
+    }
+
+    .tier-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #fb923c;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .tier-table {
+      width: 100%;
+      font-size: 12px;
+    }
+
+    .tier-table td {
+      padding: 4px 0;
+    }
+
+    .tier-table td:last-child {
+      text-align: right;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    /* Layout 产线布局拓扑图 */
+    .layout-view-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      background: white;
+      padding: 12px 18px;
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+    }
+
+    .line-canvas-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      border: 1px solid var(--gray-200);
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+
+    .flow-topology {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      padding: 16px 0;
+    }
+
+    .station-node {
+      background: #f8fafc;
+      border: 2px solid #cbd5e1;
+      border-radius: var(--radius);
+      width: 160px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .station-node:hover {
+      border-color: var(--primary);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+
+    .station-node.bottleneck {
+      border-color: var(--danger);
+      background: #fff5f5;
+    }
+
+    .station-node.bottleneck::after {
+      content: '瓶颈';
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: var(--danger);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 99px;
+    }
+
+    .st-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .st-mach {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gray-600);
+    }
+
+    .st-op-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-800);
+      min-height: 34px;
+      line-height: 1.3;
+    }
+
+    .st-time-bar-wrap {
+      width: 100%;
+      height: 6px;
+      background: var(--gray-200);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .st-time-bar {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 99px;
+    }
+
+    .st-time-bar.over {
+      background: var(--danger);
+    }
+
+    .st-time-bar.under {
+      background: var(--warning);
+    }
+
+    .st-time-text {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--gray-500);
+    }
+
+    /* 甘特排产表 */
+    .gantt-chart-box {
+      margin-top: 20px;
+      border-top: 1px solid var(--gray-200);
+      padding-top: 20px;
+    }
+
+    .gantt-bar-row {
+      display: grid;
+      grid-template-columns: 160px 1fr 100px;
+      align-items: center;
+      gap: 16px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .gantt-track {
+      background: #f1f5f9;
+      height: 24px;
+      border-radius: 6px;
+      overflow: hidden;
+      display: flex;
+      position: relative;
+    }
+
+    .gantt-progress {
+      height: 100%;
+      background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    /* 模态框与打印视图 */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: var(--radius-lg);
+      max-width: 900px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 30px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+    }
+
+    /* 打印专用 CSS */
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+        font-size: 11pt;
+      }
+      header, .tabs-bar, .panel-actions, .no-print {
+        display: none !important;
+      }
+      .panel {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid;
+      }
+      .tab-pane {
+        display: block !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 顶部系统栏 -->
+  <header>
+    <div class="brand-group">
+      <div class="brand-logo">GSD 4.0</div>
+      <div class="brand-title">
+        <h1>Y3 服装GSD工序清单 · SOT标准工时 · 智能快速报价系统</h1>
+        <p>棒球服 / 飞行员夹克 (Varsity Bomber Jacket) 专案排产与精益产线编排引擎</p>
+      </div>
+    </div>
+    <div class="header-badges">
+      <div class="badge-pill">GSD引擎：<strong>标准服装缝纫数据 (v2026)</strong></div>
+      <div class="badge-pill">基准节拍效率：<strong>85%</strong></div>
+      <button class="btn btn-primary btn-sm" onclick="exportFullSOTExcel()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        导出SOT工序表 (CSV)
+      </button>
+      <button class="btn btn-outline btn-sm" onclick="window.print()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+        打印 / 导出PDF
+      </button>
+    </div>
+  </header>
+
+  <!-- 选项卡导航 -->
+  <div class="tabs-bar no-print">
+    <button class="tab-btn active" onclick="switchTab('tab-sot')">
+      <span>📋 GSD工序拆解与SOT表</span>
+      <span class="tab-count" id="badge-op-count">37工序</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('tab-quote')">
+      <span>💰 在线客户快速报价器</span>
+      <span class="tab-count" id="badge-unit-price">¥148.50</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('tab-layout')">
+      <span>🏭 流水线平衡与车间Layout</span>
+      <span class="tab-count" id="badge-balance">88.6%</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('tab-schedule')">
+      <span>📅 订单排单与交期计算</span>
+      <span class="tab-count" id="badge-delivery">交期8天</span>
+    </button>
+    <button class="tab-btn" onclick="switchTab('tab-client-view')">
+      <span>📄 客户外发报价单预览</span>
+    </button>
+  </div>
+
+  <main class="app-main">
+
+    <!-- 款式技术参数卡片 -->
+    <div class="style-banner">
+      <div class="style-preview">
+        <img src="assets/jacket_spec.png" alt="棒球夹克设计稿" title="点击可查看大图" onclick="viewLargeImage()">
+      </div>
+      <div class="style-info">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <h2>三色拼接重工刺绣棒球夹克 (Varsity Bomber)</h2>
+          <span class="tag tag-dark">款式编号: Y3-JK2026-01</span>
+        </div>
+        <div class="style-tags" style="margin-top: 8px;">
+          <span class="tag tag-red">红袖款 PANTONE 1795C</span>
+          <span class="tag tag-blue">蓝袖款 PANTONE 7682C</span>
+          <span class="tag tag-green">绿袖款 PANTONE 350C</span>
+          <span class="tag">前门襟 #5粗齿拉链 + 飘带</span>
+          <span class="tag">后背 6.8万针精密绣花</span>
+          <span class="tag">3处特制徽章章仔</span>
+          <span class="tag">双嵌线斜插袋</span>
+          <span class="tag">间条针织罗纹</span>
+        </div>
+        <div class="style-features">
+          <div class="feature-item"><strong>主身面料：</strong>黑色 380g 高密复合斜纹/仿呢</div>
+          <div class="feature-item"><strong>袖部面料：</strong>拼接色仿皮PU/色丁尼龙</div>
+          <div class="feature-item"><strong>内胆里料：</strong>210T涤塔夫 + 80g菱格绗棉</div>
+          <div class="feature-item"><strong>罗纹部位：</strong>领口/袖口/下摆双条纹高弹罗纹</div>
+          <div class="feature-item"><strong>特种印绣：</strong>后背大面积机绣+前胸丝印+3枚章仔</div>
+          <div class="feature-item"><strong>品质标准：</strong>AQL 1.5 外贸出厂精品标准</div>
+        </div>
+      </div>
+      <div class="kpi-cards">
+        <div class="kpi-card">
+          <div class="kpi-label">整件总SAM工时</div>
+          <div class="kpi-value blue" id="banner-total-sam">32.85 <small style="font-size:12px;font-weight:400">min</small></div>
+          <div style="font-size: 11px; color: var(--gray-500); margin-top:2px;">缝纫部: <span id="banner-sew-sam">26.35</span> min</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">单件核算建议报价</div>
+          <div class="kpi-value orange" id="banner-suggest-price">¥148.50</div>
+          <div style="font-size: 11px; color: var(--gray-500); margin-top:2px;">基于 1000件 MOQ</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">标准产线人数</div>
+          <div class="kpi-value green">24 <small style="font-size:12px;font-weight:400">人/组</small></div>
+          <div style="font-size: 11px; color: var(--gray-500); margin-top:2px;">精益 U 型柔性线</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">线平衡率 (Line Bal.)</div>
+          <div class="kpi-value blue" id="banner-balance-rate">88.6%</div>
+          <div style="font-size: 11px; color: var(--gray-500); margin-top:2px;">节拍 Takt: 72 秒</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 选项卡 1: GSD 工序拆解与 SOT 表 -->
+    <div id="tab-sot" class="tab-pane active">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            标准工序分析与工时测算总表 (SOT - Standard Operation Time Breakdown)
+          </div>
+          <div class="panel-actions">
+            <button class="btn btn-outline btn-sm" onclick="resetToDefaultSOT()">重置初始SOT</button>
+            <button class="btn btn-primary btn-sm" onclick="addNewOperationModal()">+ 添加自定义工序</button>
+          </div>
+        </div>
+        <div class="table-container">
+          <table class="data-table" id="sot-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">工序号</th>
+                <th style="width: 100px;">部件类别</th>
+                <th>工序名称与动作要领说明</th>
+                <th style="width: 90px;">机种代码</th>
+                <th style="width: 80px;">设备名称</th>
+                <th style="width: 75px; text-align:right;">SAM (分)</th>
+                <th style="width: 70px; text-align:right;">工时 (秒)</th>
+                <th style="width: 70px; text-align:center;">等级</th>
+                <th style="width: 85px; text-align:right;">日产能/人</th>
+                <th style="width: 80px; text-align:right;">单道工价</th>
+                <th style="width: 80px; text-align:center;">操作</th>
+              </tr>
+            </thead>
+            <tbody id="sot-tbody">
+              <!-- JS 动态渲染 -->
+            </tbody>
+            <tfoot style="background: #f8fafc; font-weight: 700; border-top: 2px solid var(--gray-300);">
+              <tr>
+                <td colspan="5" style="text-align: right; padding: 12px 14px;">合计总缝制与后整工时：</td>
+                <td style="text-align: right; color: var(--primary);" id="total-sam-val">32.85</td>
+                <td style="text-align: right;" id="total-sec-val">1971s</td>
+                <td colspan="2" style="text-align: center; color: var(--gray-600);">人均小时产出: <span id="pph-val">1.82 件</span></td>
+                <td style="text-align: right; color: var(--accent);" id="total-piece-rate-val">¥35.12</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 选项卡 2: 在线客户快速报价器 -->
+    <div id="tab-quote" class="tab-pane">
+      <div class="quote-grid">
+        <!-- 报价配置左侧 -->
+        <div class="quote-config-box">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 16px;">
+            <h3 style="font-size: 16px; font-weight: 700; color: var(--gray-900);">成本核算参数调节器 (实时联动报价)</h3>
+            <span style="font-size: 12px; color: var(--gray-500);">所有参数变动将即时反映到客户报价中</span>
+          </div>
+
+          <h4 style="font-size: 13px; font-weight: 700; color: var(--primary); margin: 12px 0 8px 0; border-bottom: 1px solid var(--gray-200); padding-bottom: 4px;">
+            1. 订单量与宏观费率
+          </h4>
+          <div class="form-group-grid">
+            <div class="form-item">
+              <label>目标订单数量 (件) <span id="lbl-qty">1,000 件</span></label>
+              <input type="range" id="cfg-qty" min="100" max="10000" step="100" value="1000" oninput="calculateQuote()">
+            </div>
+            <div class="form-item">
+              <label>车间稼动率 / 效率 (%)</label>
+              <input type="number" id="cfg-efficiency" value="82" min="50" max="120" oninput="calculateQuote()">
+            </div>
+            <div class="form-item">
+              <label>工人基础分钟工价 (元/SAM)</label>
+              <input type="number" id="cfg-minute-cost" value="0.95" step="0.05" oninput="calculateQuote()">
+            </div>
+            <div class="form-item">
+              <label>目标综合毛利率 (%)</label>
+              <input type="number" id="cfg-margin" value="20" min="5" max="50" oninput="calculateQuote()">
+            </div>
+          </div>
+
+          <h4 style="font-size: 13px; font-weight: 700; color: var(--primary); margin: 16px 0 8px 0; border-bottom: 1px solid var(--gray-200); padding-bottom: 4px;">
+            2. 面料与里料成本 (主身、拼袖、绗棉里布、条纹罗纹)
+          </h4>
+          <div class="form-group-grid">
+            <div class="form-item">
+              <label>主身黑色复合斜纹 (米/件 × 元/米)</label>
+              <div style="display:flex; gap:6px;">
+                <input type="number" id="cfg-fab1-usage" value="1.25" step="0.05" placeholder="单耗米" style="width:50%" oninput="calculateQuote()">
+                <input type="number" id="cfg-fab1-price" value="34.00" step="1" placeholder="单价元" style="width:50%" oninput="calculateQuote()">
+              </div>
+            </div>
+            <div class="form-item">
+              <label>拼接袖子料 (红/蓝/绿面料)</label>
+              <div style="display:flex; gap:6px;">
+                <input type="number" id="cfg-fab2-usage" value="0.65" step="0.05" placeholder="单耗米" style="width:50%" oninput="calculateQuote()">
+                <input type="number" id="cfg-fab2-price" value="26.00" step="1" placeholder="单价元" style="width:50%" oninput="calculateQuote()">
+              </div>
+            </div>
+            <div class="form-item">
+              <label>210T涤塔夫+80g绗棉夹里</label>
+              <div style="display:flex; gap:6px;">
+                <input type="number" id="cfg-fab3-usage" value="1.35" step="0.05" placeholder="单耗米" style="width:50%" oninput="calculateQuote()">
+                <input type="number" id="cfg-fab3-price" value="14.50" step="0.5" placeholder="单价元" style="width:50%" oninput="calculateQuote()">
+              </div>
+            </div>
+            <div class="form-item">
+              <label>领/袖/下摆双色条纹扁机罗纹 (套)</label>
+              <div style="display:flex; gap:6px;">
+                <input type="number" id="cfg-rib-usage" value="1.00" step="0.1" style="width:40%" readonly>
+                <input type="number" id="cfg-rib-price" value="12.50" step="0.5" placeholder="整套单价" style="width:60%" oninput="calculateQuote()">
+              </div>
+            </div>
+          </div>
+
+          <h4 style="font-size: 13px; font-weight: 700; color: var(--primary); margin: 16px 0 8px 0; border-bottom: 1px solid var(--gray-200); padding-bottom: 4px;">
+            3. 特种外协印花与刺绣工艺
+          </h4>
+          <div class="form-group-grid">
+            <div class="form-item">
+              <label>后背超大精密机绣 (6.8万针)</label>
+              <div style="display:flex; gap:6px;">
+                <input type="number" id="cfg-emb-cost" value="20.40" step="1" placeholder="刺绣加工费" style="width:60%" oninput="calculateQuote()">
+                <input type="number" id="cfg-emb-mold" value="350" step="50" placeholder="开版费" style="width:40%" oninput="calculateQuote()">
+              </div>
+            </div>
+            <div class="form-item">
+              <label>前胸胶浆丝网印花 (双色套印)</label>
+              <div style="display:flex; gap:6px;">
+                <input type="number" id="cfg-print-cost" value="2.50" step="0.5" placeholder="印花单价" style="width:60%" oninput="calculateQuote()">
+                <input type="number" id="cfg-print-mold" value="180" step="20" placeholder="网版费" style="width:40%" oninput="calculateQuote()">
+              </div>
+            </div>
+            <div class="form-item">
+              <label>臂章与胸口徽章 (3枚章仔)</label>
+              <input type="number" id="cfg-patches-cost" value="7.50" step="0.5" oninput="calculateQuote()">
+            </div>
+            <div class="form-item">
+              <label>开尾树脂拉链 + 金属拉环织带飘带</label>
+              <input type="number" id="cfg-zipper-cost" value="7.20" step="0.5" oninput="calculateQuote()">
+            </div>
+          </div>
+
+          <h4 style="font-size: 13px; font-weight: 700; color: var(--primary); margin: 16px 0 8px 0; border-bottom: 1px solid var(--gray-200); padding-bottom: 4px;">
+            4. 辅料、包装及工厂制造损耗
+          </h4>
+          <div class="form-group-grid">
+            <div class="form-item">
+              <label>吊牌/主标/洗标/线/衬/配件袋</label>
+              <input type="number" id="cfg-trims-misc" value="4.20" step="0.5" oninput="calculateQuote()">
+            </div>
+            <div class="form-item">
+              <label>独立PE袋/干燥剂/外箱分摊</label>
+              <input type="number" id="cfg-pack-misc" value="2.20" step="0.2" oninput="calculateQuote()">
+            </div>
+            <div class="form-item">
+              <label>面料裁剪与裁床费 (元/件)</label>
+              <input type="number" id="cfg-cut-fee" value="3.50" step="0.5" oninput="calculateQuote()">
+            </div>
+            <div class="form-item">
+              <label>面料缩水裁损与制损率 (%)</label>
+              <input type="number" id="cfg-scrap-rate" value="4.5" step="0.5" oninput="calculateQuote()">
+            </div>
+          </div>
+        </div>
+
+        <!-- 报价右侧看板 -->
+        <div class="quote-summary-card">
+          <div style="font-size: 13px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
+            FOB / EXW 建议出厂报价
+          </div>
+          <div class="quote-price-big">
+            <span class="currency">¥</span>
+            <span class="val" id="quote-final-price">148.50</span>
+            <div class="unit">单件出厂含税含利报价 (基于 <span id="sum-qty-lbl">1000</span> 件)</div>
+          </div>
+
+          <div class="cost-breakdown-list">
+            <div class="cost-row">
+              <span>面料及里布总计：</span>
+              <span class="val" id="sum-fabric-val">¥81.98</span>
+            </div>
+            <div class="cost-row">
+              <span>拉链与辅料总计：</span>
+              <span class="val" id="sum-trims-val">¥13.60</span>
+            </div>
+            <div class="cost-row">
+              <span>后背刺绣+印花+徽章：</span>
+              <span class="val" id="sum-craft-val">¥30.93</span>
+            </div>
+            <div class="cost-row">
+              <span>缝纫CMT车工加工费：</span>
+              <span class="val" id="sum-cmt-val">¥38.06</span>
+            </div>
+            <div class="cost-row">
+              <span>裁剪与后道包装整烫：</span>
+              <span class="val" id="sum-fin-val">¥9.70</span>
+            </div>
+            <div class="cost-row">
+              <span>版费平摊 (刺绣+丝印)：</span>
+              <span class="val" id="sum-mold-val">¥0.53</span>
+            </div>
+            <div class="cost-row">
+              <span>裁剪损耗 (4.5%)：</span>
+              <span class="val" id="sum-scrap-val">¥4.30</span>
+            </div>
+            <div class="cost-row total-cost">
+              <span>实际制造成本 (BOM+CMT)：</span>
+              <span class="val" id="sum-pure-cost">¥123.75</span>
+            </div>
+            <div class="cost-row" style="color: #34d399;">
+              <span>企业毛利 (<span id="sum-margin-pct">20</span>%)：</span>
+              <span class="val" id="sum-profit-val">¥24.75</span>
+            </div>
+          </div>
+
+          <div class="tier-box">
+            <div class="tier-title">阶梯起订量 (MOQ) 报价对比</div>
+            <table class="tier-table">
+              <tr>
+                <td>300 件 (小单试产)</td>
+                <td id="tier-300">¥162.80</td>
+              </tr>
+              <tr>
+                <td>500 件 (中等批量)</td>
+                <td id="tier-500">¥154.20</td>
+              </tr>
+              <tr style="background: rgba(37,99,235,0.25); border-radius: 4px;">
+                <td style="color:#93c5fd; padding-left:4px;">1,000 件 (基准批量)</td>
+                <td style="color:#93c5fd;" id="tier-1000">¥148.50</td>
+              </tr>
+              <tr>
+                <td>3,000 件 (规模量产)</td>
+                <td id="tier-3000">¥141.20</td>
+              </tr>
+              <tr>
+                <td>5,000 件 (大货特惠)</td>
+                <td id="tier-5000">¥136.50</td>
+              </tr>
+            </table>
+          </div>
+
+          <button class="btn btn-primary" style="width: 100%; margin-top: 20px; justify-content: center;" onclick="switchTab('tab-client-view')">
+            查看生成客户报价单 &rarr;
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 选项卡 3: 流水线平衡与车间 Layout -->
+    <div id="tab-layout" class="tab-pane">
+      <div class="layout-view-controls">
+        <div style="display:flex; align-items:center; gap:16px;">
+          <div>
+            <label style="font-size:12px; font-weight:700; color:var(--gray-600);">产线总人数：</label>
+            <select id="line-workers-select" onchange="updateLineBalancing()" style="padding:4px 8px; border-radius:4px; border:1px solid #cbd5e1; font-weight:700;">
+              <option value="18">18 人精益单元线</option>
+              <option value="20">20 人标准单轨线</option>
+              <option value="24" selected>24 人精益 U 型柔性线 (推荐)</option>
+              <option value="28">28 人高速吊挂流水线</option>
+              <option value="32">32 人规模量产双列线</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:12px; font-weight:700; color:var(--gray-600);">流水线排布模式：</label>
+            <select id="line-layout-mode" onchange="renderLayoutTopology()" style="padding:4px 8px; border-radius:4px; border:1px solid #cbd5e1;">
+              <option value="U">精益 U 型单元 (Lean U-Cell)</option>
+              <option value="DOUBLE">双列对流式流水线 (Double Line)</option>
+              <option value="LINEAR">单轨直线吊挂式 (Linear Flow)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:16px; align-items:center;">
+          <div style="font-size:12px;">节拍时间 Takt: <strong style="color:var(--primary); font-size:14px;" id="val-takt-time">68 秒/件</strong></div>
+          <div style="font-size:12px;">理论平衡率: <strong style="color:var(--success); font-size:14px;" id="val-balance-rate">88.6%</strong></div>
+          <div style="font-size:12px;">日计划产出 (10H): <strong style="color:var(--accent); font-size:14px;" id="val-daily-capacity">440 件/天</strong></div>
+        </div>
+      </div>
+
+      <div class="line-canvas-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+          <h4 style="font-size:14px; font-weight:700; color:var(--gray-800);">流水线工位分配与设备拓扑图 (Workstation Balancing Topology)</h4>
+          <div style="display:flex; gap:12px; font-size:11px;">
+            <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; background:var(--primary); border-radius:2px;"></span> 正常工位</span>
+            <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; background:var(--danger); border-radius:2px;"></span> 瓶颈超载工位</span>
+            <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; background:var(--warning); border-radius:2px;"></span> 轻载可合并工位</span>
+          </div>
+        </div>
+
+        <!-- 拓扑节点容器 -->
+        <div class="flow-topology" id="topology-container">
+          <!-- JS 渲染工位卡片 -->
+        </div>
+      </div>
+
+      <!-- 设备需求汇总表 -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">本生产单元设备配置汇总表 (Equipment Requirement)</div>
+        </div>
+        <div style="padding: 16px 20px;">
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:16px;" id="mach-summary-box">
+            <!-- JS 渲染设备统计 -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 选项卡 4: 订单排单与交期计算 -->
+    <div id="tab-schedule" class="tab-pane">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">订单交期倒排与产能爬坡甘特图 (Production Scheduling & Ramp-up)</div>
+          <div class="panel-actions">
+            <span style="font-size: 12px; color: var(--gray-500);">采用 4日熟练度学习曲线 (Learning Curve)</span>
+          </div>
+        </div>
+        <div style="padding: 20px;">
+          <div class="form-group-grid" style="margin-bottom: 24px;">
+            <div class="form-item">
+              <label>订单总件数 (件)</label>
+              <input type="number" id="sch-order-qty" value="1000" oninput="calculateSchedule()">
+            </div>
+            <div class="form-item">
+              <label>车间每日工作时长 (小时/天)</label>
+              <input type="number" id="sch-work-hours" value="10" min="8" max="12" oninput="calculateSchedule()">
+            </div>
+            <div class="form-item">
+              <label>计划上线开工日期</label>
+              <input type="date" id="sch-start-date" onchange="calculateSchedule()">
+            </div>
+            <div class="form-item">
+              <label>产线人数编制</label>
+              <input type="number" id="sch-line-workers" value="24" oninput="calculateSchedule()">
+            </div>
+          </div>
+
+          <!-- 排产核心指标 -->
+          <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:16px; margin-bottom: 24px;">
+            <div class="kpi-card">
+              <div class="kpi-label">全速稳定日产能</div>
+              <div class="kpi-value green" id="sch-steady-capacity">440 件/天</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">缝制纯车缝总天数</div>
+              <div class="kpi-value blue" id="sch-sew-days">3.2 天</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">预计入库完工日期</div>
+              <div class="kpi-value orange" id="sch-finish-date">2026-11-04</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-label">总产前准备至出货周期</div>
+              <div class="kpi-value dark" id="sch-total-leadtime">8 工作日</div>
+            </div>
+          </div>
+
+          <!-- 每日排单进度表 -->
+          <h4 style="font-size: 14px; font-weight:700; color:var(--gray-800); margin-bottom: 12px;">每日排产爬坡与累计产出计划表</h4>
+          <div class="table-container">
+            <table class="data-table" id="schedule-daily-table">
+              <thead>
+                <tr>
+                  <th>生产日序</th>
+                  <th>排产日期</th>
+                  <th>生产阶段说明</th>
+                  <th>效率爬坡率</th>
+                  <th>当日计划产出 (件)</th>
+                  <th>累计产出 (件)</th>
+                  <th>订单完成率</th>
+                  <th>生产进度甘特展示</th>
+                </tr>
+              </thead>
+              <tbody id="schedule-daily-tbody">
+                <!-- JS 动态渲染 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 选项卡 5: 客户外发报价单预览 (规范脱敏版) -->
+    <div id="tab-client-view" class="tab-pane">
+      <div class="panel" style="max-width: 900px; margin: 0 auto; box-shadow: var(--shadow-lg);">
+        <div class="panel-header" style="background: white; border-bottom: 2px solid var(--dark); padding: 24px 28px;">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 800; color: #0f172a;">QUOTATION SHEET · 外贸成衣加工与打样报价单</h2>
+            <p style="font-size: 12px; color: #64748b;">报价单号: QT-20261028-01 | 发往客户: VIP CUSTOMER | 有效期: 15天</p>
+          </div>
+          <button class="btn btn-primary btn-sm no-print" onclick="window.print()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+            打印 / 另存为客户PDF
+          </button>
+        </div>
+
+        <div style="padding: 28px;">
+          <!-- 客户单款式信息 -->
+          <div style="display:flex; gap:20px; border-bottom:1px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 20px;">
+            <img src="assets/jacket_spec.png" style="width: 140px; height: 140px; object-fit: contain; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc;">
+            <div style="flex:1;">
+              <h3 style="font-size: 16px; font-weight:700; color:#1e293b;">三色拼接重工刺绣棒球夹克 (Varsity Bomber Jacket)</h3>
+              <p style="font-size: 12px; color:#64748b; margin-top:4px;">款号: Y3-JK2026-01 | 适用季节: 秋冬季 | 建议面料: 高密呢绒复合面料 + PU/锦纶拼袖</p>
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:6px 12px; font-size:12px; margin-top: 10px;">
+                <div>• <strong>颜色系列：</strong>红袖款 (1795C)、蓝袖款 (7682C)、绿袖款 (350C)</div>
+                <div>• <strong>特殊工艺：</strong>后背 6.8万针密集绣花、右臂织唛章、胸前印字</div>
+                <div>• <strong>门襟辅料：</strong>#5金属开尾拉链 + 挂环织带拉片</div>
+                <div>• <strong>内里工艺：</strong>绗缝 80g 薄夹棉防寒内胆 + 内贴暗袋</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 成本拆解 (对外展示规范结构) -->
+          <table class="data-table" style="margin-bottom: 20px;">
+            <thead>
+              <tr style="background:#f8fafc;">
+                <th>费用项目</th>
+                <th>规格说明</th>
+                <th style="text-align:right;">单件金额 (RMB)</th>
+                <th style="text-align:right;">美元折算 (USD)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>主身面料及拼接料</strong></td>
+                <td>黑色高密复合呢料 1.25m + 袖子高品质拼接料 0.65m</td>
+                <td style="text-align:right;" id="cl-fab-cost">¥59.40</td>
+                <td style="text-align:right;" id="cl-fab-cost-usd">$8.25</td>
+              </tr>
+              <tr>
+                <td><strong>里料与罗纹</strong></td>
+                <td>210T涤塔夫绗薄棉内胆 + 领口/袖口/底摆定制双色条纹扁机套件</td>
+                <td style="text-align:right;" id="cl-inner-cost">¥32.08</td>
+                <td style="text-align:right;" id="cl-inner-cost-usd">$4.46</td>
+              </tr>
+              <tr>
+                <td><strong>特种印花与机绣</strong></td>
+                <td>后背超精密大刺绣(6.8万针) + 前胸丝网印花 + 臂胸章仔3枚</td>
+                <td style="text-align:right;" id="cl-craft-cost">¥30.93</td>
+                <td style="text-align:right;" id="cl-craft-cost-usd">$4.30</td>
+              </tr>
+              <tr>
+                <td><strong>辅料及包装配件</strong></td>
+                <td>#5金属拉链、挂件拉环、主标洗标尺码标、独立PE袋及出口外箱</td>
+                <td style="text-align:right;" id="cl-trims-cost">¥13.60</td>
+                <td style="text-align:right;" id="cl-trims-cost-usd">$1.89</td>
+              </tr>
+              <tr>
+                <td><strong>车缝加工与后道整烫 (CMT)</strong></td>
+                <td>全工艺车缝组装、剪线质检、立体蒸汽定型大烫、成品封箱</td>
+                <td style="text-align:right;" id="cl-cmt-cost">¥37.20</td>
+                <td style="text-align:right;" id="cl-cmt-cost-usd">$5.17</td>
+              </tr>
+              <tr style="background:#eff6ff; font-weight:800; font-size:15px;">
+                <td colspan="2" style="color:var(--primary-dark);">建议出厂单价 (基于 1,000件 MOQ，EXW工厂交货价)</td>
+                <td style="text-align:right; color:var(--primary-dark);" id="cl-total-rmb">¥148.50</td>
+                <td style="text-align:right; color:var(--primary-dark);" id="cl-total-usd">$20.63</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- 阶梯价格与商业条款 -->
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-bottom: 20px;">
+            <h4 style="font-size:13px; font-weight:700; color:#1e293b; margin-bottom:8px;">阶梯起订量报价 (Ladder Pricing)</h4>
+            <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:10px; text-align:center;">
+              <div style="background:white; padding:8px; border-radius:6px; border:1px solid #e2e8f0;">
+                <div style="font-size:11px; color:#64748b;">300 件</div>
+                <div style="font-size:14px; font-weight:700; color:#0f172a;" id="cl-tier-300">¥162.80</div>
+              </div>
+              <div style="background:white; padding:8px; border-radius:6px; border:1px solid #e2e8f0;">
+                <div style="font-size:11px; color:#64748b;">500 件</div>
+                <div style="font-size:14px; font-weight:700; color:#0f172a;" id="cl-tier-500">¥154.20</div>
+              </div>
+              <div style="background:#eff6ff; padding:8px; border-radius:6px; border:1px solid #bfdbfe;">
+                <div style="font-size:11px; color:var(--primary);">1,000 件 (推荐)</div>
+                <div style="font-size:14px; font-weight:800; color:var(--primary);" id="cl-tier-1000">¥148.50</div>
+              </div>
+              <div style="background:white; padding:8px; border-radius:6px; border:1px solid #e2e8f0;">
+                <div style="font-size:11px; color:#64748b;">3,000 件</div>
+                <div style="font-size:14px; font-weight:700; color:#0f172a;" id="cl-tier-3000">¥141.20</div>
+              </div>
+              <div style="background:white; padding:8px; border-radius:6px; border:1px solid #e2e8f0;">
+                <div style="font-size:11px; color:#64748b;">5,000 件</div>
+                <div style="font-size:14px; font-weight:700; color:#0f172a;" id="cl-tier-5000">¥136.50</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 商务条款 -->
+          <div style="font-size:12px; color:#64748b; line-height: 1.6;">
+            <p><strong>商务条款说明：</strong></p>
+            <p>1. 打样交期：产前样 (PP Sample) 确认后 7-10 工作日寄出。</p>
+            <p>2. 大货交期：面辅料到厂及定金到位后 18-22 工作日完成出货。</p>
+            <p>3. 付款方式：30% T/T 定金启动采购，70% 尾款验货合格出厂前结清。</p>
+            <p>4. 汇率基准：按 1 USD = 7.20 RMB 核算，汇率浮动超过 ±3% 双方重新协商调整。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // 默认预置的这件 Bomber Jacket 的全部 37 道工序标准 GSD 数据
+    const DEFAULT_OPERATIONS = [
+      // 部件 1: 前片准备
+      { id: 1, section: "前片准备", name: "前片粘合加固衬（挂面止口、袋唇位、拉链位）", machCode: "FS", machName: "粘合机/平烫", sam: 0.85, level: "C", pieceRate: 0.81 },
+      { id: 2, section: "前片准备", name: "检验前胸丝网印花品质与对中定位", machCode: "HM", machName: "手工检验", sam: 0.30, level: "C", pieceRate: 0.28 },
+      { id: 3, section: "前片准备", name: "车缝右胸 Owlcat 徽章标", machCode: "SN", machName: "单针平缝机", sam: 0.75, level: "B", pieceRate: 0.71 },
+      { id: 4, section: "前片准备", name: "车缝左胸异形盾牌刺绣徽章", machCode: "SN", machName: "单针平缝机", sam: 0.90, level: "B", pieceRate: 0.85 },
+      { id: 5, section: "前片准备", name: "折烫前身袋口双嵌线牙条", machCode: "IR", machName: "蒸汽熨斗", sam: 0.65, level: "C", pieceRate: 0.62 },
+      { id: 6, section: "前片准备", name: "开前插袋（定点车嵌条、车底袋布、划袋口翻进封三角）", machCode: "SN", machName: "单针平车/开袋机", sam: 2.10, level: "A", pieceRate: 2.15 },
+      { id: 7, section: "前片准备", name: "车袋布四周封口，前身袋口压0.1cm止口线", machCode: "SN", machName: "单针平缝机", sam: 1.10, level: "B", pieceRate: 1.05 },
+      { id: 8, section: "前片准备", name: "袋口两端套结打枣加固（共4处）", machCode: "BT", machName: "电脑套结机", sam: 0.40, level: "C", pieceRate: 0.38 },
+
+      // 部件 2: 后片准备
+      { id: 9, section: "后片准备", name: "后片外协 6.8万针大刺绣裁片品检验收、剪底纸浮线", machCode: "HM", machName: "手工质检", sam: 1.20, level: "B", pieceRate: 1.14 },
+      { id: 10, section: "后片准备", name: "后领窝贴粘衬加固条并车挂耳挂袢", machCode: "SN", machName: "单针平缝机", sam: 0.50, level: "C", pieceRate: 0.48 },
+
+      // 部件 3: 袖子准备
+      { id: 11, section: "袖部准备", name: "右袖上臂车缝圆形臂章徽章", machCode: "SN", machName: "单针平缝机", sam: 0.80, level: "B", pieceRate: 0.76 },
+      { id: 12, section: "袖部准备", name: "双色条纹袖口罗纹接圈合拢", machCode: "4T", machName: "四线包缝机", sam: 0.60, level: "C", pieceRate: 0.57 },
+      { id: 13, section: "袖部准备", name: "对折袖口罗纹、预套入袖口假缝合拢固定", machCode: "4T", machName: "四线包缝机", sam: 0.85, level: "B", pieceRate: 0.81 },
+
+      // 部件 4: 领与下摆罗纹准备
+      { id: 14, section: "领摆准备", name: "领罗纹两端合角修斜口、定型", machCode: "SN", machName: "单针平缝机", sam: 0.60, level: "B", pieceRate: 0.57 },
+      { id: 15, section: "领摆准备", name: "下摆条纹罗纹两头拼缝做标记点、折烫中线", machCode: "IR", machName: "单针平车/烫台", sam: 0.55, level: "C", pieceRate: 0.52 },
+
+      // 部件 5: 里布准备
+      { id: 16, section: "里料准备", name: "里布前左胸开内挖袋并车内袋布", machCode: "SN", machName: "单针平缝机", sam: 1.40, level: "B", pieceRate: 1.33 },
+      { id: 17, section: "里料准备", name: "合里布前挂面与身身绗棉里布", machCode: "5T", machName: "五线包缝机", sam: 1.10, level: "B", pieceRate: 1.05 },
+      { id: 18, section: "里料准备", name: "合里布肩缝与后领贴", machCode: "5T", machName: "五线包缝机", sam: 0.70, level: "C", pieceRate: 0.67 },
+      { id: 19, section: "里料准备", name: "里布上袖、合里布侧缝及袖底（一侧袖底留20cm翻口）", machCode: "5T", machName: "五线包缝机", sam: 1.50, level: "B", pieceRate: 1.43 },
+
+      // 部件 6: 总装合体
+      { id: 20, section: "总装车缝", name: "面身合肩缝并压嵌条加固", machCode: "SN", machName: "单针平缝机", sam: 0.75, level: "B", pieceRate: 0.71 },
+      { id: 21, section: "总装车缝", name: "面身上袖（落肩拼袖合拢、对准袖山对位刀口）", machCode: "4T", machName: "四线包缝机", sam: 1.60, level: "A", pieceRate: 1.65 },
+      { id: 22, section: "总装车缝", name: "面身合侧缝及通缝袖底缝", machCode: "4T", machName: "四线包缝机", sam: 1.30, level: "B", pieceRate: 1.24 },
+      { id: 23, section: "总装车缝", name: "车后领主标、尺码标", machCode: "SN", machName: "单针平缝机", sam: 0.45, level: "C", pieceRate: 0.43 },
+      { id: 24, section: "总装车缝", name: "门襟排拉链、对位假缝固定左襟与右襟", machCode: "SN", machName: "单针平缝机", sam: 1.65, level: "A", pieceRate: 1.70 },
+      { id: 25, section: "总装车缝", name: "上领罗纹（面身领圈拼车间条领罗纹，均拉对位）", machCode: "SN", machName: "单针平缝机", sam: 1.25, level: "A", pieceRate: 1.30 },
+      { id: 26, section: "总装车缝", name: "上下摆罗纹（面身下摆拼底边罗纹并均匀拉伸对刀口）", machCode: "SN", machName: "单针平缝机", sam: 1.45, level: "A", pieceRate: 1.50 },
+      { id: 27, section: "总装车缝", name: "面身与里身复合套车（封门襟拉链止口、夹车领圈与下摆）", machCode: "SN", machName: "单针平缝机", sam: 2.80, level: "A", pieceRate: 3.00 },
+      { id: 28, section: "总装车缝", name: "从里布袖底翻口翻出整件衣服正面、顶出四个夹角", machCode: "HM", machName: "手工翻正", sam: 0.70, level: "B", pieceRate: 0.67 },
+      { id: 29, section: "总装车缝", name: "封里布翻口（单针平车压0.1cm止口封闭）", machCode: "SN", machName: "单针平缝机", sam: 0.50, level: "C", pieceRate: 0.48 },
+      { id: 30, section: "总装车缝", name: "门襟止口压0.6cm明线、领圈压明线定型", machCode: "SN", machName: "单针平缝机", sam: 1.80, level: "A", pieceRate: 1.85 },
+      { id: 31, section: "总装车缝", name: "安装拉链头金属开口环与红色刺绣飘带挂件", machCode: "HM", machName: "手工组装", sam: 0.40, level: "C", pieceRate: 0.38 },
+
+      // 部件 7: 后道整烫包装
+      { id: 32, section: "后道包装", name: "清理剪除整件衣服所有残留浮线及线头", machCode: "HM", machName: "手工剪线", sam: 1.20, level: "C", pieceRate: 1.10 },
+      { id: 33, section: "后道包装", name: "全件品质终检（拉链开合平顺度、对称度、尺寸检验）", machCode: "QC", machName: "质检台", sam: 1.40, level: "B", pieceRate: 1.30 },
+      { id: 34, section: "后道包装", name: "成品立体大烫（气模吹烫正身、袖臂定型烫、领摆熨平）", machCode: "IR", machName: "蒸汽烫台/气模", sam: 1.80, level: "A", pieceRate: 1.70 },
+      { id: 35, section: "后道包装", name: "挂吊牌（枪打子弹胶针）、贴合格证与洗水条形码", machCode: "HM", machName: "手工包装", sam: 0.50, level: "C", pieceRate: 0.45 },
+      { id: 36, section: "后道包装", name: "衬防潮拷贝纸、折叠装入PE拉链自封袋", machCode: "HM", machName: "手工包装", sam: 0.65, level: "C", pieceRate: 0.55 },
+      { id: 37, section: "后道包装", name: "装入出口双瓦楞外箱、十字封胶带、贴外箱麦头", machCode: "HM", machName: "装箱封口", sam: 0.40, level: "C", pieceRate: 0.35 }
+    ];
+
+    let operations = JSON.parse(JSON.stringify(DEFAULT_OPERATIONS));
+
+    // 页面初始化
+    window.addEventListener("DOMContentLoaded", () => {
+      // 预设计划日期为今天
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('sch-start-date').value = today;
+
+      renderSOTTable();
+      calculateQuote();
+      updateLineBalancing();
+      calculateSchedule();
+    });
+
+    // 选项卡切换
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+      document.getElementById(tabId).classList.add('active');
+      const targetBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (targetBtn) targetBtn.classList.add('active');
+    }
+
+    // 渲染 SOT 表格
+    function renderSOTTable() {
+      const tbody = document.getElementById("sot-tbody");
+      tbody.innerHTML = "";
+
+      let currentSection = "";
+      let totalSam = 0;
+      let totalPieceRate = 0;
+      let sewSam = 0;
+
+      operations.forEach((op, index) => {
+        totalSam += op.sam;
+        totalPieceRate += (op.pieceRate || (op.sam * 0.95));
+
+        if (op.section.includes("车缝") || op.section.includes("准备") || op.section.includes("前片") || op.section.includes("后片") || op.section.includes("袖") || op.section.includes("里料")) {
+          sewSam += op.sam;
+        }
+
+        // 分区表头
+        if (op.section !== currentSection) {
+          currentSection = op.section;
+          const secTr = document.createElement("tr");
+          secTr.className = "section-row";
+          secTr.innerHTML = `
+            <td colspan="11" style="padding: 8px 14px; background: #e2e8f0; font-weight:700; color:#1e293b;">
+              📌 ${currentSection}
+            </td>
+          `;
+          tbody.appendChild(secTr);
+        }
+
+        const tr = document.createElement("tr");
+        const sec = Math.round(op.sam * 60);
+        const pph = Math.round((60 / op.sam) * 0.85); // 85% 效率下每小时产能
+        const dailyCap = Math.round(pph * 10); // 10小时日产
+
+        tr.innerHTML = `
+          <td style="font-weight:700; color:var(--gray-500); text-align:center;">${op.id}</td>
+          <td><span style="font-size:11px; color:#475569; background:#f1f5f9; padding:2px 6px; border-radius:3px;">${op.section}</span></td>
+          <td><strong style="color:#0f172a;">${op.name}</strong></td>
+          <td><span class="badge-machine mach-${op.machCode}">${op.machCode}</span></td>
+          <td style="color:#64748b;">${op.machName}</td>
+          <td style="text-align:right;">
+            <input type="number" step="0.05" value="${op.sam.toFixed(2)}" style="width:65px; text-align:right; padding:2px 4px; border:1px solid #cbd5e1; border-radius:4px;" onchange="updateOpSam(${index}, this.value)">
+          </td>
+          <td style="text-align:right; font-family:monospace; color:#475569;">${sec}s</td>
+          <td style="text-align:center;"><span style="font-weight:700; color:${op.level==='A'?'#dc2626':op.level==='B'?'#2563eb':'#16a34a'}">${op.level}</span></td>
+          <td style="text-align:right; font-family:monospace;">${dailyCap} 件</td>
+          <td style="text-align:right; font-family:monospace; color:var(--accent);">¥${(op.pieceRate || (op.sam * 0.95)).toFixed(2)}</td>
+          <td style="text-align:center;">
+            <button class="btn btn-outline btn-sm" style="padding:2px 6px; color:#ef4444; border-color:#fca5a5;" onclick="deleteOperation(${index})">删</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // 更新汇总统计
+      document.getElementById("total-sam-val").innerText = totalSam.toFixed(2);
+      document.getElementById("total-sec-val").innerText = Math.round(totalSam * 60) + "s";
+      document.getElementById("total-piece-rate-val").innerText = "¥" + totalPieceRate.toFixed(2);
+      document.getElementById("pph-val").innerText = (60 / totalSam * 0.85).toFixed(2) + " 件/人·时";
+
+      // 顶部 Banner
+      document.getElementById("banner-total-sam").innerHTML = `${totalSam.toFixed(2)} <small style="font-size:12px;font-weight:400">min</small>`;
+      document.getElementById("banner-sew-sam").innerText = sewSam.toFixed(2);
+      document.getElementById("badge-op-count").innerText = `${operations.length}道工序`;
+    }
+
+    // 更新单工序工时
+    function updateOpSam(idx, val) {
+      const v = parseFloat(val);
+      if (!isNaN(v) && v > 0) {
+        operations[idx].sam = v;
+        operations[idx].pieceRate = v * 0.95;
+        renderSOTTable();
+        calculateQuote();
+        updateLineBalancing();
+      }
+    }
+
+    // 删除工序
+    function deleteOperation(idx) {
+      if (confirm(`确定要移除工序 "${operations[idx].name}" 吗？`)) {
+        operations.splice(idx, 1);
+        renderSOTTable();
+        calculateQuote();
+        updateLineBalancing();
+      }
+    }
+
+    // 重置 SOT
+    function resetToDefaultSOT() {
+      if (confirm("是否恢复为系统初始标准工序清单？")) {
+        operations = JSON.parse(JSON.stringify(DEFAULT_OPERATIONS));
+        renderSOTTable();
+        calculateQuote();
+        updateLineBalancing();
+      }
+    }
+
+    // 添加新工序
+    function addNewOperationModal() {
+      const name = prompt("请输入新工序名称：", "新增特种加固压线");
+      if (!name) return;
+      const samStr = prompt("请输入标准 SAM 工时 (分钟)：", "0.80");
+      const sam = parseFloat(samStr) || 0.8;
+      const mach = prompt("请输入机种代号 (SN平车 / 4T四线 / 5T五线 / IR烫台 / HM手工)：", "SN");
+
+      operations.push({
+        id: operations.length + 1,
+        section: "总装车缝",
+        name: name,
+        machCode: mach.toUpperCase(),
+        machName: mach.toUpperCase() === "SN" ? "单针平缝机" : mach.toUpperCase() === "4T" ? "四线包缝机" : "专用设备",
+        sam: sam,
+        level: "B",
+        pieceRate: sam * 0.95
+      });
+
+      renderSOTTable();
+      calculateQuote();
+      updateLineBalancing();
+    }
+
+    // 核心快速报价算法
+    function calculateQuote() {
+      const qty = parseInt(document.getElementById("cfg-qty").value) || 1000;
+      document.getElementById("lbl-qty").innerText = qty.toLocaleString() + " 件";
+      document.getElementById("sum-qty-lbl").innerText = qty.toLocaleString();
+
+      const eff = (parseFloat(document.getElementById("cfg-efficiency").value) || 82) / 100;
+      const minuteCost = parseFloat(document.getElementById("cfg-minute-cost").value) || 0.95;
+      const margin = (parseFloat(document.getElementById("cfg-margin").value) || 20) / 100;
+      document.getElementById("sum-margin-pct").innerText = (margin * 100).toFixed(0);
+
+      // 1. 面辅料成本
+      const fab1 = (parseFloat(document.getElementById("cfg-fab1-usage").value) || 1.25) * (parseFloat(document.getElementById("cfg-fab1-price").value) || 34);
+      const fab2 = (parseFloat(document.getElementById("cfg-fab2-usage").value) || 0.65) * (parseFloat(document.getElementById("cfg-fab2-price").value) || 26);
+      const fab3 = (parseFloat(document.getElementById("cfg-fab3-usage").value) || 1.35) * (parseFloat(document.getElementById("cfg-fab3-price").value) || 14.5);
+      const rib = parseFloat(document.getElementById("cfg-rib-price").value) || 12.5;
+
+      const fabricTotal = fab1 + fab2 + fab3 + rib;
+      document.getElementById("sum-fabric-val").innerText = "¥" + fabricTotal.toFixed(2);
+
+      // 2. 辅料
+      const patches = parseFloat(document.getElementById("cfg-patches-cost").value) || 7.5;
+      const zipper = parseFloat(document.getElementById("cfg-zipper-cost").value) || 7.2;
+      const miscTrims = parseFloat(document.getElementById("cfg-trims-misc").value) || 4.2;
+      const trimsTotal = zipper + miscTrims; // 拉链加小辅料
+      document.getElementById("sum-trims-val").innerText = "¥" + (trimsTotal + 2.2).toFixed(2);
+
+      // 3. 特种工艺 (刺绣/丝印/章仔)
+      const embCost = parseFloat(document.getElementById("cfg-emb-cost").value) || 20.4;
+      const printCost = parseFloat(document.getElementById("cfg-print-cost").value) || 2.5;
+      const craftTotal = embCost + printCost + patches;
+      document.getElementById("sum-craft-val").innerText = "¥" + craftTotal.toFixed(2);
+
+      // 版费分摊
+      const embMold = parseFloat(document.getElementById("cfg-emb-mold").value) || 350;
+      const printMold = parseFloat(document.getElementById("cfg-print-mold").value) || 180;
+      const moldAmortized = (embMold + printMold) / qty;
+      document.getElementById("sum-mold-val").innerText = "¥" + moldAmortized.toFixed(2);
+
+      // 4. 车缝缝制加工费 (CMT)
+      let totalSewSam = 0;
+      operations.forEach(op => {
+        if (!op.section.includes("后道包装") && !op.section.includes("前片准备裁片")) {
+          totalSewSam += op.sam;
+        }
+      });
+      const cmtCost = (totalSewSam * minuteCost) / eff;
+      document.getElementById("sum-cmt-val").innerText = "¥" + cmtCost.toFixed(2);
+
+      // 裁剪与后道包装
+      const cutFee = parseFloat(document.getElementById("cfg-cut-fee").value) || 3.5;
+      const packMisc = parseFloat(document.getElementById("cfg-pack-misc").value) || 2.2;
+      let finishingSam = 0;
+      operations.filter(o => o.section.includes("后道包装")).forEach(o => finishingSam += o.sam);
+      const finCost = cutFee + packMisc + (finishingSam * minuteCost / eff);
+      document.getElementById("sum-fin-val").innerText = "¥" + finCost.toFixed(2);
+
+      // 5. 损耗
+      const scrapRate = (parseFloat(document.getElementById("cfg-scrap-rate").value) || 4.5) / 100;
+      const scrapCost = (fabricTotal + trimsTotal + craftTotal) * scrapRate;
+      document.getElementById("sum-scrap-val").innerText = "¥" + scrapCost.toFixed(2);
+
+      // 总纯成本
+      const pureCost = fabricTotal + trimsTotal + packMisc + craftTotal + moldAmortized + cmtCost + cutFee + (finishingSam * minuteCost / eff) + scrapCost;
+      document.getElementById("sum-pure-cost").innerText = "¥" + pureCost.toFixed(2);
+
+      // 利润
+      const profit = pureCost * margin;
+      document.getElementById("sum-profit-val").innerText = "¥" + profit.toFixed(2);
+
+      // 最终单价
+      const finalPrice = pureCost + profit;
+      document.getElementById("quote-final-price").innerText = finalPrice.toFixed(2);
+      document.getElementById("banner-suggest-price").innerText = "¥" + finalPrice.toFixed(2);
+      document.getElementById("badge-unit-price").innerText = "¥" + finalPrice.toFixed(2);
+
+      // 动态计算阶梯价格
+      const getTierPrice = (tQty) => {
+        const tMold = (embMold + printMold) / tQty;
+        const tScrap = tQty < 500 ? 0.06 : tQty < 1000 ? 0.05 : tQty < 3000 ? 0.04 : 0.03;
+        const tEff = tQty < 500 ? eff * 0.9 : tQty > 2000 ? Math.min(1.0, eff * 1.1) : eff;
+        const tCmt = (totalSewSam * minuteCost) / tEff;
+        const tPure = fabricTotal + trimsTotal + packMisc + craftTotal + tMold + tCmt + cutFee + (finishingSam * minuteCost / tEff) + ((fabricTotal + trimsTotal + craftTotal) * tScrap);
+        return (tPure * (1 + margin)).toFixed(2);
+      };
+
+      const p300 = getTierPrice(300);
+      const p500 = getTierPrice(500);
+      const p1000 = getTierPrice(1000);
+      const p3000 = getTierPrice(3000);
+      const p5000 = getTierPrice(5000);
+
+      document.getElementById("tier-300").innerText = "¥" + p300;
+      document.getElementById("tier-500").innerText = "¥" + p500;
+      document.getElementById("tier-1000").innerText = "¥" + p1000;
+      document.getElementById("tier-3000").innerText = "¥" + p3000;
+      document.getElementById("tier-5000").innerText = "¥" + p5000;
+
+      // 更新客户报价单预览
+      const usdRate = 7.20;
+      document.getElementById("cl-fab-cost").innerText = "¥" + (fab1 + fab2).toFixed(2);
+      document.getElementById("cl-fab-cost-usd").innerText = "$" + ((fab1 + fab2)/usdRate).toFixed(2);
+
+      document.getElementById("cl-inner-cost").innerText = "¥" + (fab3 + rib).toFixed(2);
+      document.getElementById("cl-inner-cost-usd").innerText = "$" + ((fab3 + rib)/usdRate).toFixed(2);
+
+      document.getElementById("cl-craft-cost").innerText = "¥" + (craftTotal + moldAmortized).toFixed(2);
+      document.getElementById("cl-craft-cost-usd").innerText = "$" + ((craftTotal + moldAmortized)/usdRate).toFixed(2);
+
+      document.getElementById("cl-trims-cost").innerText = "¥" + (trimsTotal + packMisc).toFixed(2);
+      document.getElementById("cl-trims-cost-usd").innerText = "$" + ((trimsTotal + packMisc)/usdRate).toFixed(2);
+
+      document.getElementById("cl-cmt-cost").innerText = "¥" + (cmtCost + finCost + scrapCost + profit).toFixed(2);
+      document.getElementById("cl-cmt-cost-usd").innerText = "$" + ((cmtCost + finCost + scrapCost + profit)/usdRate).toFixed(2);
+
+      document.getElementById("cl-total-rmb").innerText = "¥" + finalPrice.toFixed(2);
+      document.getElementById("cl-total-usd").innerText = "$" + (finalPrice / usdRate).toFixed(2);
+
+      document.getElementById("cl-tier-300").innerText = "¥" + p300;
+      document.getElementById("cl-tier-500").innerText = "¥" + p500;
+      document.getElementById("cl-tier-1000").innerText = "¥" + p1000;
+      document.getElementById("cl-tier-3000").innerText = "¥" + p3000;
+      document.getElementById("cl-tier-5000").innerText = "¥" + p5000;
+    }
+
+    // 生产线平衡与 Layout 计算
+    function updateLineBalancing() {
+      const workers = parseInt(document.getElementById("line-workers-select").value) || 24;
+      let totalSewSam = 0;
+      operations.forEach(o => totalSewSam += o.sam);
+
+      // 计算理想节拍 Takt Time
+      const taktMin = totalSewSam / workers;
+      const taktSec = Math.round(taktMin * 60);
+
+      document.getElementById("val-takt-time").innerText = `${taktSec} 秒/件`;
+
+      // 日计划产出 (10小时工作制，85%效率)
+      const dailyCap = Math.round((workers * 600 * 0.85) / totalSewSam);
+      document.getElementById("val-daily-capacity").innerText = `${dailyCap} 件/天`;
+      document.getElementById("sch-steady-capacity").innerText = `${dailyCap} 件/天`;
+
+      renderLayoutTopology();
+    }
+
+    // 渲染车间拓扑图与工位分布
+    function renderLayoutTopology() {
+      const container = document.getElementById("topology-container");
+      container.innerHTML = "";
+      const workers = parseInt(document.getElementById("line-workers-select").value) || 24;
+      const mode = document.getElementById("line-layout-mode").value;
+
+      let totalSewSam = 0;
+      operations.forEach(o => totalSewSam += o.sam);
+      const taktMin = totalSewSam / workers;
+
+      // 简易贪心工位合并逻辑：将 37 道工序平摊进 workers 个工作站
+      const stations = [];
+      let currentStationOps = [];
+      let currentStationSam = 0;
+
+      // 为确保所有工位都有工序，依序填充
+      const opList = [...operations];
+      const targetPerStation = totalSewSam / workers;
+
+      for (let w = 1; w <= workers; w++) {
+        let stOps = [];
+        let stSam = 0;
+
+        if (w === workers) {
+          // 最后一个工位放入剩余全部
+          stOps = opList.splice(0);
+          stSam = stOps.reduce((a, b) => a + b.sam, 0);
+        } else {
+          while (opList.length > 0) {
+            const nextOp = opList[0];
+            if (stSam === 0 || (stSam + nextOp.sam <= targetPerStation * 1.15 && opList.length > (workers - w))) {
+              stOps.push(opList.shift());
+              stSam += nextOp.sam;
+            } else {
+              break;
+            }
+          }
+        }
+
+        stations.push({
+          stationNo: w,
+          ops: stOps,
+          sam: stSam,
+          machCode: stOps[0] ? stOps[0].machCode : "SN",
+          machName: stOps[0] ? stOps[0].machName : "平车"
+        });
+      }
+
+      // 计算平衡率
+      const maxStationSam = Math.max(...stations.map(s => s.sam));
+      const balanceRate = (totalSewSam / (workers * maxStationSam)) * 100;
+      document.getElementById("val-balance-rate").innerText = balanceRate.toFixed(1) + "%";
+      document.getElementById("banner-balance-rate").innerText = balanceRate.toFixed(1) + "%";
+      document.getElementById("badge-balance").innerText = balanceRate.toFixed(1) + "%";
+
+      // 渲染工位卡片
+      stations.forEach(st => {
+        const isBottleneck = st.sam > taktMin * 1.15;
+        const isUnder = st.sam < taktMin * 0.85;
+        const loadPct = Math.min(100, Math.round((st.sam / taktMin) * 100));
+
+        const card = document.createElement("div");
+        card.className = `station-node ${isBottleneck ? 'bottleneck' : ''}`;
+
+        const opTitle = st.ops.map(o => o.name).join(" + ");
+        const shortTitle = opTitle.length > 26 ? opTitle.substring(0, 24) + "..." : opTitle;
+
+        card.innerHTML = `
+          <div class="st-header">
+            <span style="color:var(--primary); font-weight:800;">#WS-${st.stationNo.toString().padStart(2, '0')}</span>
+            <span class="badge-machine mach-${st.machCode}">${st.machCode}</span>
+          </div>
+          <div class="st-mach">${st.machName}</div>
+          <div class="st-op-title" title="${opTitle}">${shortTitle}</div>
+          <div class="st-time-bar-wrap">
+            <div class="st-time-bar ${isBottleneck?'over':isUnder?'under':''}" style="width: ${loadPct}%;"></div>
+          </div>
+          <div class="st-time-text">
+            <span>工时: <strong>${Math.round(st.sam*60)}s</strong></span>
+            <span>负荷: <strong>${loadPct}%</strong></span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // 统计设备需求
+      const machCount = {};
+      stations.forEach(st => {
+        machCount[st.machName] = (machCount[st.machName] || 0) + 1;
+      });
+
+      const machSummaryBox = document.getElementById("mach-summary-box");
+      machSummaryBox.innerHTML = "";
+      Object.keys(machCount).forEach(k => {
+        const mCard = document.createElement("div");
+        mCard.style = "background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;";
+        mCard.innerHTML = `
+          <span style="font-weight:600; color:#334155;">${k}</span>
+          <span style="font-size:18px; font-weight:800; color:var(--primary);">${machCount[k]} <small style="font-size:12px; font-weight:400; color:#64748b;">台</small></span>
+        `;
+        machSummaryBox.appendChild(mCard);
+      });
+    }
+
+    // 生产排单与交期计算
+    function calculateSchedule() {
+      const orderQty = parseInt(document.getElementById("sch-order-qty").value) || 1000;
+      const workHours = parseInt(document.getElementById("sch-work-hours").value) || 10;
+      const workers = parseInt(document.getElementById("sch-line-workers").value) || 24;
+      const startDateStr = document.getElementById("sch-start-date").value || new Date().toISOString().split('T')[0];
+
+      let totalSewSam = 0;
+      operations.forEach(o => totalSewSam += o.sam);
+
+      // 满负荷日标准产能 (100% 效率)
+      const fullCapacity = Math.round((workers * workHours * 60 * 0.85) / totalSewSam);
+
+      // 熟练度爬坡比率 (Learning Curve)
+      const rampRates = [0.45, 0.70, 0.90, 1.00];
+
+      const tbody = document.getElementById("schedule-daily-tbody");
+      tbody.innerHTML = "";
+
+      let cumQty = 0;
+      let dayIndex = 1;
+      let currDate = new Date(startDateStr);
+
+      while (cumQty < orderQty && dayIndex <= 30) {
+        // 跳过周末 (周日)
+        if (currDate.getDay() === 0) {
+          currDate.setDate(currDate.getDate() + 1);
+          continue;
+        }
+
+        const ramp = rampRates[Math.min(dayIndex - 1, rampRates.length - 1)];
+        let dayPlanned = Math.round(fullCapacity * ramp);
+
+        // 如果当天加上去超过订单量，按剩余计算
+        if (cumQty + dayPlanned > orderQty) {
+          dayPlanned = orderQty - cumQty;
+        }
+
+        cumQty += dayPlanned;
+        const progressPct = Math.min(100, (cumQty / orderQty) * 100);
+
+        const phaseDesc = dayIndex === 1 ? "首日上线 · 产前样首件封样及熟练度磨合" :
+                          dayIndex === 2 ? "次日爬坡 · 工位平衡微调、出半成品贯通" :
+                          dayIndex === 3 ? "全线贯通 · 接近标准节拍产出" : "全速量产 · 标准高产稳态运行";
+
+        const dateStr = currDate.toISOString().split('T')[0];
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td style="font-weight:700; color:var(--primary);">Day ${dayIndex}</td>
+          <td>${dateStr}</td>
+          <td style="font-size:12px; color:#475569;">${phaseDesc}</td>
+          <td style="font-weight:700; color:${ramp<0.7?'#ea580c':ramp<1.0?'#0284c7':'#16a34a'};">${(ramp*100).toFixed(0)}%</td>
+          <td style="font-weight:700; font-family:monospace; text-align:right;">${dayPlanned} 件</td>
+          <td style="font-weight:800; font-family:monospace; color:var(--dark); text-align:right;">${cumQty} 件</td>
+          <td style="font-weight:700; text-align:center;">${progressPct.toFixed(1)}%</td>
+          <td>
+            <div class="gantt-track">
+              <div class="gantt-progress" style="width: ${progressPct}%;">
+                ${progressPct > 15 ? progressPct.toFixed(0) + '%' : ''}
+              </div>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+
+        if (cumQty >= orderQty) {
+          // 完工
+          document.getElementById("sch-finish-date").innerText = dateStr;
+          document.getElementById("sch-sew-days").innerText = dayIndex + " 生产天";
+          document.getElementById("badge-delivery").innerText = `交期${dayIndex + 4}天`;
+          document.getElementById("sch-total-leadtime").innerText = (dayIndex + 4) + " 工作日 (含采买面辅料)";
+          break;
+        }
+
+        currDate.setDate(currDate.getDate() + 1);
+        dayIndex++;
+      }
+    }
+
+    // 导出 Excel / CSV 格式的 SOT 总表
+    function exportFullSOTExcel() {
+      let csvContent = "\uFEFF工序号,部件分部,工序名称与动作要领,机种代码,设备名称,标准工时(SAM分),工时(秒),技能等级,单人日产定额(件),单道工价(元)\n";
+
+      operations.forEach(op => {
+        const sec = Math.round(op.sam * 60);
+        const dailyCap = Math.round((60 / op.sam) * 0.85 * 10);
+        const price = (op.pieceRate || (op.sam * 0.95)).toFixed(2);
+        csvContent += `"${op.id}","${op.section}","${op.name}","${op.machCode}","${op.machName}","${op.sam.toFixed(2)}","${sec}","${op.level}","${dailyCap}","${price}"\n`;
+      });
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `SOT工序工时表_棒球夹克_${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // 点击预览大图
+    function viewLargeImage() {
+      window.open('assets/jacket_spec.png', '_blank');
+    }
+  </script>
+</body>
+</html>
+

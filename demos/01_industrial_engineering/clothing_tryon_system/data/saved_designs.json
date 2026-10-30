@@ -1,0 +1,72 @@
+[
+  {
+    "name": "测试意式藏青条纹西装",
+    "styleId": "blazer",
+    "styleName": "高定意式收腰西装",
+    "colors": {
+      "body": "#0F172A",
+      "collar": "#1E293B",
+      "sleeves": "#0F172A",
+      "pockets": "#1E293B",
+      "accents": "#E2E8F0"
+    },
+    "materials": {
+      "body": "wool"
+    },
+    "pattern": "stripes",
+    "id": "design-1793178235241",
+    "createdAt": "2026-10-28 17:03"
+  },
+  {
+    "id": "design-170001",
+    "name": "极简燕麦风衣 - 晨雾驼",
+    "styleId": "trench_coat",
+    "styleName": "经典双排扣风衣",
+    "category": "outerwear",
+    "colors": {
+      "body": "#D2B48C",
+      "collar": "#8B5A2B",
+      "sleeves": "#D2B48C",
+      "pockets": "#8B5A2B",
+      "accents": "#2F1F17"
+    },
+    "materials": {
+      "body": "wool",
+      "collar": "leather"
+    },
+    "pattern": "solid",
+    "fit": "regular",
+    "createdAt": "2026-10-28 10:20",
+    "tags": [
+      "商务通勤",
+      "秋冬百搭",
+      "高级英伦"
+    ]
+  },
+  {
+    "id": "design-170002",
+    "name": "赛博机能廓形夹克 - 暗夜黑",
+    "styleId": "bomber_jacket",
+    "styleName": "工装廓形飞行员夹克",
+    "category": "outerwear",
+    "colors": {
+      "body": "#1E232A",
+      "collar": "#12151A",
+      "sleeves": "#282F39",
+      "pockets": "#00FF9D",
+      "accents": "#00FF9D"
+    },
+    "materials": {
+      "body": "techwear",
+      "collar": "ribbed"
+    },
+    "pattern": "solid",
+    "fit": "oversized",
+    "createdAt": "2026-10-28 14:15",
+    "tags": [
+      "机能潮牌",
+      "赛博朋克",
+      "防风防水"
+    ]
+  }
+]

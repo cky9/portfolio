@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>服装个性化设计与 AI 虚拟试穿平台 | Fashion AI Studio</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 顶部导航栏与流程引导 (对应原图底部与主标题) -->
+  <header class="studio-header">
+    <div class="brand-section">
+      <div class="brand-logo-icon">👗</div>
+      <div class="brand-title">
+        <h1>服装个性化设计与 AI 虚拟试穿平台</h1>
+        <p>从看衣，到设计衣、AI虚拟试穿衣 · 智能高定工作台</p>
+      </div>
+    </div>
+
+    <!-- 流程引导条 (1.选款 -> 2.定制 -> 3.模特 -> 4.试穿 -> 5.对比保存) -->
+    <div class="workflow-stepper">
+      <div class="step-item" data-step="1">
+        <span class="step-num">1</span>
+        <span>款式选择</span>
+      </div>
+      <span class="step-divider">›</span>
+      <div class="step-item active" data-step="2">
+        <span class="step-num">2</span>
+        <span>部件定制</span>
+      </div>
+      <span class="step-divider">›</span>
+      <div class="step-item" data-step="3">
+        <span class="step-num">3</span>
+        <span>模特与上传</span>
+      </div>
+      <span class="step-divider">›</span>
+      <div class="step-item" data-step="4">
+        <span class="step-num">4</span>
+        <span>AI虚拟试穿</span>
+      </div>
+      <span class="step-divider">›</span>
+      <div class="step-item" data-step="5">
+        <span class="step-num">5</span>
+        <span>多方案对比</span>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button id="btn-open-library" class="btn-secondary">
+        <span>📁 方案库</span>
+      </button>
+      <button id="btn-compare-modal" class="btn-secondary">
+        <span>⚖️ 多方案对比</span>
+      </button>
+      <button id="btn-export-poster" class="btn-primary">
+        <span>📥 导出试穿工单</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 主工作台 (三栏式经典设计布局) -->
+  <main class="studio-workspace">
+    
+    <!-- 左侧栏：1. 款式选择 (Style Selection) -->
+    <section class="left-style-selector">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span>👔 款式与版型</span>
+        </div>
+        <span class="panel-badge">6 种精选版型</span>
+      </div>
+
+      <div id="style-scroll-list" class="style-scroll-list">
+        <!-- 动态注入款式卡片 -->
+      </div>
+    </section>
+
+    <!-- 中央工作台：2. 个性化设计 (Custom Design - 部件拆解微调) -->
+    <section class="center-customizer">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span>🎨 部件拆解与个性化设计</span>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button id="btn-random-palette" class="btn-secondary" style="padding:4px 10px; font-size:12px;">
+            <span>🎲 灵感配色</span>
+          </button>
+          <button id="btn-reset-design" class="btn-secondary" style="padding:4px 10px; font-size:12px;">
+            <span>↺ 恢复预设</span>
+          </button>
+          <button id="btn-save-design" class="btn-primary" style="padding:4px 12px; font-size:12px;">
+            <span>💾 保存方案</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 服装交互画布与引线指示层 (仿原图引线指引) -->
+      <div class="customizer-canvas-container">
+        <div id="canvas-viewport" class="canvas-viewport">
+          <!-- 动态渲染 SVG 服装与部件 -->
+        </div>
+        <!-- 引线标注层 -->
+        <div id="callout-overlay" class="callout-overlay"></div>
+      </div>
+
+      <!-- 底部实时定制控制面板 (仿原图“实时定制”) -->
+      <div class="center-bottom-bar">
+        <!-- 部件选择标签栏 -->
+        <div class="custom-tools-row">
+          <div style="font-size:12px; font-weight:600; color:var(--text-sub); white-space:nowrap;">
+            当前微调部件：<span id="selected-part-label" style="color:#38bdf8;">衣身主体</span>
+          </div>
+          <div id="part-tabs" class="part-selector-tabs">
+            <!-- 动态生成部件 tab -->
+          </div>
+        </div>
+
+        <!-- 调色盘与面料选择栏 -->
+        <div class="sub-customizer-panel">
+          <!-- 左边：材质与纹理 -->
+          <div class="sub-ctrl-group">
+            <h4>面料材质与肌理</h4>
+            <div style="display:flex; gap:8px; margin-bottom:8px;">
+              <select id="material-select" class="material-select"></select>
+              <select id="pattern-select" class="material-select"></select>
+            </div>
+          </div>
+
+          <!-- 右边：潘通色板与拾色器 -->
+          <div class="sub-ctrl-group">
+            <h4>部件色彩定制 (潘通/流行色)</h4>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <div id="palette-swatches" class="palette-swatches"></div>
+              <input type="color" id="custom-color-input" value="#3b82f6" title="自定义任意色彩" style="width:28px; height:28px; border:none; border-radius:50%; cursor:pointer; background:transparent;">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 右侧栏：3 & 4. 仿原图手机屏幕模型 - AI 虚拟试穿系统 (AI Try-On Screen) -->
+    <section class="right-tryon-container">
+      <div class="panel-header">
+        <div class="panel-title">
+          <span>📱 AI 虚拟试穿效果</span>
+        </div>
+        <span class="panel-badge">实时人体贴合</span>
+      </div>
+
+      <!-- 手机外壳质感拟态 (Phone Mockup) -->
+      <div class="phone-mockup-wrapper">
+        <div class="phone-device">
+          <!-- 灵动岛 -->
+          <div class="phone-notch"></div>
+          
+          <!-- 手机屏幕画布 -->
+          <div class="phone-screen">
+            <canvas id="tryon-canvas"></canvas>
+
+            <!-- 手机内浮动角度切换栏 -->
+            <div class="screen-floating-controls">
+              <div class="angle-switcher">
+                <button class="angle-btn active" data-angle="front">正面 0°</button>
+                <button class="angle-btn" data-angle="side">侧身 45°</button>
+                <button class="angle-btn" data-angle="back">背面 180°</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 模特选择与拍照上传工具栏 -->
+      <div class="tryon-control-dock">
+        <div style="font-size:12px; color:var(--text-sub); display:flex; justify-content:space-between;">
+          <span>选择试穿模特 / 切换身形：</span>
+          <span style="color:#38bdf8;">自适应体型适配</span>
+        </div>
+        <div id="model-thumbnails" class="model-thumbnails">
+          <!-- 动态注入 4 位不同性别身材模特 -->
+        </div>
+
+        <div class="photo-upload-bar">
+          <label class="upload-btn-label">
+            <span>📷 上传全身自拍照 体验真实试穿</span>
+            <input type="file" id="photo-upload-input" accept="image/*" style="display:none;">
+          </label>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 模态框：多方案并排对比 (4. 多方案对比) -->
+  <div id="compare-modal" class="modal-backdrop">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <h3 style="font-size:18px;">⚖️ 多方案并排横向对比 (Side-by-Side Comparison)</h3>
+          <span class="panel-badge">支持款式、配色、面料并排横评</span>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button id="btn-add-to-compare" class="btn-primary" style="font-size:12px; padding:6px 14px;">
+            <span>+ 加入当前方案</span>
+          </button>
+          <button id="btn-close-compare" class="btn-secondary" style="font-size:12px; padding:6px 12px;">
+            <span>✕ 关闭</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div id="compare-grid" class="compare-grid">
+          <!-- 并排对比卡片 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 模态框：方案库 (5. 保存与分享) -->
+  <div id="library-modal" class="modal-backdrop">
+    <div class="modal-window" style="max-width:820px;">
+      <div class="modal-header">
+        <h3 style="font-size:18px;">📁 方案库与历史定制作品</h3>
+        <button id="btn-close-library" class="btn-secondary" style="font-size:12px; padding:6px 12px;">
+          <span>✕ 关闭</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="library-grid" class="compare-grid">
+          <!-- 方案库卡片 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入系统脚本 -->
+  <script src="js/presets.js"></script>
+  <script src="js/tryon_engine.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
+
