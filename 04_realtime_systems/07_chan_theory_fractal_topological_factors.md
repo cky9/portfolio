@@ -1,43 +1,45 @@
-# 缠论笔线段与中枢多维量化因子模型（脱敏版）
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./07_chan_theory_fractal_topological_factors_zh.md) ]**
 
-> **作者/量化算法工程师**：Quantitative Strategy & Algorithmic Research Team  
-> **核心算法**：顶底分型解算 · 缠论笔/线段标准化逻辑 · 走势中枢自动提取 · 多维因子共振
+# Chan Theory Bi/Segment and Pivot Multi-Dimensional Quantitative Factor Model (Sanitized Version)
+
+> **Author / Quantitative Algorithm Engineer**: Quantitative Strategy & Algorithmic Research Team
+> **Core Algorithms**: Top/Bottom Fractal Resolution · Chan Theory Bi/Segment Standardization Logic · Automated Trend Pivot Extraction · Multi-Dimensional Factor Resonance
 
 ---
 
-## 一、 项目背景与理论基础
+## I. Project Background and Theoretical Foundation
 
-缠论（Chan Theory）是以形态学与动力学为基础的技术分析体系。传统人工画笔与识别中枢极易受主观偏见影响。本项目将缠论核心概念进行严密的**标准化数学解算**，转化为完全客观的量化代码。
+Chan Theory is a technical analysis framework grounded in morphology and dynamics. Manual drawing of Bi and identification of pivots are highly susceptible to subjective bias. This project subjects the core concepts of Chan Theory to rigorous **standardized mathematical resolution**, translating them into fully objective quantitative code.
 
 ```mermaid
 graph TD
-    K[包含关系 K 线处理] --> FX[顶分型与底分型识别]
-    FX --> Bi[标准化画笔 (Bi Engine)]
-    Bi --> Seg[线段解算 (Segment Engine)]
-    Seg --> Pivot[走势中枢提取 (Chan Pivot)]
-    Pivot --> Signal[买卖点 1B/2B/3B 自动判别]
+    K[Inclusion-Relationship K-Line Processing] --> FX[Top and Bottom Fractal Identification]
+    FX --> Bi[Standardized Bi Engine]
+    Bi --> Seg[Segment Engine]
+    Seg --> Pivot[Trend Pivot Extraction (Chan Pivot)]
+    Pivot --> Signal[Automated 1B/2B/3B Buy/Sell Point Discrimination]
 ```
 
 ---
 
-## 二、 核心解算模块
+## II. Core Resolution Modules
 
-### 1. K 线包含关系处理 (Inclusion Processing)
-严格按高高低低（向上元素）与低高低低（向下元素）原则合并连续 K 线，消除噪声干扰。
+### 1. K-Line Inclusion-Relationship Processing (Inclusion Processing)
+Continuous K-lines are merged strictly according to the high-high-low-low (upward element) and low-high-low-low (downward element) principle, eliminating noise interference.
 
-### 2. 标准化笔与线段解算 (Bi & Segment Engine)
-- **顶底分型**：相邻 5 根经过包含处理的 K 线中，中间最高（低）且两侧依次递减（增）。
-- **笔成立条件**：顶底分型之间至少隔开 1 根独立 K 线（经典定义）或满足重叠区间约束。
+### 2. Standardized Bi and Segment Resolution (Bi & Segment Engine)
+- **Top/Bottom Fractals**: Among 5 adjacent K-lines that have undergone inclusion processing, the middle one is the highest (lowest) with the two sides decreasing (increasing) sequentially.
+- **Bi Validity Conditions**: At least 1 independent K-line must separate the top and bottom fractals (classic definition), or the overlapping-interval constraint must be satisfied.
 
-### 3. 走势中枢提取 (Chan Pivot Engine)
-自动解算连续三笔在价格区间上的重叠部分（$[Z_g, Z_d]$）：
-$$ \text{中枢区间} = [\max(D_1, D_2, D_3), \min(G_1, G_2, G_3)] $$
+### 3. Trend Pivot Extraction (Chan Pivot Engine)
+Automatically resolve the overlapping portion of three consecutive Bi over the price range ($[Z_g, Z_d]$):
+$$ \text{Pivot Range} = [\max(D_1, D_2, D_3), \min(G_1, G_2, G_3)] $$
 
 ---
 
-## 三、 工程效果
+## III. Engineering Results
 
-1. **客观无偏见**：将原本模糊的技术分析理论转化为 100% 可重复验证的纯 Python 代码。
-2. **多维因子结合**：将缠论中枢与均线偏离度及 MACD 动能背离结合，形成极高的量化胜率。
+1. **Objective and Unbiased**: Transforms the originally ambiguous technical analysis theory into 100% repeatably verifiable pure Python code.
+2. **Multi-Dimensional Factor Integration**: Combines Chan Theory pivots with moving-average deviation and MACD momentum divergence to achieve an exceptionally high quantitative win rate.
 
-*(注：本模型算法文档已作脱敏清洗)*
+*(Note: This model algorithm document has been sanitized.)*

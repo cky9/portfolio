@@ -1,8 +1,9 @@
-# 🕵️ 无侵入式业务 RPA 自动化与脏数据清洗管道
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
 
-> **商业价值**：外贸出海与电商企业往往受困于多平台商家后台的数据黑盒，官方接口门槛高、第三方抓取收费贵且存在封号风险。本方案通过纯本地 RPA 无侵入抓取 + 本地 Python 管道清洗，实现 0 云端成本、100% 数据归属本地的闭环。
+# 🕵️ Non-Invasive Business RPA Automation and Dirty Data Cleaning Pipeline
 
-## 🚀 极速开箱试跑
+> **Business value**: Cross-border trade and e-commerce companies are often trapped by the data black box of multi-platform merchant backends—official APIs have high barriers to entry, third-party scraping is expensive and carries account-ban risk. This solution uses pure local RPA for non-invasive scraping plus a local Python pipeline for cleaning, achieving a closed loop with zero cloud cost and 100% local data ownership.
+
+## 🚀 Quick Start
 ```bash
 python demo_run.py
-```

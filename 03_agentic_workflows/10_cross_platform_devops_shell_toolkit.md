@@ -1,86 +1,88 @@
-# 跨平台环境调优与自动化运维 Shell 脚本工具箱（脱敏版）
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./10_cross_platform_devops_shell_toolkit_zh.md) ]**
 
-> **作者/运维架构师**：DevOps & Systems Engineering Team  
-> **核心工具**：macOS 系统级 UI 渲染调优 · 跨平台按键/环境映射 · 自动化诊断与修复一键脚本
+# Cross-Platform Environment Tuning and Automated Operations Shell Script Toolkit (Sanitized Version)
 
----
-
-## 一、 项目背景与设计理念
-
-在跨平台开发与日常极客运维中，工程师常遇到两大痛点：
-1. **操作系统体验打流与按键习惯冲突**：在 macOS 与 Windows 系统之间频繁切换时，快捷键映射与键盘习惯不同步，严重打断开发节奏。
-2. **系统渲染冗余与低效运维**：操作系统默认的动画过渡（如 Window Animation、Dock 延迟）会消耗显存并拉低多屏切换效率。
-
-本工具箱整理并开发了一套 **“轻量、纯粹、开箱即用”** 的命令行 Shell 运维自动化工具集。
+> **Author / Operations Architect**: DevOps & Systems Engineering Team  
+> **Core Tools**: macOS system-level UI rendering tuning · Cross-platform keybinding/environment mapping · One-click automated diagnostics and remediation scripts
 
 ---
 
-## 二、 工具箱架构与脚本组成
+## I. Project Background and Design Philosophy
+
+In cross-platform development and day-to-day power-user operations, engineers routinely run into two major pain points:
+1. **Friction between operating system experience and keybinding habits**: When switching frequently between macOS and Windows, shortcut mappings and keyboard habits fall out of sync, severely disrupting development rhythm.
+2. **Redundant system rendering and inefficient operations**: Default OS animation transitions (such as Window Animation and Dock delay) consume VRAM and drag down multi-monitor switching efficiency.
+
+This toolkit consolidates and develops a set of **"lightweight, pure, out-of-the-box"** command-line Shell operations automation tools.
+
+---
+
+## II. Toolkit Architecture and Script Composition
 
 ```
 devops-shell-toolbox/
 ├── osx_tune/
-│   ├── disable_macos_animations.sh    # 零延迟：一键关闭 macOS 冗余 UI 窗口动画
-│   └── restore_macos_animations.sh    # 一键恢复默认动画
+│   ├── disable_macos_animations.sh    # Zero latency: one-click disable of redundant macOS UI window animations
+│   └── restore_macos_animations.sh    # One-click restore of default animations
 ├── proxy_and_tools/
-│   ├── mac_proxy_config.sh            # MAC 代理与本地网络中继自动化切换脚本
-│   └── fanyi721_runner.sh             # \fanyi721 多语言自动化文本清洗与翻译调用链
+│   ├── mac_proxy_config.sh            # MAC proxy and local network relay automated switching script
+│   └── fanyi721_runner.sh             # \fanyi721 multilingual automated text cleaning and translation invocation chain
 ├── cross_platform_env/
-│   ├── install_env.sh                 # 自动化安装与环境初始化一键脚本
-│   ├── diagnose_system.sh             # 系统与网络联通性自动诊断脚本
-│   └── quick_fix.sh                   # 常见环境异常极速一键修复
-└── README.md                          # 命令行快捷操作指南
+│   ├── install_env.sh                 # Automated installation and environment initialization one-click script
+│   ├── diagnose_system.sh             # System and network connectivity automated diagnostic script
+│   └── quick_fix.sh                   # Rapid one-click remediation for common environment anomalies
+└── README.md                          # Command-line quick operation guide
 ```
 
 ---
 
-## 三、 核心脚本代码片段展示
+## III. Core Script Code Snippets
 
-### 1. macOS 极客性能调优（系统 UI 零延迟加速）
-通过修改 macOS 系统底层 `defaults` 域配置，彻底消除窗口弹出、Dock 弹出及网格缩放的系统动画延迟，显著提升老旧设备或高负荷下的桌面流畅度：
+### 1. macOS Power-User Performance Tuning (Zero-Latency System UI Acceleration)
+By modifying macOS system-level `defaults` domain configurations, this completely eliminates system animation delays for window pop-ups, Dock pop-ups, and grid scaling, significantly improving desktop responsiveness on older hardware or under heavy load:
 
 ```bash
 #!/usr/bin/env bash
-# 脱敏示例：macOS 极客零延迟UI调优脚本
+# Sanitized example: macOS power-user zero-latency UI tuning script
 
-echo "🚀 开始执行系统级 UI 动画禁用与性能调优..."
+echo "🚀 Starting system-level UI animation disable and performance tuning..."
 
-# 1. 禁用窗口打开和缩放动画
+# 1. Disable window open and scale animations
 defaults write com.apple.finder DisableAllAnimations -bool true
 defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
 
-# 2. 移除 Dock 自动隐藏和显示的延迟
+# 2. Remove Dock auto-hide and show delays
 defaults write com.apple.dock autohide-delay -float 0
 defaults write com.apple.dock autohide-time-modifier -float 0
 
-# 3. 禁用调整大小时的平滑延迟
+# 3. Disable smooth delay on resize
 defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
 
-# 重启受影响的底层进程
+# Restart affected underlying processes
 killall Finder
 killall Dock
 
-echo "✅ 调优完成！系统 UI 动画延迟已彻底消除。"
+echo "✅ Tuning complete! System UI animation delays have been completely eliminated."
 ```
 
 ---
 
-### 2. 自动化一键诊断与修复脚本体系 (Diagnose & Quick Fix)
-在环境异常或端口被占用时，无需手动执行繁琐命令，直接运行诊断脚本：
-- **诊断脚本 (`diagnose_system.sh`)**：自动检查端口占用（如 Redis 6379 / MySQL 3306）、代理变量状态及文件权限。
-- **快速修复 (`quick_fix.sh`)**：一键清理僵尸进程、重置代理白名单并修复 Unix 文件执行权限 (`chmod +x`)。
+### 2. Automated One-Click Diagnostics and Remediation Script System (Diagnose & Quick Fix)
+When the environment is abnormal or a port is occupied, there is no need to manually run tedious commands—just run the diagnostic script:
+- **Diagnostic script (`diagnose_system.sh`)**: Automatically checks port occupancy (e.g., Redis 6379 / MySQL 3306), proxy variable status, and file permissions.
+- **Quick fix (`quick_fix.sh`)**: One-click cleanup of zombie processes, reset of proxy whitelists, and repair of Unix file execution permissions (`chmod +x`).
 
 ---
 
-### 3. MAC 代理配置与 \fanyi721 工具运行器 (`fanyi721_runner.sh`)
-- **MAC 代理环境一键开关**：`mac_proxy_config.sh` 支持在终端中快速配置/切断 HTTP/HTTPS 及 SOCKS5 本地中继代理，解决网络阻隔与爬虫 IP 映射问题。
-- **\fanyi721 自动化管道**：整合多语言翻译接口与正则清洗脚本，一键传入待翻译的旧数据或外部资讯，自动批处理并导出标准化文本。
+### 3. MAC Proxy Configuration and \fanyi721 Tool Runner (`fanyi721_runner.sh`)
+- **One-click MAC proxy environment toggle**: `mac_proxy_config.sh` supports quickly configuring/cutting off HTTP/HTTPS and SOCKS5 local relay proxies in the terminal, resolving network blocking and crawler IP mapping issues.
+- **\fanyi721 automated pipeline**: Integrates multilingual translation interfaces with regex cleaning scripts; pass in legacy data or external content to be translated with a single command, and it automatically batch-processes and exports standardized text.
 
 ---
 
-## 四、 工具箱价值
+## IV. Toolkit Value
 
-1. **一键式部署**：将繁琐的系统调优与故障排查抽象为简洁的 Shell 指令。
-2. **提升开发纯粹度**：通过消除系统过度动画与习惯摩擦，让工程师的注意心智带宽 100% 聚焦于代码本身。
+1. **One-click deployment**: Abstracts tedious system tuning and troubleshooting into concise Shell commands.
+2. **Enhanced development purity**: By eliminating excessive system animations and habit friction, engineers' attention and mental bandwidth are 100% focused on the code itself.
 
-*(注：本工具箱脚本已脱敏，移除了特定私有域名与路径)*
+*(Note: The scripts in this toolkit have been sanitized, with specific private domains and paths removed.)*

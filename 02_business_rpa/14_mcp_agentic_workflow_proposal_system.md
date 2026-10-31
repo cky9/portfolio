@@ -1,35 +1,37 @@
-# 基于 MCP 协议的 AI 智能体工作流与精准订单匹配系统（脱敏版）
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./14_mcp_agentic_workflow_proposal_system_zh.md) ]**
 
-> **作者/架构师**：QuantDev / AI Full-Stack Team  
-> **版本**：v1.8 (Production Ready)  
-> **适用场景**：自由职业者 / Solo-Dev 个人极客、全球远程接单平台（Upwork 等）自动化工单狙击、多源上下文智能体（MCP Agent）协同
+# AI Agent Workflow and Precision Order Matching System Based on the MCP Protocol (Redacted Version)
+
+> **Author/Architect**: QuantDev / AI Full-Stack Team  
+> **Version**: v1.8 (Production Ready)  
+> **Applicable Scenarios**: Freelancers / Solo-Dev individual geeks, automated job sniping on global remote work platforms (Upwork, etc.), multi-source context agent (MCP Agent) collaboration
 
 ---
 
-## 一、 系统架构总览
+## I. System Architecture Overview
 
-本项目实现了一套基于 **Model Context Protocol (MCP)** 标准协议的企业级 AI 智能体集成工作流。系统核心致力于解决自由职业者和独立开发团队在应对海量远程需求时的“信息过载与低效竞标”痛点。
+This project implements an enterprise-grade AI agent integration workflow built on the **Model Context Protocol (MCP)** standard. The system's core mission is to solve the "information overload and inefficient bidding" pain point that freelancers and independent development teams face when responding to a flood of remote demands.
 
-通过将远程平台 API 全量封装为类型安全（Type-Safe）的 MCP 工具服务，大模型（LLM）能够在受控权限沙箱中自主执行：**订单动态拉取 $\to$ 客户预算与信誉漏斗过滤 $\to$ 本地真实代码资产语义匹配 $\to$ 高转化率定制化 Proposal 自动生成**。
+By fully wrapping remote platform APIs into type-safe MCP tool services, large language models (LLMs) can autonomously execute within a controlled-permission sandbox: **dynamic order retrieval $\to$ client budget and reputation funnel filtering $\to$ semantic matching against local real code assets $\to$ automated generation of high-conversion customized Proposals**.
 
-### MCP 协议智能体调度架构图
+### MCP Protocol Agent Orchestration Architecture Diagram
 
 ```mermaid
 graph LR
-    subgraph Client [AI 决策中枢]
+    subgraph Client [AI Decision Hub]
         Agent[Antigravity / Claude Agent]
-        Brain[本地代码资产与经验知识库]
+        Brain[Local Code Assets and Experience Knowledge Base]
     end
 
-    subgraph MCP_Server [远程平台 MCP 桥接网关]
-        Auth[OAuth 2.1 鉴权与安全令牌刷新]
-        Tools[32+ 项标准原子工具集]
-        RateLimit[调用频率与风控控制器]
+    subgraph MCP_Server [Remote Platform MCP Bridge Gateway]
+        Auth[OAuth 2.1 Authentication and Secure Token Refresh]
+        Tools[32+ Standard Atomic Tool Set]
+        RateLimit[Call Frequency and Risk Control Controller]
     end
 
-    subgraph Remote_Platform [全球远程工单平台]
-        API[平台官方 Open API]
-        Jobs[(实时任务与需求池)]
+    subgraph Remote_Platform [Global Remote Job Platform]
+        API[Platform Official Open API]
+        Jobs[(Real-Time Task and Demand Pool)]
     end
 
     Agent <-->|JSON-RPC 2.0 (stdio / SSE)| Tools
@@ -37,26 +39,26 @@ graph LR
     Auth --> RateLimit
     RateLimit <-->|RESTful / GraphQL| API
     API <--> Jobs
-    Brain -.->|真实项目案例注入| Agent
+    Brain -.->|Real Project Case Injection| Agent
 ```
 
 ---
 
-## 二、 核心技术亮点与设计思想
+## II. Core Technical Highlights and Design Philosophy
 
-### 1. 官方级 MCP 协议打通与 OAuth 2.1 安全生命周期
-- **协议标准化**：严格遵循 Anthropic / Linux 基金会主导的 MCP 规范，通过 `stdio` 管道实现轻量级零网络暴露通信；
-- **全生命周期令牌管理**：内嵌 OAuth 2.1 自动续签机制，Access Token 内存隔离缓存，Refresh Token 加密存储于系统底层安全保管库；
-- **细粒度权限沙箱**：提供 `find_jobs`、`get_proposal` 等多维度只读查询与显式确认的写操作，杜绝越权动作。
+### 1. Official-Grade MCP Protocol Integration and OAuth 2.1 Security Lifecycle
+- **Protocol Standardization**: Strictly adheres to the MCP specification led by Anthropic / the Linux Foundation, achieving lightweight zero-network-exposure communication through `stdio` pipes;
+- **Full-Lifecycle Token Management**: Embeds an OAuth 2.1 auto-renewal mechanism, with Access Tokens cached in memory isolation and Refresh Tokens encrypted and stored in the system's underlying secure vault;
+- **Fine-Grained Permission Sandbox**: Provides multi-dimensional read-only queries such as `find_jobs` and `get_proposal`, along with write operations that require explicit confirmation, eliminating unauthorized actions.
 
-### 2. 真实资产驱动的 Proposal 生成引擎 (Evidence-Based Pitching)
-业内自动化竞标最大的缺陷是“AI 胡编乱造与泛泛空话”，导致客户极度反感并封禁。本系统首创**“本地真实资产锚定”**机制：
-- 检索到相关订单（如 Python 爬虫、Telegram Bot、数据大屏）后，智能体必须优先从本地脱敏作品集中提取 1~2 个真实存在的架构文档与脱敏指标；
-- 提案内容由 **客户痛点提炼（Pain Point） + 现有成熟方案（Proven Architecture） + 最小验证周期（Milestone-1 Demo）** 构成；
-- 杜绝空洞模板，转化率提升 3 倍以上。
+### 2. Real-Asset-Driven Proposal Generation Engine (Evidence-Based Pitching)
+The biggest flaw in industry automated bidding is "AI fabrication and generic empty talk," which clients find extremely off-putting and which leads to bans. This system pioneers a **"local real-asset anchoring"** mechanism:
+- After retrieving relevant orders (e.g., Python scraping, Telegram Bot, data dashboards), the agent must first extract 1–2 genuinely existing architecture documents and redacted metrics from the local redacted portfolio;
+- Proposal content is composed of **client pain point distillation (Pain Point) + existing proven solution (Proven Architecture) + minimum validation cycle (Milestone-1 Demo)**;
+- Eliminates hollow templates, boosting conversion rates by more than 3x.
 
 ```python
-# 示例：脱敏后的工单评估与资产召回逻辑
+# Example: Redacted job evaluation and asset recall logic
 from typing import Dict, Any, List
 
 class JobOpportunityFilter:
@@ -65,37 +67,37 @@ class JobOpportunityFilter:
         self.min_budget = min_fixed_budget
 
     def evaluate_job(self, job: Dict[str, Any]) -> bool:
-        """多维硬指标漏斗过滤"""
-        # 1. 过滤未验证支付方式客户
+        """Multi-dimensional hard-metric funnel filtering"""
+        # 1. Filter out clients without verified payment methods
         if not job.get("client", {}).get("payment_verified", False):
             return False
             
-        # 2. 过滤过低单价
+        # 2. Filter out excessively low rates
         budget = job.get("budget", 0)
         rate = job.get("hourly_rate", 0)
         if budget < self.min_budget and rate < self.min_rate:
             return False
             
-        # 3. 技能关键词命中校验
+        # 3. Skill keyword hit validation
         skills = set(job.get("skills", []))
         target_skills = {"python", "scraping", "telegram", "fastapi", "ai-agent"}
         return len(skills.intersection(target_skills)) > 0
 ```
 
-### 3. 反封控与防抖动长轮询
-- 内置平台 API Rate-Limit 动态监测，采用自适应滑动窗口（Sliding Window）限流；
-- 避免瞬间高并发请求触发平台的反爬机制，实现稳健、长周期的合规接入。
+### 3. Anti-Ban and Anti-Jitter Long Polling
+- Built-in dynamic monitoring of platform API Rate-Limit, using adaptive sliding window throttling;
+- Avoids instantaneous high-concurrency requests that trigger the platform's anti-scraping mechanisms, achieving robust, long-cycle compliant access.
 
 ---
 
-## 三、 典型应用与落地效益
+## III. Typical Applications and Real-World Benefits
 
-| 场景 | 传统手工模式 | MCP 智能体模式 | 效能提升 |
+| Scenario | Traditional Manual Mode | MCP Agent Mode | Efficiency Gain |
 | :--- | :--- | :--- | :--- |
-| **高价值工单发现** | 每天手动刷新筛选 1~2 小时 | 毫秒级后台过滤与推送 | **节省 90% 时间** |
-| **定制方案编写** | 逐字手写 30~45 分钟/单 | 30 秒调用本地资产生成高维提案 | **效率提升 10 倍** |
-| **转化率与专业度** | 泛泛说教，缺乏实证 | 直击痛点，提供真实架构与最小里程碑 | **回复率从 8% 提升至 28%+** |
+| **High-Value Job Discovery** | Manually refresh and filter 1–2 hours per day | Millisecond-level background filtering and push | **90% time saved** |
+| **Custom Proposal Writing** | Hand-write word by word, 30–45 min per order | 30-second call to local assets to generate high-dimensional proposals | **10x efficiency gain** |
+| **Conversion Rate and Professionalism** | Generic lecturing, lacking evidence | Directly addresses pain points, provides real architecture and minimum milestones | **Reply rate up from 8% to 28%+** |
 
 ---
 
-*(注：本文档仅供技术架构交流与工程能力展示，已剔除所有个人身份凭据、商业 API 密钥及未公开平台配置)*
+*(Note: This document is intended solely for technical architecture exchange and engineering capability demonstration. All personal identity credentials, commercial API keys, and undisclosed platform configurations have been removed.)*

@@ -1,22 +1,24 @@
-# 全景态势感知与响应式前端监控大屏（脱敏版）
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./05_realtime_telemetry_svelte_dashboard_zh.md) ]**
 
-> **作者/前端架构师**：Frontend & UI/UX Team  
-> **技术栈**：Svelte / SvelteKit · TailwindCSS · Reactive Store · Component Architecture
+# Panoramic Situational Awareness & Responsive Frontend Monitoring Dashboard (Redacted Version)
 
----
-
-## 一、 项目背景与 UI/UX 设计理念
-
-在现代数据监控与态势感知场景中，传统的表格化看板难以在第一时间传递核心风险与关键异动。本项目设计并实现了一套 **高颜值、极速响应、组件化** 的全景态势感知前端监控大屏。
-
-### 核心设计原则
-1. **视觉分级与极简审美**：告别繁杂庸俗的传统界面，采用现代现代深色暗黑主题（Dark Mode Glassmorphic Design）、tailored 现代字体与优雅渐变色盘。
-2. **零延迟响应式状态（Svelte Reactive Store）**：基于 Svelte 极轻量的响应式状态管理，避免 React/Vue 的重度虚拟 DOM 开销，实现毫秒级数据流更新。
-3. **完全响应式布局**：基于 TailwindCSS 的原子化 CSS 布局，无缝适配大屏显示器、MacBook 笔记本及移动设备。
+> **Author/Frontend Architect**: Frontend & UI/UX Team  
+> **Tech Stack**: Svelte / SvelteKit · TailwindCSS · Reactive Store · Component Architecture
 
 ---
 
-## 二、 核心技术架构
+## I. Project Background & UI/UX Design Philosophy
+
+In modern data monitoring and situational awareness scenarios, traditional tabular dashboards struggle to convey core risks and critical anomalies at a glance. This project designs and implements a **visually polished, ultra-fast, component-driven** panoramic situational awareness frontend monitoring dashboard.
+
+### Core Design Principles
+1. **Visual Hierarchy & Minimalist Aesthetics**: A departure from cluttered, conventional interfaces—featuring a modern Dark Mode Glassmorphic Design, tailored contemporary typography, and an elegant gradient palette.
+2. **Zero-Latency Reactive State (Svelte Reactive Store)**: Built on Svelte's ultra-lightweight reactive state management, eliminating the heavy virtual DOM overhead of React/Vue to achieve millisecond-level data stream updates.
+3. **Fully Responsive Layout**: Atomic CSS layout powered by TailwindCSS, seamlessly adapting to large-format displays, MacBook laptops, and mobile devices.
+
+---
+
+## II. Core Technical Architecture
 
 ```mermaid
 graph TD
@@ -40,10 +42,10 @@ graph TD
 
 ---
 
-## 三、 技术亮点与代码美学
+## III. Technical Highlights & Code Aesthetics
 
-### 1. 组件化与极速渲染
-放弃冗余的框架包，采用 Svelte 组件化开发，打包后产物极其精简，页面首次加载时间 (FCP) 提升 70% 以上。
+### 1. Componentization & Ultra-Fast Rendering
+By forgoing bloated framework bundles and adopting Svelte's component-based development, the build output is exceptionally lean, improving First Contentful Paint (FCP) by over 70%.
 
 ```svelte
 <!-- 示例：脱敏态势感知组件模板 -->
@@ -68,9 +70,9 @@ graph TD
 
 ---
 
-## 四、 成果与价值
+## IV. Outcomes & Value
 
-1. **极致视觉冲击力**：为数据监控与决策提供了媲美极客大屏的现代 UI/UX 体验。
-2. **模块化易维护**：全组件化设计，新增监控维度只需拖入新的 Svelte 组件即可快速完成扩展。
+1. **Exceptional Visual Impact**: Delivers a modern UI/UX experience on par with geek-grade command centers for data monitoring and decision-making.
+2. **Modular & Maintainable**: A fully componentized design—adding new monitoring dimensions requires only dropping in a new Svelte component for rapid extensibility.
 
-*(注：本系统已对项目接口地址与具体品牌标识完成全局脱敏)*
+*(Note: All project API endpoints and specific brand identifiers in this system have been globally redacted.)*

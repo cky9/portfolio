@@ -1,57 +1,57 @@
-# 👗 服装个性化设计与 AI 虚拟试穿平台 (Fashion AI Studio)
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
 
-> **设计灵感与对齐**：完全复刻并升华“鞋款个性化设计与AI虚拟试穿平台”的架构与交互理念，构建面向服装领域的端到端高定设计与虚拟试穿系统。
+# 👗 Fashion AI Studio — Personalized Apparel Design & AI Virtual Try-On Platform
+
+> **Design inspiration & alignment**: A faithful replication and elevation of the "Sneaker Personalization & AI Virtual Try-On Platform" architecture and interaction philosophy, rebuilt as an end-to-end couture design and virtual try-on system for apparel.
 
 ---
 
-## 🌟 核心功能对应（五大闭环流程）
+## 🌟 Core Feature Mapping (Five Closed-Loop Workflows)
 
-| 序号 | 平台核心流程 | 对应原图能力 | 服装系统实现细节 |
+| # | Platform Core Workflow | Corresponding Original Capability | Apparel System Implementation Details |
 | :--- | :--- | :--- | :--- |
-| **1** | **款式选择** | 鞋款选择 (鞋型/款式) | 英伦风衣、意式高定西装、美式重磅卫衣、赛博机能飞行员夹克、法式复古连衣裙、极简短T等 |
-| **2** | **个性化设计** | 部件拆解微调 (颜色/材质/配件) | **动态引线指示标注 (Leader Lines)** 指向衣领、衣身、衣袖、口袋、辅料排扣、下摆；支持潘通流行色盘、高质感面料（羊毛/真丝/丹宁/机能）与印花（格纹/条纹/千鸟格/徽标） |
-| **3** | **AI 虚拟试穿** | 手机模型与AI试穿上脚 | **手机端拟真试穿视窗** + Canvas 高保真人像形变自适应引擎；支持 4 位职业模特（男女/多种体型）及用户自拍照上传贴合，支持正面、45°侧视角、背面切换 |
-| **4** | **多方案对比** | 多方案并排对比 | 横向并排展示方案 A vs 方案 B vs 方案 C，包含材质成分、风格维度打分、工期预估与对比 |
-| **5** | **保存与分享** | 收藏方案，下载效果图 | 本地/云端方案库持久化存储，一键导出 2K 超清「成衣试穿工单与打版海报 (Tech Pack)」 |
+| **1** | **Style Selection** | Sneaker selection (silhouette/style) | British trench coat, Italian bespoke suit, American heavyweight hoodie, cyber-techwear bomber jacket, French vintage dress, minimalist tee, and more |
+| **2** | **Personalized Design** | Component-level fine-tuning (color/material/accessories) | **Dynamic leader-line callouts** pointing to collar, body, sleeves, pockets, trim buttons, and hem; supports Pantone trend palettes, premium fabrics (wool/silk/denim/technical), and prints (plaid/stripe/houndstooth/logo) |
+| **3** | **AI Virtual Try-On** | Phone mockup + AI try-on | **Mobile-style realistic try-on viewport** + Canvas high-fidelity portrait deformation and adaptive fitting engine; supports 4 professional models (male/female, multiple body types) plus user selfie upload fitting, with front, 45° side, and back view switching |
+| **4** | **Multi-Option Comparison** | Side-by-side comparison of options | Horizontal side-by-side display of Option A vs. Option B vs. Option C, including material composition, style-dimension scoring, lead-time estimates, and comparison |
+| **5** | **Save & Share** | Save designs, download renders | Local/cloud design library with persistent storage; one-click export of 2K ultra-HD "Garment Try-On Tech Pack & Pattern-Making Poster" |
 
 ---
 
-## 🚀 启动与使用指南
+## 🚀 Getting Started
 
-### 方式一：macOS 双击一键启动（最推荐）
-直接在访达 (Finder) 中双击运行：
+### Option 1: One-Click Launch on macOS (Recommended)
+Double-click directly in Finder:
 - `/Users/ck/Desktop/小工具/启动服装AI试穿系统.command`
-- 或进入目录双击 `clothing_tryon_system/启动服装AI试穿系统.command`
+- Or enter the directory and double-click `clothing_tryon_system/启动服装AI试穿系统.command`
 
-系统会自动启动后台服务并唤起 Safari / Chrome 打开 `http://127.0.0.1:8765`。
+The system automatically starts the background service and opens Safari / Chrome to `http://127.0.0.1:8765`.
 
-### 方式二：终端命令行启动
+### Option 2: Launch from the Terminal
 ```bash
 cd /Users/ck/Desktop/小工具/clothing_tryon_system
 PYTHONIOENCODING=utf-8 /usr/bin/python3 server.py 8765
 ```
-然后在浏览器中访问：`http://127.0.0.1:8765`
+Then visit in your browser: `http://127.0.0.1:8765`
 
 ---
 
-## 🛠️ 技术底座与目录结构
+## 🛠️ Tech Stack & Directory Structure
 
-- **前端架构**：原生 HTML5 + Modern CSS (Glassmorphism 拟态) + SVG 矢量多部件图层 + Canvas 贴合渲染引擎，**0 外部 npm 依赖，开箱即用**。
-- **后端服务**：基于 Python 3 原生 `http.server` 打造的自适应 RESTful 服务，支持持久化存储 (`data/saved_designs.json`) 与用户照片上传。
+- **Frontend architecture**: Native HTML5 + Modern CSS (Glassmorphism) + SVG vector multi-component layers + Canvas fitting render engine — **zero external npm dependencies, works out of the box**.
+- **Backend service**: An adaptive RESTful service built on Python 3's native `http.server`, with persistent storage (`data/saved_designs.json`) and user photo upload support.
 
 ```text
 clothing_tryon_system/
-├── index.html                 # 主系统交互视图
-├── 启动服装AI试穿系统.command    # macOS 一键启动可执行脚本
-├── server.py                  # 轻量级自闭环后端服务 (端口 8765)
+├── index.html                 # Main system interaction view
+├── 启动服装AI试穿系统.command    # macOS one-click launch executable script
+├── server.py                  # Lightweight self-contained backend service (port 8765)
 ├── css/
-│   └── style.css              # 高质感暗黑科技与时尚视觉样式
+│   └── style.css              # Premium dark-tech and fashion visual styling
 ├── js/
-│   ├── presets.js             # 款式库、潘通色盘、面料纹理、模特数据定义
-│   ├── tryon_engine.js        # 矢量部件几何计算、引线指示、Canvas 试穿贴合算法
-│   └── app.js                 # 核心事件分发、状态管理与 API 通信
+│   ├── presets.js             # Style library, Pantone palettes, fabric textures, model data definitions
+│   ├── tryon_engine.js        # Vector component geometry, leader-line callouts, Canvas try-on fitting algorithms
+│   └── app.js                 # Core event dispatch, state management, and API communication
 ├── data/
-│   └── saved_designs.json     # 定制方案持久化数据库
-└── uploads/                   # 用户自拍人像上传缓存目录
-```
-
+│   └── saved_designs.json     # Persistent database of custom designs
+└── uploads/                   # Cache directory for user selfie portrait uploads

@@ -1,41 +1,43 @@
-# PB 级私有多源多媒体资产智能治理与特征去重中台（脱敏版）
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./18_pb_scale_multimedia_deduplication_engine_zh.md) ]**
 
-> **作者/架构师**：AI Full-Stack / Data Infrastructure Team  
-> **版本**：v2.3 (Production Ready)  
-> **适用场景**：家庭与企业海量多媒体存储治理、多网盘与本地冷备份去重清洗、digiKam 与 Immich 私有云协同、SQLite 逆向元数据提取
+# PB-Scale Private Multi-Source Multimedia Asset Intelligent Governance and Feature De-duplication Platform (Sanitized Version)
+
+> **Author/Architect**: AI Full-Stack / Data Infrastructure Team  
+> **Version**: v2.3 (Production Ready)  
+> **Applicable Scenarios**: Governance of massive multimedia storage for households and enterprises, de-duplication and cleanup across multiple cloud drives and local cold backups, digiKam and Immich private cloud collaboration, SQLite reverse-engineered metadata extraction
 
 ---
 
-## 一、 系统架构总览
+## I. System Architecture Overview
 
-在企业数字化资料归档与个人家庭数字资产管理中，海量影像（数以万计的照片、4K 视频、归档文档）往往分散在百度网盘、移动硬盘、NAS（SMB 共享目录）以及本地计算机中。面临三大典型痛点：
-1. **数据孤岛与重复存储严重**：多次迁移导致相同照片视频在多个目录存在多个冗余副本，极度浪费昂贵的冷热存储空间；
-2. **闭源网盘客户端元数据难以直接提取**：网盘内部索引机制封闭，海量云端文件无法进行程序化统计、分类与治理；
-3. **私有云图库迁移门槛高**：专业人脸识别图库（如 digiKam）与现代化 Web 私有云（如 Immich）之间数据割裂，缺乏自动化清洗、导入与打标管道。
+In enterprise digital archiving and personal/family digital asset management, massive volumes of imagery (tens of thousands of photos, 4K videos, archived documents) are often scattered across Baidu Netdisk, external hard drives, NAS (SMB shared directories), and local machines. Three typical pain points emerge:
+1. **Severe data silos and redundant storage**: Repeated migrations leave identical photos and videos as multiple redundant copies across directories, egregiously wasting expensive hot and cold storage capacity;
+2. **Metadata from closed-source cloud drive clients is hard to extract directly**: Cloud drive internal indexing mechanisms are opaque, making programmatic statistics, classification, and governance of massive cloud files impossible;
+3. **High barrier to private cloud photo library migration**: Data is fragmented between professional face-recognition photo libraries (e.g., digiKam) and modern web-based private clouds (e.g., Immich), with no automated cleanup, import, and tagging pipeline.
 
-本项目构建了一套**多源异构多媒体资产智能治理与特征去重清洗中台**。系统融合了**本地云盘 SQLite 客户端底层逆向分析**、**多维时间戳与感知哈希去重引擎**以及 **digiKam + Immich 现代化私有云协同流水线**，实现了对数十万级非结构化文件的毫秒级智能盘点与无损治理。
+This project builds a **multi-source heterogeneous multimedia asset intelligent governance and feature de-duplication cleanup platform**. The system fuses **low-level reverse engineering of local cloud drive SQLite clients**, a **multi-dimensional timestamp and perceptual hashing de-duplication engine**, and a **digiKam + Immich modern private cloud collaboration pipeline**, delivering millisecond-level intelligent inventory and lossless governance of hundreds of thousands of unstructured files.
 
-### 多源资产治理与清洗中台架构图
+### Multi-Source Asset Governance and Cleanup Platform Architecture Diagram
 
 ```mermaid
 flowchart TD
-    subgraph DataSources["多源异构数据底座"]
-        S1["本地百度网盘客户端 SQLite 缓存库 (170MB+)"]
-        S2["外部 USB 移动硬盘 / 移动固态 (Cold Storage)"]
-        S3["家庭/内网 NAS SMB 网络存储共享卷"]
+    subgraph DataSources["Multi-Source Heterogeneous Data Foundation"]
+        S1["Local Baidu Netdisk Client SQLite Cache DB (170MB+)"]
+        S2["External USB Portable HDD / Portable SSD (Cold Storage)"]
+        S3["Home/Intranet NAS SMB Network Storage Shared Volume"]
     end
 
-    subgraph CoreEngine["资产清洗与逆向治理中台"]
-        P1["SQLite 底层逆向解析器 (提取数万条文件拓扑与元数据)"]
-        P2["感知哈希 (pHash) 与 EXIF 精准时间戳指纹解算器"]
-        P3["大文件与格式智能分类器 (按体积/时间/人物/扩展名聚合)"]
-        P4["增量排重引擎 (对比主图库指纹，自动剔除已有副本)"]
+    subgraph CoreEngine["Asset Cleanup and Reverse-Engineering Governance Platform"]
+        P1["SQLite Low-Level Reverse-Engineering Parser (extracts tens of thousands of file topology and metadata records)"]
+        P2["Perceptual Hashing (pHash) and EXIF Precise Timestamp Fingerprint Resolver"]
+        P3["Large-File and Format Intelligent Classifier (aggregated by size/time/person/extension)"]
+        P4["Incremental De-duplication Engine (compares against master library fingerprints, auto-excludes existing copies)"]
     end
 
-    subgraph DestTargets["私有图库与安全落盘"]
-        D1["digiKam 桌面级人脸特征与元数据管理库"]
-        D2["Immich 现代 Web 端私有云相册服务 (实时浏览)"]
-        D3["安全归档目录 (自动打上『_已处理完成』审计标记)"]
+    subgraph DestTargets["Private Photo Library and Secure Persistence"]
+        D1["digiKam Desktop-Grade Face Feature and Metadata Management Library"]
+        D2["Immich Modern Web-Based Private Cloud Album Service (real-time browsing)"]
+        D3["Secure Archive Directory (auto-tagged with '_Processing Complete' audit marker)"]
     end
 
     S1 --> P1
@@ -51,38 +53,38 @@ flowchart TD
 
 ---
 
-## 二、 核心技术亮点与设计思想
+## II. Core Technical Highlights and Design Philosophy
 
-### 1. 本地网盘 SQLite 底层逆向与全量元数据秒级解算
-为了突破第三方网盘 API 严格的限速和权限封控，系统直接对其本地缓存数据库（单库容量超 170MB、涉及数十万条文件记录）执行逆向工程解析：
-- **无侵入逆向表结构**：对数据库中的父子目录拓扑链、文件扩展名分布、文件大小（Byte）与精确修改时间戳进行多表关联查询；
-- **大文件特征与冷热资产透视**：在几秒内解算出 top 100 冗余大文件分布，并将结构化结果实时同步至个人知识中枢。
+### 1. Low-Level Reverse Engineering of Local Cloud Drive SQLite and Second-Level Resolution of Full Metadata
+To break through the strict rate limits and permission lockdowns of third-party cloud drive APIs, the system performs reverse-engineering analysis directly against their local cache databases (single databases exceeding 170MB in capacity, involving hundreds of thousands of file records):
+- **Non-invasive reverse engineering of table structures**: Multi-table join queries against parent-child directory topology chains, file extension distributions, file sizes (in bytes), and precise modification timestamps;
+- **Large-file characteristics and hot/cold asset visibility**: Resolves the top 100 redundant large-file distribution in seconds and syncs structured results in real time to the personal knowledge hub.
 
 ```python
-# 核心脱敏实现：网盘 SQLite 数据库逆向解析与元数据统计分析器
+# Core sanitized implementation: Cloud drive SQLite database reverse-engineering parser and metadata statistics analyzer
 import sqlite3
 import pandas as pd
 from typing import Dict, Any, List
 
 class CloudDriveDBAnalyzer:
-    """网盘本地数据库逆向与资产分析引擎"""
+    """Cloud drive local database reverse-engineering and asset analysis engine"""
     
     def __init__(self, db_path: str):
         self.db_path = db_path
 
     def extract_storage_overview(self) -> Dict[str, Any]:
-        """逆向查询文件元数据分布与大文件排行"""
+        """Reverse-query file metadata distribution and large-file ranking"""
         conn = sqlite3.connect(self.db_path)
         cursor = conn.cursor()
         
-        # 统计总体文件量与各类型体积分布（脱敏后的典型底层表模式）
+        # Aggregate total file counts and size distribution by type (typical sanitized low-level table schema)
         sql_summary = """
         SELECT 
             CASE 
-                WHEN server_filename LIKE '%.mp4' OR server_filename LIKE '%.mov' THEN '视频'
-                WHEN server_filename LIKE '%.jpg' OR server_filename LIKE '%.heic' THEN '照片'
-                WHEN server_filename LIKE '%.zip' OR server_filename LIKE '%.rar' THEN '压缩包'
-                ELSE '其他文档'
+                WHEN server_filename LIKE '%.mp4' OR server_filename LIKE '%.mov' THEN 'Video'
+                WHEN server_filename LIKE '%.jpg' OR server_filename LIKE '%.heic' THEN 'Photo'
+                WHEN server_filename LIKE '%.zip' OR server_filename LIKE '%.rar' THEN 'Archive'
+                ELSE 'Other Documents'
             END AS file_category,
             COUNT(1) as total_count,
             SUM(size) as total_bytes
@@ -93,7 +95,7 @@ class CloudDriveDBAnalyzer:
         cursor.execute(sql_summary)
         summary_rows = cursor.fetchall()
         
-        # 提取超过 1GB 的特大文件列表
+        # Extract list of oversized files exceeding 1GB
         sql_top_files = """
         SELECT server_filename, size, server_mtime 
         FROM file_meta_cache 
@@ -112,14 +114,14 @@ class CloudDriveDBAnalyzer:
 
 ---
 
-### 2. 多源异构媒体精准排重与增量导入引擎 (Smart De-duplication)
-针对外置移动硬盘与 SMB 共享盘中动辄数百 GB 的零散照片：
-- **双重指纹校验机制**：采用“精确字节哈希（MD5 / SHA-256） + EXIF 拍摄绝对时间戳”双重防线，既防止内容相同但文件名不同的重复写入，又避免修改时间丢失导致的误判；
-- **智能增量合并**：对比主相册已有指纹库，仅筛选出主相册中尚不存在的高清原图和珍贵录像，保持源目录只读不动；
-- **幂等性与审计追踪**：一旦某个外部目录处理完毕，系统自动将目录重命名追加 `_已处理完成` 尾标，保证任何意外中断或二次执行均具备严格的幂等性。
+### 2. Multi-Source Heterogeneous Media Precise De-duplication and Incremental Import Engine (Smart De-duplication)
+Targeting the hundreds of GB of scattered photos on external portable drives and SMB shared drives:
+- **Dual fingerprint verification mechanism**: Employs a dual line of defense combining "exact byte hash (MD5 / SHA-256) + EXIF absolute capture timestamp," preventing both duplicate writes of identical content under different filenames and false positives caused by lost modification times;
+- **Intelligent incremental merge**: Compares against the master album's existing fingerprint library, selecting only high-definition originals and precious footage not yet present in the master album, keeping source directories read-only and untouched;
+- **Idempotency and audit trail**: Once an external directory is fully processed, the system automatically renames it with a `_Processing Complete` suffix, guaranteeing strict idempotency across any unexpected interruption or re-execution.
 
 ```python
-# 核心脱敏实现：多媒体文件特征指纹与增量去重比对器
+# Core sanitized implementation: Multimedia file feature fingerprint and incremental de-duplication comparator
 import hashlib
 import os
 from typing import Set
@@ -131,8 +133,9 @@ class MediaIngestDeduplicator:
     @staticmethod
     def calculate_file_hash(filepath: str, sample_size: int = 65536) -> str:
         """
-        大文件极速特征采样算法：
-        读取文件头、中部与尾部采样块，在毫秒级内完成数百兆视频的指纹计算
+        High-speed feature sampling algorithm for large files:
+        Reads sample blocks from the file head, middle, and tail, completing fingerprint computation
+        for hundreds of megabytes of video in milliseconds
         """
         hasher = hashlib.md5()
         file_size = os.path.getsize(filepath)
@@ -159,20 +162,20 @@ class MediaIngestDeduplicator:
 
 ---
 
-### 3. digiKam 与 Immich 私有云图库协同闭环
-- **底层数据库直接登记**：数据导入主图库后，自动向 digiKam 的底层 SQLite 数据库写入元数据，保留专业级人物标签与评分；
-- **自动化触发私有云微服务**：调用 Immich RESTful API，触发特定相册或资产库的无缝微服务增量扫描，实现手机端 App 与 Web 端的全量即时无感呈现。
+### 3. digiKam and Immich Private Cloud Photo Library Collaboration Loop
+- **Direct low-level database registration**: After data is imported into the master library, metadata is automatically written to digiKam's underlying SQLite database, preserving professional-grade person tags and ratings;
+- **Automated triggering of private cloud microservices**: Invokes the Immich RESTful API to trigger seamless microservice incremental scans of specific albums or asset libraries, achieving full instant, frictionless presentation across mobile apps and the web.
 
 ---
 
-## 三、 核心应用场景与工程成效
+## III. Core Application Scenarios and Engineering Outcomes
 
-| 场景维度 | 传统人工整理模式 | 本系统落地实践 | 实际工程指标 |
+| Scenario Dimension | Traditional Manual Organization Mode | This System's Implementation | Actual Engineering Metrics |
 | :--- | :--- | :--- | :--- |
-| **网盘海量资产排查** | 打开客户端一个个文件夹点开看，极易遗漏 | SQLite 逆向多表穿透分析，秒级输出大文件排行与类别报表 | 170MB 本地库数十万条记录，解算耗时 < 3 秒 |
-| **移动硬盘多副本整理** | 手工拖拽复制，动辄提示“文件已存在”卡死，耗时数天 | 增量指纹排重，仅搬运未收录的全新高清原片，安全幂等 | 节省无效复制存储空间 40% 以上，处理吞吐量 > 200MB/s |
-| **家庭图库多端统一** | 电脑里存一套、网盘存一套、手机各存各的，互不相通 | digiKam 桌面人脸打标 + Immich 跨端私有云联动 | 形成全家统一、完全私有化且终身免月费的数字资产中枢 |
+| **Cloud drive massive asset audit** | Opening the client and clicking through folders one by one, highly prone to omissions | SQLite reverse-engineering multi-table drill-down analysis, second-level output of large-file rankings and category reports | 170MB local DB with hundreds of thousands of records, resolution time < 3 seconds |
+| **Portable drive multi-copy organization** | Manual drag-and-drop copying, frequently freezing on "file already exists" prompts, taking days | Incremental fingerprint de-duplication, transferring only uncatalogued brand-new HD originals, safely idempotent | Saves 40%+ of wasted copy storage space, throughput > 200MB/s |
+| **Home photo library multi-device unification** | One copy on the PC, one on the cloud drive, separate copies on each phone, all disconnected | digiKam desktop face tagging + Immich cross-device private cloud linkage | A unified, fully privatized, lifetime subscription-free digital asset hub for the whole family |
 
 ---
 
-*(注：本文档已执行严谨脱敏，代码中涉及的网盘数据模型与逆向逻辑均已通用抽象化，不包含任何个人敏感文件路径、账号凭证或家庭隐私数据)*
+*(Note: This document has undergone rigorous sanitization. The cloud drive data models and reverse-engineering logic referenced in the code have all been generically abstracted, containing no personal sensitive file paths, account credentials, or family privacy data)*

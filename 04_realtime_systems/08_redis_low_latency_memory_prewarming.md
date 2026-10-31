@@ -1,19 +1,21 @@
-# Redis 高性能数据预热与低延迟缓存架构（脱敏版）
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./08_redis_low_latency_memory_prewarming_zh.md) ]**
 
-> **作者/架构师**：High-Performance Backend / Performance Engineering Team  
-> **核心技术**：24h 自动化预热 · 低延迟基准测试 · 内存数据推送 · 缓存防穿透与防雪崩
+# Redis High-Performance Data Pre-warming and Low-Latency Caching Architecture (Redacted Version)
 
----
-
-## 一、 项目背景与性能瓶颈
-
-在金融量化交易与高并发应用中，频繁请求后端数据库会导致严重的 I/O 瓶颈和高延时（Latency Spike）。直接在开盘或高并发交易时段临时加载数据，极易造成请求超时（Timeout）与卡顿。
-
-本项目设计并实现了一套 **“Redis 24h 自动化缓存预热 + 毫秒级基准测试 + 高频数据内存推送”** 的缓存性能治理方案。
+> **Author/Architect**: High-Performance Backend / Performance Engineering Team  
+> **Core Technologies**: 24h Automated Pre-warming · Low-Latency Benchmarking · In-Memory Data Push · Cache Penetration and Avalanche Protection
 
 ---
 
-## 二、 缓存预热与基准测试架构
+## I. Project Background and Performance Bottlenecks
+
+In financial quantitative trading and high-concurrency applications, frequent requests to the backend database cause severe I/O bottlenecks and latency spikes. Loading data on demand right at market open or during high-concurrency trading sessions can easily lead to request timeouts and stalls.
+
+This project designed and implemented a cache performance governance solution consisting of **"Redis 24h Automated Cache Pre-warming + Millisecond-Level Benchmarking + High-Frequency In-Memory Data Push."**
+
+---
+
+## II. Cache Pre-warming and Benchmarking Architecture
 
 ```mermaid
 graph TD
@@ -36,15 +38,15 @@ graph TD
 
 ---
 
-## 三、 核心技术亮点
+## III. Core Technical Highlights
 
-### 1. 盘前 24h 自动化预热与高频 K 线推送 (24h Pre-warmer & HP Push)
-- **定时装载**：在盘前离线时段，自动将全市场主力标的的名称映射 (`metadata:name_map`)、历史 K 线 (a1d/a1h/a5m) 及交易日状态全量预载入内存。
-- **高频 Hash 堆叠**：采用 Pipeline 批量写入技术，将毫秒级 K 线快照快速推送到 Redis 内存结构中，避免高并发下单条 `SET` 指令的网络开销。
+### 1. 24h Pre-Market Automated Pre-warming and High-Frequency K-Line Push (24h Pre-warmer & HP Push)
+- **Scheduled Loading**: During pre-market offline hours, automatically preload the full market's primary instrument name mappings (`metadata:name_map`), historical K-lines (a1d/a1h/a5m), and trading day status into memory in bulk.
+- **High-Frequency Hash Stacking**: Uses Pipeline batch-write techniques to rapidly push millisecond-level K-line snapshots into Redis in-memory structures, avoiding the network overhead of individual `SET` commands under high concurrency.
 
-### 2. Redis vs 原生接口基准时延测试 (Benchmark Test)
-- 内置自动化基准测试工具（Benchmark Tool），定期采样比较原生 API 访问时延与 Redis 内存提取时延。
-- **实测结果**：Redis 内存平均提取时延控制在 **< 1ms**，较原生 API / 数据库查询提升 **10 ~ 50 倍**。
+### 2. Redis vs. Native API Benchmark Latency Testing (Benchmark Test)
+- Built-in automated benchmarking tool that periodically samples and compares native API access latency against Redis in-memory retrieval latency.
+- **Measured Results**: Average Redis in-memory retrieval latency is held at **< 1ms**, a **10–50x** improvement over native API / database queries.
 
 ```python
 # 示例：脱敏 Redis 缓存读取与基准采样
@@ -67,9 +69,9 @@ def benchmark_cache_read(redis_client, sample_codes, iterations=1000):
 
 ---
 
-## 四、 成果与价值
+## IV. Outcomes and Value
 
-1. **零冷启动延迟**：交易系统开盘即可秒级响应，彻底消除了冷启动时的数据库打满风险。
-2. **毫秒级响应**：为上层算法引擎提供了 < 1ms 的极速数据流支持。
+1. **Zero Cold-Start Latency**: The trading system responds within seconds at market open, completely eliminating the risk of saturating the database during cold start.
+2. **Millisecond-Level Response**: Provides < 1ms ultra-fast data stream support for upper-layer algorithm engines.
 
-*(注：本系统文档已做全局 IP、端口与安全密码脱敏处理)*
+*(Note: This system document has undergone global redaction of IPs, ports, and security credentials)*

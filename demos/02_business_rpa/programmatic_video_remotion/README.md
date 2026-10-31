@@ -1,8 +1,9 @@
-# 🎬 代码驱动短视频全自动渲染流水线 (Remotion-based)
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
 
-> **商业价值**：传统的剪辑软件（剪映/PR）严重依赖人工拖拽与轨道微调，无法实现工业级批量规模化出片。本项目将 **React / Remotion** 与 Python 脚本结合，实现从 Markdown 剧本文案直接生成精准到帧的时间轴，并通过无头浏览器全自动批量渲染 1080p 视频。
+# 🎬 Fully Automated Code-Driven Short-Form Video Rendering Pipeline (Remotion-based)
 
-## 🚀 极速开箱试跑
+> **Business value**: Traditional editing software (CapCut/Premiere) relies heavily on manual dragging and timeline micro-adjustments, making industrial-scale batch production impossible. This project combines **React / Remotion** with Python scripts to generate a frame-accurate timeline directly from Markdown scripts, then automatically batch-renders 1080p video via a headless browser.
+
+## 🚀 Quick Start
 ```bash
 python demo_run.py
-```

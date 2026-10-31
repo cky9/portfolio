@@ -1,8 +1,9 @@
-# 🎞️ 视频关键帧等间隔抽取与分镜采风工具
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
 
-> **商业价值**：在研究海外工厂一线制造视频（如看厂实录、竞品拆解、短视频对标）时，人工暂停截图费时费力。本项目基于 FFmpeg 构建自动化低码率快速拉流与等间隔关键帧切片流水线，为视觉动作审计和分镜拆解提供结构化图像序列。
+# 🎞️ Video Keyframe Interval Extraction & Storyboard Scouting Tool
 
-## 🚀 极速开箱试跑
+> **Business value**: When researching overseas factory frontline manufacturing videos (e.g., factory walkthroughs, competitor teardowns, short-video benchmarking), manually pausing and screenshotting is time-consuming and labor-intensive. This project builds an automated low-bitrate fast-streaming and evenly-spaced keyframe slicing pipeline on top of FFmpeg, providing structured image sequences for visual motion auditing and storyboard breakdown.
+
+## 🚀 Quick Start
 ```bash
 python demo_run.py
-```

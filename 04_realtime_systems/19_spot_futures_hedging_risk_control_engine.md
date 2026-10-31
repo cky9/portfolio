@@ -1,41 +1,43 @@
-# 期现对冲双轨决策风控闭环与全口径分钟级量能基准系统（脱敏版）
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./19_spot_futures_hedging_risk_control_engine_zh.md) ]**
 
-> **作者/架构师**：QuantDev / Quantitative Risk Architecture Team  
-> **版本**：v3.5 (Production Ready)  
-> **适用场景**：A股量化系统风控增强、高精度分钟级量能曲线基准、300ETF期权衍生品与现货双轨对冲联动、大盘转折点毫秒级感知
+# Dual-Track Spot-Futures Hedging Decision Risk-Control Closed Loop and Full-Coverage Minute-Level Volume Benchmark System (Sanitized Version)
+
+> **Author/Architect**: QuantDev / Quantitative Risk Architecture Team  
+> **Version**: v3.5 (Production Ready)  
+> **Applicable Scenarios**: A-share quantitative system risk-control enhancement, high-precision minute-level volume curve benchmarking, 300ETF options derivatives and spot dual-track hedging linkage, millisecond-level perception of broad-market inflection points
 
 ---
 
-## 一、 系统架构总览
+## I. System Architecture Overview
 
-在日内量化交易与中线波段持仓管理中，量化系统常常遭遇两大底层风控盲区：
-1. **全市场成交量能估算严重失真**：传统做法通过遍历累加全市场 5,200+ 只个股的分时成交量，不仅计算耗时（秒级延迟），而且在早盘集合竞价（09:25~09:30）与开盘急剧波动期极易产生线性插值失真，导致错判“假放量”或“假缩量”；
-2. **纯单边现货裸奔缺乏保护**：当宏观突发外生黑天鹅或突发向心坍缩时，纯股票多头仓位只能被动承受净值剧烈回撤；而盲目割肉又往往割在流动性冰点。
+In intraday quantitative trading and medium-term swing position management, quantitative systems frequently encounter two fundamental risk-control blind spots:
+1. **Severely distorted full-market volume estimation**: The traditional approach iterates and accumulates the intraday volume of all 5,200+ individual stocks across the entire market, which is not only computationally expensive (second-level latency) but also highly prone to linear interpolation distortion during the pre-market call auction (09:25–09:30) and the sharp volatility at market open, leading to misjudgment of "fake volume expansion" or "fake volume contraction";
+2. **Naked unhedged long-only spot exposure lacking protection**: When macroeconomic exogenous black swans or sudden centripetal collapses occur, pure equity long positions can only passively absorb severe net-value drawdowns; yet indiscriminate capitulation selling often executes at liquidity troughs.
 
-针对上述难题，本项目在底层三层数据架构之上，构建了**全口径交易所分钟级量能时序基准引擎**与**期现对冲双轨决策风控闭环**。
+To address these challenges, this project builds upon the underlying three-tier data architecture to construct a **full-coverage exchange minute-level volume time-series benchmark engine** and a **dual-track spot-futures hedging decision risk-control closed loop**.
 
-系统一方面通过交易所官方三大核心指数直取全市场实时成交额（0.3ms 极速直出），比对 241 个分钟级高精度官方曲线；另一方面将 300ETF 防御期权（虚值认沽 Put）保费走势作为大盘系统性风险风向标，在现货操作与仓位增减时执行强行对冲核验与硬性止损联锁。
+On one hand, the system directly retrieves full-market real-time turnover from the exchange's three official core indices (0.3ms ultra-fast direct output) and compares against 241 minute-level high-precision official curves; on the other hand, it treats the premium trajectory of 300ETF defensive options (out-of-the-money put options) as a barometer of broad-market systemic risk, enforcing mandatory hedge verification and hard stop-loss interlocks during spot operations and position adjustments.
 
-### 双轨风控与量能基准系统流转图
+### Dual-Track Risk Control and Volume Benchmark System Flow Diagram
 
 ```mermaid
 flowchart TD
-    subgraph DataFeeds["超低延迟市场行情源"]
-        I1["官方核心指数实时 Tick (000001.SH / 399106.SZ / 899050.BJ)"]
-        O1["300ETF 当月期权 T 型报价 (IV / Delta / 认沽保费)"]
-        S1["全市场 A 股多周期 K 线与 UP 动能流"]
+    subgraph DataFeeds["Ultra-Low-Latency Market Data Feeds"]
+        I1["Official Core Index Real-Time Tick (000001.SH / 399106.SZ / 899050.BJ)"]
+        O1["300ETF Current-Month Option T-Shaped Quote (IV / Delta / Put Premium)"]
+        S1["Full-Market A-Share Multi-Timeframe K-Line and UP Momentum Flow"]
     end
 
-    subgraph Engines["核心计算与比对引擎"]
-        M1["全口径量能比对器 (O(1) 比对昨日 241 个分钟级官方基准时序)"]
-        M2["期权防御保费风向标解算器 (Put Premium & IV Spike)"]
-        M3["MA34 生命线蓄势与板块三流动力学模型"]
+    subgraph Engines["Core Computation and Comparison Engines"]
+        M1["Full-Coverage Volume Comparator (O(1) comparison against yesterday's 241 minute-level official benchmark time series)"]
+        M2["Options Defense Premium Barometer Solver (Put Premium & IV Spike)"]
+        M3["MA34 Lifeline Accumulation and Sector Three-Flow Dynamics Model"]
     end
 
-    subgraph DecisionMatrix["期现双轨对冲与决策矩阵"]
-        D1{"大盘是健康放量还是无量阴跌?"}
-        D2{"防御期权保费是否发生异动脉冲?"}
-        D3["现货执行指令核验网关 (RPC Gateway)"]
+    subgraph DecisionMatrix["Spot-Futures Dual-Track Hedging and Decision Matrix"]
+        D1{"Is the broad market showing healthy volume expansion or low-volume grinding decline?"}
+        D2{"Has an anomalous pulse occurred in defensive option premiums?"}
+        D3["Spot Execution Order Verification Gateway (RPC Gateway)"]
     end
 
     I1 --> M1
@@ -47,57 +49,57 @@ flowchart TD
 
     D1 & D2 --> D3
     
-    D3 -- "量能健康且期权平稳" --> R1["允许执行右侧加仓或日内做 T"]
-    D3 -- "量能急剧萎缩但期权暴涨" --> R2["触发一级风控：现货禁止买入，买入认沽对冲保费"]
-    D3 -- "跌破 MA34 止损线" --> R3["执行铁律止损：卖出大部仓位，仅保留 100 股雷达探针"]
+    D3 -- "Volume healthy and options stable" --> R1["Permit right-side position addition or intraday T+0 trading"]
+    D3 -- "Volume sharply contracting but options surging" --> R2["Trigger Tier-1 risk control: spot buying prohibited, purchase puts to hedge premium"]
+    D3 -- "Breaks below MA34 stop-loss line" --> R3["Execute ironclad stop-loss: sell majority of position, retain only 100 shares as radar probe"]
 ```
 
 ---
 
-## 二、 核心技术亮点与设计思想
+## II. Core Technical Highlights and Design Philosophy
 
-### 1. 交易所官方核心指数全口径分钟级量能基准 (Official 241-Minute Volume Benchmark)
-彻底抛弃在客户端逐只累加 5,200 只股票的分时量能旧做法：
-- **官方三指数汇总直取**：通过上证综指（000001.SH）+ 深证成指/综指（399106.SZ）+ 北证50（899050.BJ）的成交额（`amt`）实时求和，0.3ms 极速覆盖全部 A 股官方全口径；
-- **241 个官方分钟级高精度基准曲线**：将昨日官方交易所分时时序持久化为标准 241 个分钟基准节点，盘中实时比对今日当前分钟与昨日此时的放量/缩量绝对比例（`ratio`），彻底消除早盘集合竞价与微观噪波失真。
+### 1. Exchange Official Core Index Full-Coverage Minute-Level Volume Benchmark (Official 241-Minute Volume Benchmark)
+Completely abandon the legacy approach of client-side per-stock accumulation of intraday volume across 5,200 stocks:
+- **Official Three-Index Aggregate Direct Retrieval**: Real-time summation of turnover (`amt`) from the Shanghai Composite Index (000001.SH) + Shenzhen Component/Composite Index (399106.SZ) + Beijing Stock Exchange 50 (899050.BJ), covering all A-shares on an official full-coverage basis in 0.3ms;
+- **241 Official Minute-Level High-Precision Benchmark Curves**: Persist yesterday's official exchange intraday time series as standard 241 minute-level benchmark nodes, and compare in real time during the session the absolute ratio (`ratio`) of today's current minute volume expansion/contraction versus the same time yesterday, thoroughly eliminating distortion from the pre-market call auction and micro-noise.
 
 ```python
-# 核心脱敏实现：交易所官方全口径分钟量能基准比对引擎
+# Core sanitized implementation: Exchange official full-coverage minute-level volume benchmark comparison engine
 import time
 from typing import Dict, Any, List
 
 class MarketVolumeBenchmark:
-    """全市场成交量能高精度分钟基准分析器"""
+    """Full-market volume high-precision minute-level benchmark analyzer"""
     
     CORE_INDEXES = ["000001.SH", "399106.SZ", "899050.BJ"]
 
     def __init__(self, yesterday_benchmark_curve: List[float]):
-        # yesterday_benchmark_curve 包含昨日从 09:30 至 15:00 的 241 根分钟累计成交额
+        # yesterday_benchmark_curve contains yesterday's 241 minute-level cumulative turnover bars from 09:30 to 15:00
         self.benchmark_curve = yesterday_benchmark_curve
 
     def calculate_current_volume_status(self, current_minute_idx: int, realtime_tick_map: Dict[str, Any]) -> Dict[str, Any]:
         """
-        0.3ms 极速计算：
-        汇总三大指数实时 amt，比对昨日此时基准，判定市场微观放量/缩量
+        0.3ms ultra-fast computation:
+        Aggregate real-time amt from the three major indices, compare against yesterday's benchmark at this time, determine market micro-level volume expansion/contraction
         """
-        # 1. 汇总官方三大指数全口径成交额 (亿元)
+        # 1. Aggregate official three-index full-coverage turnover (100 million CNY)
         total_amt = 0.0
         for code in self.CORE_INDEXES:
             index_tick = realtime_tick_map.get(code, {})
             total_amt += index_tick.get("amount", 0.0) / 1e8
 
-        # 2. 检索昨日对应分钟的成交额基准
+        # 2. Retrieve yesterday's corresponding minute turnover benchmark
         benchmark_amt = self.benchmark_curve[current_minute_idx] if current_minute_idx < len(self.benchmark_curve) else self.benchmark_curve[-1]
         
-        # 3. 计算相对昨日此时的量能缩放比例
+        # 3. Calculate volume scaling ratio relative to yesterday at this time
         vol_ratio = total_amt / benchmark_amt if benchmark_amt > 0 else 1.0
         delta_amt = total_amt - benchmark_amt
 
-        status_tag = "平量蓄势"
+        status_tag = "Flat volume, accumulating"
         if vol_ratio >= 1.10:
-            status_tag = f"显著放量 (+{(vol_ratio - 1)*100:.1f}%)"
+            status_tag = f"Significant volume expansion (+{(vol_ratio - 1)*100:.1f}%)"
         elif vol_ratio <= 0.90:
-            status_tag = f"明显缩量 ({(vol_ratio - 1)*100:.1f}%)"
+            status_tag = f"Notable volume contraction ({(vol_ratio - 1)*100:.1f}%)"
 
         return {
             "realtime_total_amt_billion": round(total_amt, 2),
@@ -110,46 +112,46 @@ class MarketVolumeBenchmark:
 
 ---
 
-### 2. 300ETF 期权防御保费风向标与期现对冲双轨纠偏 (Options Defense Hedging)
-- **期权保费异动作为现货风向标**：将当月浅虚值认沽期权（如 Delta 介于 -0.2 至 -0.3 的 Put 合约）的价格与隐含波动率（IV）异动纳入现货交易风控前置校验；
-- **防买入陷阱**：若大盘现货分时看似企稳但认沽期权保费逆势持续拉升，系统自动识别为机构资金正在大规模买入看跌防守，自动冻结现货买入开仓，规避“假突破诱多”；
-- **保费对冲替代恐慌割肉**：在系统性暴跌或外部地缘事件冲击下，利用极小比例资金（如总仓位 1%~2%）买入防御期权，用期权的高 Gamma 杠杆对冲现货底仓回撤，无需深水区割肉抛售。
+### 2. 300ETF Options Defense Premium Barometer and Spot-Futures Dual-Track Hedging Correction (Options Defense Hedging)
+- **Options premium anomalies as a spot-market barometer**: Incorporate the price and implied volatility (IV) anomalies of current-month shallow out-of-the-money put options (e.g., Put contracts with Delta between -0.2 and -0.3) into the pre-trade risk-control verification of spot trading;
+- **Buying trap prevention**: If the broad-market spot intraday chart appears to be stabilizing but put option premiums are persistently rising against the trend, the system automatically identifies this as institutional capital making large-scale bearish defensive purchases, automatically freezing spot buy order entry, and avoiding "fake breakout bull traps";
+- **Premium hedging as an alternative to panic selling**: Under systemic crashes or external geopolitical shock events, deploy a minimal capital allocation (e.g., 1%–2% of total position) to purchase defensive options, using the high Gamma leverage of options to hedge drawdown on the spot base position, eliminating the need for capitulation selling in deep water.
 
 ```python
-# 核心脱敏实现：期现对冲双轨校验与开仓拦截逻辑
+# Core sanitized implementation: Spot-futures dual-track verification and order entry interception logic
 class OptionsSpotHedger:
     @staticmethod
     def audit_spot_order(action: str, spot_code: str, put_option_iv_spike: float) -> Dict[str, Any]:
         """
-        现货报单期权联动风控校验：
-        若认沽期权隐含波动率 (IV) 出现单日剧烈异动脉冲 (> +20%)，系统阻断现货买入
+        Spot order options-linked risk-control verification:
+        If put option implied volatility (IV) exhibits a severe single-day anomalous pulse (> +20%), the system blocks spot buying
         """
         if action == "BUY" and put_option_iv_spike > 0.20:
             return {
                 "allowed": False,
-                "reason": "【风控拦截】300ETF 认沽期权保费与 IV 异常飙升，提示宏观极端风险，禁止现货开仓做多！"
+                "reason": "[Risk-Control Interception] 300ETF put option premiums and IV are surging anomalously, signaling extreme macroeconomic risk; spot long position entry prohibited!"
             }
         
-        return {"allowed": True, "reason": "风控核验通过"}
+        return {"allowed": True, "reason": "Risk-control verification passed"}
 ```
 
 ---
 
-### 3. MA34 生命线蓄势、三流资金动力学与硬性破位止损铁律
-- **多周期共振选股标准**：日线 1d UP 动能连续上涨 $\ge$ 3 天，价格贴合 MA34 生命线（$\pm 3\%$），周线 UP 红柱非下跌趋势，且所属概念板块三流资金呈非派发健康净流入；
-- **破位“卖剩 100 股”纪律机制**：任何试探性仓位，一旦跌破 MA34 生命线超 $-2.5\% \sim -3.0\%$ 且无法收复，系统坚决止损卖出绝大部分持仓，**仅保留最后 100 股作为持续跟踪的“雷达探针”**。
-  - **机制收益**：90% 以上本金瞬间回笼，彻底消灭被动深套风险，同时彻底卸下心理负担。
+### 3. MA34 Lifeline Accumulation, Three-Flow Capital Dynamics, and Ironclad Breakdown Stop-Loss Discipline
+- **Multi-timeframe resonance stock selection criteria**: Daily 1d UP momentum rising continuously for $\ge$ 3 days, price hugging the MA34 lifeline ($\pm 3\%$), weekly UP red bars not in a downtrend, and the affiliated concept sector's three-flow capital showing healthy net inflow without distribution;
+- **Breakdown "sell down to 100 shares" discipline mechanism**: For any probe position, once it breaks below the MA34 lifeline by more than $-2.5\% \sim -3.0\%$ and fails to recover, the system resolutely stops out and sells the vast majority of the position, **retaining only the final 100 shares as a continuously tracked "radar probe"**.
+  - **Mechanism benefit**: Over 90% of principal is instantly recovered, thoroughly eliminating the risk of passive deep trapping while completely offloading psychological burden.
 
 ---
 
-## 三、 核心应用场景与工程成效
+## III. Core Application Scenarios and Engineering Outcomes
 
-| 场景维度 | 传统量化与盯盘做法 | 本系统落地实践 | 实际工程指标 |
+| Scenario Dimension | Traditional Quantitative and Manual Monitoring Approach | This System's Implementation | Actual Engineering Metrics |
 | :--- | :--- | :--- | :--- |
-| **大盘量能判断** | 循环 5200 只股票分时累加，延迟数秒且开盘极易失真 | 官方三大指数秒级汇总 + 241 分钟基准曲线直读 | 计算时延从 3.5s 压缩至 0.3ms，量能判定准确度 100% |
-| **突发下挫防守** | 缺乏衍生品保护，要么眼睁睁暴跌，要么恐慌割肉在底盘 | 虚值 Put 隐含波动率风向标，小额期权保费锁住系统性下行风险 | 极端黑天鹅下现货回撤控制在容许范围，保留战略流动性 |
-| **止损纪律执行** | 抱有侥幸心理死扛，小亏拖成大套 | 破位卖剩 100 股（雷达探针法），本金即时回笼，卸下心理包袱 | 彻底规避单只标的深套 >15% 的系统性毁灭打击 |
+| **Broad-Market Volume Assessment** | Loop through 5,200 stocks' intraday accumulation, multi-second latency and highly distorted at market open | Official three-index second-level aggregation + 241-minute benchmark curve direct read | Computation latency compressed from 3.5s to 0.3ms, volume assessment accuracy 100% |
+| **Sudden Drawdown Defense** | Lacking derivatives protection, either watch the crash helplessly or panic-sell at the bottom | Out-of-the-money Put implied volatility barometer, small option premium locks in systemic downside risk | Spot drawdown contained within acceptable range under extreme black swans, strategic liquidity preserved |
+| **Stop-Loss Discipline Execution** | Holding on with wishful thinking, letting small losses compound into deep traps | Breakdown sell-down-to-100-shares (radar probe method), principal instantly recovered, psychological burden offloaded | Thoroughly avoids systemic devastating losses of >15% deep trapping in any single instrument |
 
 ---
 
-*(注：本文档中代码与模型均为量化风控脱敏后方案，不包含任何真实交易账户账号、专有策略密钥或未公开算法代码)*
+*(Note: All code and models in this document are sanitized quantitative risk-control solutions and do not contain any real trading account credentials, proprietary strategy keys, or undisclosed algorithm code)*

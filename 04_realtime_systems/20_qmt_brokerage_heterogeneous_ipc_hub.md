@@ -1,85 +1,92 @@
-# 合规环境调整下的量化交易系统跨平台分布式协同架构（脱敏版）
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./20_qmt_brokerage_heterogeneous_ipc_hub_zh.md) ]**
 
-> **作者/架构师**：QuantDev / Architecture Team  
-> **版本**：v4.0 (Enterprise Architecture)  
-> **适用场景**：金融终端环境合规受限场景、跨平台异构计算协同、高可用自动化交易链路设计与多级容灾调度
+# Cross-Platform Distributed Collaborative Architecture for Quantitative Trading Systems Under Compliance Environment Adjustments (Redacted Version)
 
----
-
-## 一、 业务背景与合规驱动
-
-2026年10月下旬，为贯彻落实证券期货市场交易信息系统合规接入管理规范，保障实盘交易系统的安全稳定运行，证券公司对主流机构量化交易终端（QMT 系统）内置的 Python 运行环境进行了安全合规基线调整与功能规范化收紧：
-
-> **【证券公司通知公告（2026-10-24 22:24:56）】**  
-> *“尊敬的客户，您好：  
-> 结合证券公司交易信息系统接入管理规范及我司的业务发展规划。我司 QMT 系统内置 Python 已启用文件读写及网络连接功能的相关限制。如您策略涉及相关功能，请结合需求提前调整程序。如您策略程序不涉及网络连接仍有非法 IP:127.0.0.1:XX 的提示，可联系服务人员获取 2.1.33.0 客户端版本。该版本已支持 Python 3.12 版本，请务必在测试环境完成测试验证，确认您的策略程序或工具功能可正常运行。如有任何疑问，可详询您的专属服务人员，感谢您的理解与支持。2026年10月24日”*
-
-面对行业合规监管的统一要求，量化交易系统原有的部分单体架构和传统跨环境数据流转方式面临重构需求。系统不仅需要无缝适配新版 Python 3.12 运行时环境，更需要在满足终端安全边界的前提下，确保高频风控、持仓同步与订单执行的业务连续性。
+> **Author/Architect**: QuantDev / Architecture Team  
+> **Version**: v4.0 (Enterprise Architecture)  
+> **Applicable Scenarios**: Compliance-constrained financial terminal environments, cross-platform heterogeneous computing collaboration, high-availability automated trading pipeline design, and multi-tier disaster recovery scheduling
 
 ---
 
-## 二、 核心设计哲学：异构解耦与微服务中继
+## I. Business Context and Compliance Drivers
 
-应对合规环境约束的最优解，是将原本紧密耦合的系统进行**服务化与边界解耦**：
+In late October 2026, to implement the regulatory standards for compliant access management of securities and futures market trading information systems and to ensure the safe and stable operation of live trading systems, securities firms applied security compliance baseline adjustments and functional normalization tightening to the built-in Python runtime environment of mainstream institutional quantitative trading terminals (QMT systems):
+
+> **[Securities Firm Notice (2026-10-24 22:24:56)]**  
+> *"Dear Valued Client,  
+> In accordance with the access management standards for securities firm trading information systems and our company's business development plans, the built-in Python in our QMT system has enabled restrictions on file read/write and network connection functionality. If your strategy involves related functionality, please adjust your program in advance according to your requirements. If your strategy program does not involve network connections but still displays an illegal IP prompt: 127.0.0.1:XX, you may contact our service personnel to obtain the 2.1.33.0 client version. This version supports Python 3.12. Please be sure to complete testing and validation in a test environment to confirm that your strategy program or tool functionality operates normally. If you have any questions, please consult your dedicated service representative. Thank you for your understanding and support. October 24, 2026"*
+
+Faced with the unified requirements of industry compliance regulation, certain monolithic architectures and traditional cross-environment data flow methods in the existing quantitative trading system face reconstruction requirements. The system must not only seamlessly adapt to the new Python 3.12 runtime environment but also ensure business continuity for high-frequency risk control, position synchronization, and order execution while satisfying terminal security boundaries.
+
+---
+
+## II. Core Design Philosophy: Heterogeneous Decoupling and Microservice Relay
+
+The optimal solution for addressing compliance environment constraints is to perform **servitization and boundary decoupling** on the originally tightly coupled system:
 
 ```text
 ┌───────────────────────────────────────────────────────────────┐
-│                 Mac 综合量化决策与分析中枢                     │
-│      • 多周期共振算法 / 做 T 决策 / 实时雷达 / Web 可视化      │
+│              Mac Comprehensive Quantitative Decision          │
+│                  and Analysis Hub                              │
+│      • Multi-timeframe resonance algorithms / T-trading       │
+│        decisions / Real-time radar / Web visualization        │
 └───────────────────────────────┬───────────────────────────────┘
-                                │ 跨节点轻量服务调用 (毫秒级响应)
+                                │ Cross-node lightweight service calls (millisecond-level response)
                                 ▼
 ┌───────────────────────────────────────────────────────────────┐
-│                    宿主解耦式接入中继服务                      │
-│      • 状态机协调 / 协议标准化转换 / 异步指令调度 / 流量削峰   │
+│                Host-Decoupled Access Relay Service             │
+│      • State machine coordination / Protocol normalization    │
+│        conversion / Async command scheduling / Traffic peak   │
+│        shaving                                               │
 └───────────────────────────────┬───────────────────────────────┘
-                                │ 终端受控受信交换机制
+                                │ Terminal-controlled trusted exchange mechanism
                                 ▼
 ┌───────────────────────────────────────────────────────────────┐
-│                     柜台执行与事件感知终端                     │
-│      • 官方原生生命周期驱动 / 柜台交易接口 / 资金持仓态势感知 │
+│                Counter Execution and Event Perception Terminal │
+│      • Official native lifecycle driver / Counter trading     │
+│        interface / Capital and position situational awareness │
 └───────────────────────────────────────────────────────────────┘
 ```
 
-1. **执行与决策物理隔离**：
-   - 将算力密集型的多周期分析、K线形态解算及人机交互控制台集中于主控中枢；
-   - 柜台终端仅保留精简合规的生命周期响应逻辑，实现职责单一化与风险最小化。
-2. **边缘中继隔离缓冲**：
-   - 通过在宿主层架设专职的轻量中继服务，负责对外提供标准化服务契约，对内完成协议安全转换与缓冲；
-   - 终端策略保持纯粹的被动调度状态，完全契合端内安全与连接规范。
-3. **状态机驱动与异步闭环**：
-   - 采用标准状态机机制管理所有查询与交易报单的完整生命周期；
-   - 指令下发、柜台受理、状态回传形成双向可靠确认，具备完善的超时防重和幂等保护。
+1. **Physical Isolation of Execution and Decision-Making**:
+   - Concentrate compute-intensive multi-timeframe analysis, candlestick pattern resolution, and human-machine interaction console in the master control hub;
+   - The counter terminal retains only streamlined, compliant lifecycle response logic, achieving single responsibility and risk minimization.
+2. **Edge Relay Isolation Buffering**:
+   - By deploying a dedicated lightweight relay service at the host layer, it provides standardized service contracts externally and performs protocol security conversion and buffering internally;
+   - Terminal strategies remain in a purely passive scheduling state, fully conforming to in-terminal security and connection standards.
+3. **State Machine-Driven Asynchronous Closed Loop**:
+   - Adopt a standard state machine mechanism to manage the complete lifecycle of all queries and trading orders;
+   - Command dispatch, counter acceptance, and status callback form bidirectional reliable confirmation, with comprehensive timeout-based deduplication and idempotent protection.
 
 ---
 
-## 三、 系统高可用关键特性
+## III. Key High-Availability System Features
 
-### 1. 生命周期级长效稳态保活
-- 全面适配新一代终端底层事件机制，实现策略与宿主底层消息泵的深度协同；
-- 告别非交易时段或静态行情下的策略休眠失效问题，保障 7x24 小时全天候稳态在线；
-- 建立规范的运行时上下文校验体系，彻底杜绝多线程环境下的上下文空指针隐患。
+### 1. Lifecycle-Level Long-Lasting Steady-State Keep-Alive
+- Fully adapt to the new-generation terminal underlying event mechanism, achieving deep synergy between strategies and the host's underlying message pump;
+- Eliminate strategy dormancy failures during non-trading hours or static market conditions, ensuring 7x24 all-weather steady-state online presence;
+- Establish a standardized runtime context validation system, completely eliminating context null pointer hazards in multi-threaded environments.
 
-### 2. 多级自愈流转与容灾降级矩阵
-为防范单点网络抖动或环境异常，系统建立了多级故障自愈机制：
-- **主动通道（高速直达）**：正常时段由专职服务提供毫秒级持仓资产实时同步；
-- **自愈备选（边缘接管）**：主链路瞬断时自动切换至旁路冗余通道保持数据流转；
-- **离线持久化兜底**：终端休市或关机时，自动激活最新有效资产快照缓存，保障外部看板随时复盘。
+### 2. Multi-Tier Self-Healing Flow and Disaster Recovery Degradation Matrix
+To guard against single-point network jitter or environmental anomalies, the system establishes a multi-tier fault self-healing mechanism:
+- **Active Channel (High-Speed Direct)**: During normal periods, dedicated services provide millisecond-level real-time synchronization of positions and assets;
+- **Self-Healing Fallback (Edge Takeover)**: When the primary link momentarily drops, automatic switching to a bypass redundant channel maintains data flow;
+- **Offline Persistence Fallback**: When the terminal is closed for market holidays or powered off, automatically activates the latest valid asset snapshot cache, ensuring the external dashboard can review at any time.
 
-### 3. 数据总线无感平替
-- 交易中枢与下属各业务模块（行情广播、做T引擎、机会雷达、仪表盘）通过内存高速数据总线松耦合交互；
-- 底层通信中继重构升级后，数据总线接口契约与数据结构保持 100% 兼容，下游全套量化业务模块实现 **零改动无感平滑切换**。
+### 3. Transparent Data Bus Replacement
+- The trading hub and subordinate business modules (market data broadcast, T-trading engine, opportunity radar, dashboard) interact through a loosely coupled in-memory high-speed data bus;
+- After the underlying communication relay is reconstructed and upgraded, the data bus interface contracts and data structures remain 100% compatible, enabling the entire downstream quantitative business module suite to achieve **zero-modification transparent smooth switching**.
 
 ---
 
-## 四、 实施收益与行业实践价值
+## IV. Implementation Benefits and Industry Practice Value
 
-| 评估维度 | 升级改造前 | 架构重构后 |
+| Evaluation Dimension | Before Upgrade and Reconstruction | After Architecture Reconstruction |
 | :--- | :--- | :--- |
-| **合规与安全性** | 易受端内权限收紧影响 | **100% 符合券商接入合规规范与安全基线** |
-| **端到端链路耗时** | 分钟级被动轮询 | **毫秒级按需双向响应** |
-| **业务交互深度** | 仅具备被动只读查询 | **全面支持资产查询、持仓监控、报单与撤单双向闭环** |
-| **跨系统稳定性** | 受制于文件挂载与环境抖动 | **分布式解耦中继，具备多级降级与容灾自愈能力** |
-| **下游系统兼容** | 需侵入式配合改造 | **标准数据总线透明封装，下游业务系统零改动** |
+| **Compliance and Security** | Susceptible to in-terminal permission tightening | **100% compliant with brokerage access compliance standards and security baselines** |
+| **End-to-End Pipeline Latency** | Minute-level passive polling | **Millisecond-level on-demand bidirectional response** |
+| **Business Interaction Depth** | Passive read-only queries only | **Full support for asset queries, position monitoring, order placement and cancellation bidirectional closed loop** |
+| **Cross-System Stability** | Constrained by file mounts and environmental jitter | **Distributed decoupled relay with multi-tier degradation and disaster recovery self-healing capabilities** |
+| **Downstream System Compatibility** | Requires invasive coordinated modifications | **Standard data bus transparent encapsulation, zero modifications to downstream business systems** |
 
-> **架构师总结**：面对金融科技领域持续深化的安全监管演进，优秀的工程架构应当顺应合规趋势。通过“**职责边界外置、中继协议隔离、生命周期自适应、多级链路容灾**”的企业级架构设计，既满足了金融级别的严苛合规要求，又大幅提升了量化交易系统的工程健壮性与业务敏捷度。
+> **Architect's Summary**: In the face of continuously deepening security regulatory evolution in the fintech domain, excellent engineering architecture should align with compliance trends. Through enterprise-grade architectural design featuring "**responsibility boundary externalization, relay protocol isolation, lifecycle self-adaptation, and multi-tier link disaster recovery**," the system not only satisfies stringent financial-grade compliance requirements but also substantially enhances the engineering robustness and business agility of the quantitative trading system.

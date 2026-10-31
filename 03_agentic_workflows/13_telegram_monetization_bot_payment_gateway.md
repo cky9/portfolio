@@ -1,69 +1,71 @@
-# 高并发即时通讯服务与自动化会员交付中台架构（脱敏版）
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./13_telegram_monetization_bot_payment_gateway_zh.md) ]**
 
-> **作者/架构师**：QuantDev / AI Full-Stack Team  
-> **版本**：v2.1 (Production Ready)  
-> **适用场景**：高并发异步消息网关、私域高价值服务交付、实时数据订阅推送、企业级自动化准入与生命周期治理
+# High-Concurrency Instant Messaging Service and Automated Membership Delivery Platform Architecture (Redacted Version)
+
+> **Author/Architect**: QuantDev / AI Full-Stack Team  
+> **Version**: v2.1 (Production Ready)  
+> **Applicable Scenarios**: High-concurrency asynchronous messaging gateways, private-domain high-value service delivery, real-time data subscription push, enterprise-grade automated access control and lifecycle governance
 
 ---
 
-## 一、 系统架构总览
+## I. System Architecture Overview
 
-本项目提供了一套面向高并发即时通讯平台（如 Telegram / 企微 Webhook）的高可用、生产就绪型自动化交互与交付中台。系统解决的核心问题是：**从高价值实时数据服务与企业知识库，到自动化权益校验、动态鉴权准入与交互交付的全链路无人值守闭环**。
+This project delivers a high-availability, production-ready automated interaction and delivery platform built for high-concurrency instant messaging platforms (e.g., Telegram / WeCom Webhook). The core problem the system solves is: **a fully unattended, end-to-end closed loop spanning high-value real-time data services and enterprise knowledge bases, through automated entitlement verification, dynamic authentication and access control, and interactive delivery**.
 
-在安全架构上，彻底抛弃业内常见的明文 `.env` 配置文件模式，全面接入操作系统级安全凭据保管库（macOS Keychain），杜绝任何 API Token 泄漏与被攻击风险。
+On the security architecture front, the industry-common plaintext `.env` configuration file pattern is abandoned entirely in favor of full integration with OS-level secure credential vaults (macOS Keychain), eliminating any risk of API Token leakage or compromise.
 
-### 中台核心交互与权限闭环流转图
+### Platform Core Interaction and Permission Closed-Loop Flow Diagram
 
 ```mermaid
 sequenceDiagram
     autonumber
-    actor User as 最终交互用户
-    participant TG as 即时通讯网关 (Bot API)
-    participant Engine as 异步调度引擎 (Python AsyncIO)
-    participant Sec as 安全凭据中枢 (OS Keychain)
-    participant Pay as 支付与授权中台 (Stripe/合规网关)
-    participant Channel as VIP 专属服务通道
+    actor User as End Interactive User
+    participant TG as Instant Messaging Gateway (Bot API)
+    participant Engine as Async Scheduling Engine (Python AsyncIO)
+    participant Sec as Secure Credential Hub (OS Keychain)
+    participant Pay as Payment & Authorization Platform (Stripe/Compliance Gateway)
+    participant Channel as VIP Dedicated Service Channel
 
-    Engine->>Sec: 1. 级联检索并安全装载服务 Token (非明文)
-    Engine->>TG: 2. 建立长轮询 / 生产 Webhook 通道
-    User->>TG: 3. 发送 /start 或触发交互卡片
-    TG-->>Engine: 4. 路由分发指令与回调 Query
+    Engine->>Sec: 1. Cascading retrieval and secure loading of service Token (non-plaintext)
+    Engine->>TG: 2. Establish long polling / production Webhook channel
+    User->>TG: 3. Send /start or trigger interactive card
+    TG-->>Engine: 4. Route and dispatch commands and callback Query
     
-    alt 实时数据与指标查询
-        User->>TG: 点击「实时系统卡片」
-        Engine->>Engine: 异步拉取实时状态与计算结果
-        Engine-->>TG: 渲染富文本格式化状态卡片
-    else 专属权限准入校验 (Access Gate)
-        User->>TG: 点击「开通专属服务通道」
-        Engine-->>TG: 下发合规订单与动态签约链接 (Stripe/聚合支付)
-        User->>Pay: 完成授权或履约
-        Pay-->>Engine: 履约成功 Webhook 安全回调
-        Engine->>TG: 生成单次有效专属访问令牌 (One-Time Invite Link)
-        Engine-->>User: 私发安全访问链接并设定生命周期
-        Engine->>Channel: 记录用户身份并纳入守护监控
+    alt Real-time data and metrics query
+        User->>TG: Tap "Real-Time System Card"
+        Engine->>Engine: Asynchronously pull real-time status and computed results
+        Engine-->>TG: Render rich-text formatted status card
+    else Dedicated access entitlement verification (Access Gate)
+        User->>TG: Tap "Activate Dedicated Service Channel"
+        Engine-->>TG: Issue compliant order and dynamic contracting link (Stripe/aggregated payment)
+        User->>Pay: Complete authorization or fulfillment
+        Pay-->>Engine: Fulfillment success Webhook secure callback
+        Engine->>TG: Generate single-use dedicated access token (One-Time Invite Link)
+        Engine-->>User: Privately send secure access link and set lifecycle
+        Engine->>Channel: Record user identity and bring under guardian monitoring
     end
 ```
 
 ---
 
-## 二、 核心技术亮点与设计思想
+## II. Core Technical Highlights and Design Philosophy
 
-### 1. 零明文硬编码：系统级安全凭据防护 (Keychain-First Architecture)
-针对 Telegram Bot Token 极易在 Git 仓库泄漏的痛点，架构设计了双层防御机制：
-- 运行时优先通过 `keyring` 库从操作系统底层安全区（macOS Keychain / Linux Secret Service）提取凭据；
-- 支持生产环境优雅降级至受保护的环境变量；
-- 本地提供一键加密写入脚手架，杜绝在源码或配置文件中留下任何私密字符串。
+### 1. Zero Plaintext Hardcoding: System-Level Secure Credential Protection (Keychain-First Architecture)
+To address the pain point that Telegram Bot Tokens are highly prone to leaking in Git repositories, the architecture employs a two-layer defense mechanism:
+- At runtime, credentials are preferentially extracted via the `keyring` library from the OS-level secure enclave (macOS Keychain / Linux Secret Service);
+- Graceful degradation to protected environment variables is supported in production environments;
+- A one-click encrypted write scaffolding is provided locally, ensuring no private strings are ever left in source code or configuration files.
 
 ```python
-# 示例：脱敏后的安全凭据装载与级联降级策略
+# Example: Redacted secure credential loading with cascading fallback strategy
 import os
 import sys
 
 def resolve_secure_bot_token(service_name: str = "TG_COMMERCIAL_BOT") -> str:
     """
-    生产级安全凭据解算：
-    优先级 1: 操作系统底层凭据保险箱 (macOS Keychain)
-    优先级 2: 进程隔离环境变量
+    Production-grade secure credential resolution:
+    Priority 1: OS-level credential vault (macOS Keychain)
+    Priority 2: Process-isolated environment variables
     """
     try:
         import keyring
@@ -73,66 +75,66 @@ def resolve_secure_bot_token(service_name: str = "TG_COMMERCIAL_BOT") -> str:
     except Exception:
         pass
 
-    # 降级至环境隔离变量
+    # Fall back to environment-isolated variables
     token = os.getenv("TELEGRAM_BOT_TOKEN")
     if token:
         return token.strip()
 
-    raise RuntimeError("【安全阻断】未检测到安全凭据，严禁以明文方式启动生产机器人！")
+    raise RuntimeError("[SECURITY BLOCK] No secure credentials detected. Starting a production bot in plaintext is strictly prohibited!")
 ```
 
-### 2. 异步长轮询与消息路由（High-Concurrency Async Engine）
-基于 Python `asyncio` 与原生轻量异步 HTTP 客户端构建，摆脱重型框架依赖，内存开销 < 30MB：
-- **Inline Keyboard（内嵌键盘）动态状态机**：支持带参数的 Callback Data 路由解算；
-- **MarkdownV2 强转义渲染器**：解决 Telegram 富文本解析中下划线、括号导致的语法熔断问题；
-- **异常退避与自愈守护**：遇到 Telegram 429（Too Many Requests）或网络波动时，采用带抖动的指数退避（Exponential Backoff with Jitter）自动恢复。
+### 2. Asynchronous Long Polling and Message Routing (High-Concurrency Async Engine)
+Built on Python `asyncio` and a native lightweight async HTTP client, free of heavy framework dependencies, with memory overhead < 30MB:
+- **Inline Keyboard dynamic state machine**: Supports parameterized Callback Data routing and resolution;
+- **MarkdownV2 strict-escaping renderer**: Resolves syntax breakage caused by underscores and parentheses in Telegram rich-text parsing;
+- **Exception backoff and self-healing guardian**: On encountering Telegram 429 (Too Many Requests) or network fluctuations, employs Exponential Backoff with Jitter for automatic recovery.
 
 ```python
-# 示例：脱敏后的动态 Inline Keyboard 渲染与回调解算
+# Example: Redacted dynamic Inline Keyboard rendering and callback resolution
 from typing import List, Dict, Any
 
 class TelegramMenuRouter:
     @staticmethod
     def build_main_dashboard() -> Dict[str, Any]:
-        """构建商业级多列内嵌交互仪表盘"""
+        """Build a commercial-grade multi-column inline interactive dashboard"""
         keyboard = [
             [
-                {"text": "📈 实时量化异动", "callback_data": "menu:quote"},
-                {"text": "📊 资产态势大屏", "callback_data": "menu:dashboard"}
+                {"text": "📈 Real-Time Quant Alerts", "callback_data": "menu:quote"},
+                {"text": "📊 Asset Posture Dashboard", "callback_data": "menu:dashboard"}
             ],
             [
-                {"text": "💎 订阅 VIP 私密频道", "callback_data": "menu:subscribe_vip"}
+                {"text": "💎 Subscribe to VIP Private Channel", "callback_data": "menu:subscribe_vip"}
             ],
             [
-                {"text": "🛠️ 定制开发咨询", "callback_data": "menu:contact"}
+                {"text": "🛠️ Custom Development Inquiry", "callback_data": "menu:contact"}
             ]
         ]
         return {"inline_keyboard": keyboard}
 ```
 
-### 3. VIP 会员付费拦截与一次性凭据交付（Automated Paywall）
-- **动态一次性链接 (Revocable Invite Link)**：用户支付核销后，机器人调用 `createChatInviteLink` 生成单人有效、限时入场的邀请链接，防止链接被二次转发滥用；
-- **到期自动移出队列**：通过 Redis TTL 机制或后台时间轮（Timing Wheel），定期扫描到期用户并自动从频道/社群中移除，实现 100% 无人值守运作。
+### 3. VIP Membership Paywall and One-Time Credential Delivery (Automated Paywall)
+- **Dynamic one-time link (Revocable Invite Link)**: After the user's payment is verified, the bot calls `createChatInviteLink` to generate a single-person, time-limited entry invite link, preventing the link from being re-forwarded and abused;
+- **Automatic removal queue on expiry**: Via a Redis TTL mechanism or a background Timing Wheel, periodically scans expired users and automatically removes them from the channel/community, achieving 100% unattended operation.
 
 ---
 
-## 三、 商业变现模块矩阵与落地价值
+## III. Monetization Module Matrix and Business Value
 
-| 模块名称 | 变现场景 | 交付模式 | 典型客单价/ROI |
+| Module Name | Monetization Scenario | Delivery Model | Typical Price Point / ROI |
 | :--- | :--- | :--- | :--- |
-| **实时行情卡片** | 外汇/加密货币/美股/A股量化信号订阅 | 每日盘中自动推送 + 交互式点播 | \$19 - \$49 / 月 / 席位 |
-| **VIP 频道付费墙** | 私域高净值社区、研报社群自动准入 | 支付后自动发码、核销入群、逾期自动移出 | \$39 - \$199 / 季度 |
-| **轻量企业工作流中继** | 跨境电商报警、库存突变推送、工单通知 | 专有部署至客户私有 Telegram 群组 | \$500 - \$2,000 / 套 (交付制) |
+| **Real-Time Market Card** | Forex/crypto/US equities/A-share quant signal subscription | Automated intraday push + interactive on-demand | \$19 - \$49 / month / seat |
+| **VIP Channel Paywall** | Private-domain high-net-worth communities, automated access to research report communities | Auto-issue code after payment, verify and join, auto-remove on expiry | \$39 - \$199 / quarter |
+| **Lightweight Enterprise Workflow Relay** | Cross-border e-commerce alerts, inventory spike push, ticket notifications | Dedicated deployment to customer's private Telegram group | \$500 - \$2,000 / set (delivery-based) |
 
 ---
 
-## 四、 部署与运行规格 (Deployment Specs)
+## IV. Deployment and Runtime Specifications (Deployment Specs)
 
-- **运行时支持**：Python 3.9+、Docker、macOS / Linux VPS
-- **内存占用**：基础长轮询驻留内存 ≤ 28MB，极端高并发消息推送 ≤ 80MB
-- **依赖库**：`aiohttp`, `keyring` (可选 `redis` / `pydantic`)
-- **运维监控**：内置 `/health` 探针与进程心跳打点，支持 Systemd / launchd 守护重启
+- **Runtime support**: Python 3.9+, Docker, macOS / Linux VPS
+- **Memory footprint**: Baseline long-polling resident memory ≤ 28MB, extreme high-concurrency message push ≤ 80MB
+- **Dependencies**: `aiohttp`, `keyring` (optional `redis` / `pydantic`)
+- **Ops monitoring**: Built-in `/health` probe and process heartbeat pings, supports Systemd / launchd guardian restart
 
 ---
 
-*(注：本文档已执行商业主体、敏感 Token 及业务数据脱敏，仅保留核心架构与逻辑范式)*
+*(Note: This document has been redacted for business entities, sensitive Tokens, and business data; only the core architecture and logic paradigms are retained.)*

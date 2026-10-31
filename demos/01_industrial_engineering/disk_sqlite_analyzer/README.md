@@ -1,8 +1,9 @@
-# 💾 本地客户端 SQLite 逆向解析与多媒体资产排重工具
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
 
-> **商业价值**：面对 NAS 或本地存储中 TB 级的图片、录像与文档，直接计算全文件 MD5 会造成巨大的磁盘 I/O 堵塞。本项目通过直接逆向客户端本地已有的 SQLite 缓存数据库，提取已有元数据配合“头中尾哈希采样”，实现 0 网络传输、极速秒级排重。
+# 💾 Local Client SQLite Reverse-Engineering Parser & Multimedia Asset Deduplication Tool
 
-## 🚀 极速开箱试跑
+> **Business Value**: When facing terabytes of images, videos, and documents on a NAS or local storage, computing full-file MD5 hashes directly causes massive disk I/O bottlenecks. This project reverse-engineers the SQLite cache database already present on the local client, extracting existing metadata and combining it with "head-middle-tail hash sampling" to achieve zero network transfer and blazing-fast, second-level deduplication.
+
+## 🚀 Quick Start
 ```bash
 python demo_run.py
-```

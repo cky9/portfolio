@@ -1,15 +1,17 @@
-# 🎥 0 预算工人工时与动作节拍分析工具 (IE Motion Study)
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
 
-> **商业价值**：实体制造业传统的工时定额和 IE 动作分析需采购昂贵动捕设备，或耗费大量人力秒表掐表。本项目仅需 15 元手机支架录制视频，使用纯 CPU 跑视觉骨骼追踪算法，自动提取工人装配节拍并计算标准工时 (SMV)。
+# 🎥 Zero-Budget Worker Time & Motion Takt Analysis Tool (IE Motion Study)
 
-## 🚀 极速开箱试跑 (Zero Dependency Demo)
-无需任何繁琐配置，内置仿真数据，单机直接运行：
+> **Business value**: Traditional time standards and IE motion analysis in physical manufacturing require purchasing expensive motion-capture equipment or spending massive manual effort with stopwatches. This project needs only a $15 phone stand to record video, runs a vision-based skeletal tracking algorithm on pure CPU, and automatically extracts worker assembly takt and calculates standard time (SMV).
+
+## 🚀 Quick Out-of-the-Box Trial Run (Zero Dependency Demo)
+No tedious configuration required—built-in simulated data, runs directly on a single machine:
 ```bash
 python demo_run.py
 ```
 
-## 🛠️ 生产环境实战能力
-- **双模自适应**：
-  - 若安装了 `mediapipe` 与 `opencv-python`，传入本地录像即可进行真机 21 关节点轨迹提取与渲染；
-  - 遇到轻量测试环境时，自动以极低系统占用运行高精度仿真推算。
-- **核心算法**：双手骨骼欧式距离波动解算、速度极值点动素分割、IE 宽放率工时（SMV）折算。
+## 🛠️ Production-Grade Capabilities
+- **Dual-mode adaptive**:
+  - If `mediapipe` and `opencv-python` are installed, pass in a local recording to perform real-device 21-keypoint trajectory extraction and rendering;
+  - In lightweight test environments, it automatically runs high-precision simulated inference with extremely low system overhead.
+- **Core algorithms**: Two-hand skeletal Euclidean distance fluctuation solving, speed-extremum motion-element segmentation, IE allowance-rate standard time (SMV) conversion.

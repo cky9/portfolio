@@ -1,8 +1,9 @@
-# 🛡️ 金融级高可用实时状态机与熔断防御引擎
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
 
-> **工程硬实力实证**：脱胎于严苛实盘场景的高频底层架构。针对“高并发、亚秒级时延、零脏读容忍”的极端场景，实现事件去重幂等性保障、滑点阈值熔断拦截与状态一致性校验。
+# 🛡️ Financial-Grade High-Availability Real-Time State Machine and Circuit-Breaker Defense Engine
 
-## 🚀 极速开箱试跑
+> **Hard Proof of Engineering Strength**: A high-frequency low-level architecture forged in demanding live-trading environments. Built for extreme scenarios—high concurrency, sub-second latency, zero tolerance for dirty reads—it delivers event deduplication with idempotency guarantees, slippage-threshold circuit-breaker interception, and state-consistency validation.
+
+## 🚀 Quick Start in Seconds
 ```bash
 python demo_run.py
-```

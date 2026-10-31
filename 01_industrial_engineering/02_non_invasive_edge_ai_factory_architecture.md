@@ -1,115 +1,117 @@
-# 传统制造企业轻量级 AI 数字化提效与无侵入式架构方案（脱敏版）
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./02_non_invasive_edge_ai_factory_architecture_zh.md) ]**
 
-> **作者/架构师**：AI Full-Stack Architecture / 数字化转型 Team  
-> **设计理念**：零侵入（0 修改旧系统） · 极低成本 · 模块化一周部署落地 (Zero-Disruption Architecture)
+# Lightweight AI Digital Efficiency and Non-Invasive Architecture for Traditional Manufacturing Enterprises (Redacted Version)
 
----
-
-## 一、 项目背景与架构设计哲学
-
-传统中小型制造企业（如电子组装、照明制造、五金压铸车间）在推进数字化转型时，普遍面临三大痛点：
-1. **旧系统不敢动**：传统 ERP/MES 系统上线多年，原厂服务商维护成本高或难以定制，修改源码风险极高。
-2. **多楼层/多工序信息孤岛**：进料仓储、生产组装、品管质检、模具管理各自独立，依赖纸质单据或人工手动录入，效率低下。
-3. **现场响应滞后**：软件系统弹窗警报极易被现场工人忽略。
-
-本方案提出 **“无侵入式自动化中继 (Zero-Touch Process Middleman)”** 架构，无需修改旧系统一行代码，通过移动端轻量感知、智能 BOM 防错比对及现场物理声光联动，实现周级快速见效。
+> **Author/Architect**: AI Full-Stack Architecture / Digital Transformation Team  
+> **Design Philosophy**: Zero-Disruption (0 changes to legacy systems) · Ultra-Low Cost · Modular One-Week Deployment (Zero-Disruption Architecture)
 
 ---
 
-## 二、 无侵入式数字化架构图 (System Architecture)
+## I. Project Background and Architectural Design Philosophy
+
+Traditional small and mid-sized manufacturing enterprises (e.g., electronics assembly, lighting manufacturing, hardware die-casting shops) commonly face three major pain points when pursuing digital transformation:
+1. **Legacy systems are untouchable**: Traditional ERP/MES systems have been in production for years; the original vendors' maintenance costs are high or customization is difficult, and modifying source code carries extreme risk.
+2. **Multi-floor/multi-process information silos**: Inbound warehousing, production assembly, quality control inspection, and mold management each operate independently, relying on paper documents or manual data entry—grossly inefficient.
+3. **Delayed on-site response**: Software system pop-up alerts are easily ignored by frontline workers.
+
+This solution proposes a **"Zero-Touch Process Middleman"** architecture that requires zero modification to legacy system code, achieving week-level rapid results through lightweight mobile sensing, intelligent BOM mismatch verification, and on-site physical audible-visual linkage.
+
+---
+
+## II. Non-Invasive Digital Architecture Diagram (System Architecture)
 
 ```mermaid
 graph TD
-    subgraph 物理现场感知层 (Physical Perception)
-        倉[仓储找货: 二维码标签 + 移动扫码]
-        組[生产组装: 工位打卡 + 自动扣料]
-        質[品管质检: 电子质检 + 一键溯源]
-        模[压铸模具: 自动称重 + 网格锁定]
+    subgraph Physical Perception Layer
+        WH[Warehouse Picking: QR Code Labels + Mobile Scanning]
+        ASM[Production Assembly: Workstation Check-in + Auto Material Deduction]
+        QC[Quality Control: Electronic Inspection + One-Click Traceability]
+        MOLD[Die-Casting Molds: Auto Weighing + Grid Locking]
     end
 
-    subgraph 无侵入式数据中继与决策层 (Zero-Touch Intelligence)
-        RPA[自动化流程中继 (RPA/Middleman)]
-        BOM[智能 BOM 用料自动比对引擎]
-        CV[本地轻量 AI 瑕疵辅助识别]
+    subgraph Zero-Touch Intelligence Layer
+        RPA[Automated Process Middleman (RPA/Middleman)]
+        BOM[Intelligent BOM Material Auto-Verification Engine]
+        CV[Local Lightweight AI Defect-Assist Recognition]
     end
 
-    subgraph 物理响应与现场执行层 (Physical Execution)
-        Alert[现场声光警报灯 (物理级强响应)]
-        Dash[车间实时看板 / 移动端看板]
+    subgraph Physical Execution Layer
+        Alert[On-Site Audible-Visual Alarm Light (Physical-Grade Strong Response)]
+        Dash[Real-Time Shop-Floor Dashboard / Mobile Dashboard]
     end
 
-    subgraph 企业现有旧系统 (Legacy Systems)
-        ERP[(企业原有 ERP / MES 系统)]
+    subgraph Legacy Systems
+        ERP[(Existing Enterprise ERP / MES System)]
     end
 
-    仓 --> RPA
-    组 --> RPA
-    质 --> RPA
-    模 --> RPA
+    WH --> RPA
+    ASM --> RPA
+    QC --> RPA
+    MOLD --> RPA
 
-    RPA -->|只读查询 / 外挂式注入| ERP
+    RPA -->|Read-Only Query / Sidecar Injection| ERP
     RPA --> BOM
-    BOM -->|检测到错漏| Alert
+    BOM -->|Mismatch Detected| Alert
     CV --> Alert
     RPA --> Dash
 ```
 
 ---
 
-## 三、 三层数字化提效实施方案
+## III. Three-Tier Digital Efficiency Implementation Plan
 
-### 1. 感知层：现场数据实时连线（Line-side Real-time Connection）
+### 1. Perception Layer: Line-Side Real-Time Connection
 
-- **仓储找货 (仓储环节)**：
-  - *现状*：未实时连线，找货依赖经验，耗时严重。
-  - *方案*：二维码标签 + 移动端扫码定位。
-  - *量化效果*：**5 秒快速找货**，物料位置实时精准定位。
-- **组装领料 (生产环节)**：
-  - *现状*：人工对账，纸本领料，耗时费力。
-  - *方案*：工位快捷打卡 + 虚拟账套自动扣料。
-  - *量化效果*：实时对账，生产进度与损耗自动统计。
-- **品管质检 (追溯环节)**：
-  - *现状*：纸本记录质检结果，查账溯源极其困难。
-  - *方案*：电子化质检录入 + 在线结构化归档。
-  - *量化效果*：**质量问题一键溯源**，彻底告别翻阅纸本。
-- **模具与防废料 (防漏环节)**：
-  - *现状*：压铸模具易错放，废料缺少有效监控。
-  - *方案*：自动称重传感器 + 网格货位物理锁定。
-  - *量化效果*：防废料跑冒滴漏，模具位置一目了然。
-
----
-
-### 2. 决策与防错层：数据智能对比防错（Smart Verification）
-
-- **BOM 用料自动对比引擎**：
-  - *现状*：依赖人工核对 BOM 领料单，容易漏看错看导致批量次品。
-  - *方案*：开发外挂式智能对比中继，自动抓取工单与领料数据进行校验。
-  - *核心优势*：**0 修改旧系统源码**，实时拦截用料错漏。
-- **本地 AI 视觉瑕疵辅助判定（扩展）**：
-  - *现状*：质检人员长时间肉眼检查，极易产生视觉疲劳。
-  - *方案*：部署本地轻量 AI 视觉识别模型，实时辅助瑕疵过滤。
-  - *核心优势*：跟上生产高速转速，显著减轻质检疲劳。
+- **Warehouse Picking (Warehousing)**:
+  - *Status Quo*: No real-time connectivity; picking relies on experience and is severely time-consuming.
+  - *Solution*: QR code labels + mobile scanning for location.
+  - *Quantified Result*: **5-second rapid picking**, real-time precise material location.
+- **Assembly Material Requisition (Production)**:
+  - *Status Quo*: Manual reconciliation, paper-based requisition—time-consuming and labor-intensive.
+  - *Solution*: Quick workstation check-in + virtual ledger auto-deduction.
+  - *Quantified Result*: Real-time reconciliation, automated tracking of production progress and material loss.
+- **Quality Control Inspection (Traceability)**:
+  - *Status Quo*: Paper-based QC records; auditing and traceability are extremely difficult.
+  - *Solution*: Electronic QC entry + online structured archiving.
+  - *Quantified Result*: **One-click traceability of quality issues**, eliminating paper flipping entirely.
+- **Molds and Scrap Prevention (Leak Prevention)**:
+  - *Status Quo*: Die-casting molds easily misplaced; scrap lacks effective monitoring.
+  - *Solution*: Auto weighing sensors + physical grid bin locking.
+  - *Quantified Result*: Prevents scrap leakage and loss; mold locations visible at a glance.
 
 ---
 
-### 3. 执行层：现场声光报警与流程自动化（Physical Execution）
+### 2. Decision and Error-Proofing Layer: Smart Verification
 
-- **现场物理声光警报联动**：
-  - *现状*：电脑屏幕系统的文字弹窗警报，车间现场工人极易忽视。
-  - *方案*：通过中继控制器联动车间现场的**三色声光警报灯**。
-  - *量化效果*：出现错料或质量告警时，**现场物理闪灯/蜂鸣**，强制现场人员即时处理。
-- **数据自动化流程中继**：
-  - *现状*：多套软件系统独立运行，员工需重复打字搬运数据。
-  - *方案*：采用 Python 自动化流程中继 (RPA) 打通数据流。
-  - *量化效果*：免去高额软件二次开发费，极速实现全流程连线。
+- **BOM Material Auto-Verification Engine**:
+  - *Status Quo*: Manual cross-checking of BOM requisition sheets; easy to miss or misread, causing batch defects.
+  - *Solution*: Develop a sidecar intelligent verification middleman that automatically captures work orders and material requisition data for validation.
+  - *Core Advantage*: **0 modifications to legacy system source code**, real-time interception of material mismatches.
+- **Local AI Visual Defect-Assist Judgment (Extension)**:
+  - *Status Quo*: QC inspectors perform prolonged naked-eye inspection, highly prone to visual fatigue.
+  - *Solution*: Deploy a local lightweight AI visual recognition model for real-time defect-assist filtering.
+  - *Core Advantage*: Keeps pace with high-speed production lines, significantly reducing inspection fatigue.
 
 ---
 
-## 四、 方案总结与商业价值
+### 3. Execution Layer: On-Site Audible-Visual Alarms and Process Automation (Physical Execution)
 
-本方案的核心商业价值在于 **“高 ROI 与低实施风险”**：
-1. **保护已有资产**：不替代、不破坏企业现有的 ERP/MES 投资。
-2. **极短交付周期**：采用轻量中继架构，**1 周内即可完成首个车间示范点的连线与见效**。
-3. **显著降低心智负荷**：用物理声光与自动化比对代替人工眼力核查，从根本上杜绝人为差错。
+- **On-Site Physical Audible-Visual Alarm Linkage**:
+  - *Status Quo*: Text pop-up alerts on computer screens are easily overlooked by shop-floor workers.
+  - *Solution*: Through the middleman controller, link to the shop floor's **three-color audible-visual alarm lights**.
+  - *Quantified Result*: When material mismatch or quality alerts occur, **on-site physical flashing/buzzing** forces immediate response from on-site personnel.
+- **Automated Data Process Middleman**:
+  - *Status Quo*: Multiple software systems operate independently; employees must repeatedly type and shuttle data.
+  - *Solution*: Adopt Python automated process middleman (RPA) to bridge data flows.
+  - *Quantified Result*: Eliminates costly secondary software development fees; achieves full-process connectivity at extreme speed.
 
-*(注：本方案已对企业名称、特定车间楼层布局及商业敏感数据完成全局脱敏处理)*
+---
+
+## IV. Solution Summary and Business Value
+
+The core business value of this solution lies in **"High ROI and Low Implementation Risk"**:
+1. **Protect existing assets**: Does not replace or disrupt the enterprise's existing ERP/MES investment.
+2. **Extremely short delivery cycle**: Using a lightweight middleman architecture, **the first workshop pilot can be connected and delivering results within 1 week**.
+3. **Significantly reduce cognitive load**: Replacing manual visual verification with physical audible-visual alerts and automated comparison fundamentally eliminates human error.
+
+*(Note: This document has undergone global redaction of company names, specific workshop floor layouts, and commercially sensitive data)*

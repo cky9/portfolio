@@ -1,8 +1,9 @@
-# 🎙️ Edge-TTS 异步批量音频流生成管道
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
 
-> **商业价值**：外包配音周期长、成本高；传统云厂商 TTS API 按字符计费昂贵。本项目封装微软开源 Edge-TTS 协议，支持多发音人音色、语速与情绪动态调节，0 成本秒级合成广播级商业解说音频。
+# 🎙️ Edge-TTS Async Batch Audio Stream Generation Pipeline
 
-## 🚀 极速开箱试跑
+> **Business value**: Outsourced voiceover takes weeks and costs a fortune; traditional cloud TTS APIs charge by the character. This project wraps Microsoft's open-source Edge-TTS protocol, supports multiple voice personas with dynamic speed and emotion control, and synthesizes broadcast-grade commercial narration audio in seconds at zero cost.
+
+## 🚀 Quick Start
 ```bash
 python demo_run.py
-```

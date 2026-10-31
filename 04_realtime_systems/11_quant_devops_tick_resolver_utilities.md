@@ -1,15 +1,17 @@
-# Y3TRADE 量化自动化运维与辅助小工具集锦（脱敏版）
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./11_quant_devops_tick_resolver_utilities_zh.md) ]**
 
-> **作者/量化工程团队**：QuantDev & Automated Trading Ops Team  
-> **核心工具**：PTrade 界面自愈监控 · 安全 SQL 查询桥接 · 物理声光闹钟警报 · 实时 Tick 代码解算
+# Y3TRADE Quantitative Automated Operations & Utility Toolkit Collection (Sanitized Edition)
+
+> **Author/Quant Engineering Team**: QuantDev & Automated Trading Ops Team  
+> **Core Tools**: PTrade UI Self-Healing Monitor · Secure SQL Query Bridge · Physical Audio-Visual Alarm Alert · Real-Time Tick Code Resolver
 
 ---
 
-## 一、 工具集锦概览
+## I. Toolkit Collection Overview
 
-在量化交易系统的实际盘中运行中，除了核心策略与风控引擎外，还需要一系列高可用、无侵入的自动化运维辅助工具，保障系统 7x24 小时稳定运行。
+In the actual intraday operation of a quantitative trading system, beyond the core strategy and risk control engines, a series of high-availability, non-invasive automated operations support tools are also required to ensure stable 7x24 operation of the system.
 
-本项目脱敏整理并集成了 Y3TRADE 系统的 **四大实用自动化工具**：
+This project has sanitized, organized, and integrated the **four practical automation tools** of the Y3TRADE system:
 
 ```mermaid
 graph TD
@@ -32,15 +34,15 @@ graph TD
 
 ---
 
-## 二、 核心小工具代码及技术亮点
+## II. Core Utility Code and Technical Highlights
 
-### 1. PTrade 交易客户端自愈脚手架 (`ptrade_self_healing.py`)
-- **功能**：自动检测 PTrade 客户端进程及 UI 控件状态。当发生断连、重启或弹窗阻塞时，自动执行模拟恢复与策略重新挂载。
-- **防止假死**：对“重启中”与“正常监控中”状态建立二次强核验逻辑，避免由于状态误报导致策略漏挂。
+### 1. PTrade Trading Client Self-Healing Scaffold (`ptrade_self_healing.py`)
+- **Function**: Automatically detects the PTrade client process and UI control states. When disconnection, restart, or modal dialog blocking occurs, it automatically performs simulated recovery and strategy re-mounting.
+- **False-Death Prevention**: Establishes a secondary strong verification logic for the "restarting" and "normal monitoring" states, preventing strategies from being missed due to state misreporting.
 
-### 2. 安全 SQL 执行与数据校验桥 (`db_query_safe.py`)
-- **规范执行**：强制通过写入 `.sql` 文件避免命令行拼接注入漏洞；统一设置 `PYTHONIOENCODING=utf-8`。
-- **自动化结果解析**：自动将 SQL 结果集转化为 Pandas DataFrame 或 JSON 结构供上层策略消费。
+### 2. Secure SQL Execution and Data Validation Bridge (`db_query_safe.py`)
+- **Standardized Execution**: Enforces writing to `.sql` files to avoid command-line concatenation injection vulnerabilities; uniformly sets `PYTHONIOENCODING=utf-8`.
+- **Automated Result Parsing**: Automatically converts SQL result sets into Pandas DataFrames or JSON structures for consumption by upper-layer strategies.
 
 ```python
 # 脱敏示意：安全 SQL 执行脚本调用
@@ -56,16 +58,16 @@ def run_safe_sql(sql_file_path):
     return json.loads(res.stdout)
 ```
 
-### 3. 物理声光警报与动态盯盘哨兵 (`alarm_watchdog.py`)
-- **声光强提醒**：当做 T 网格触发止损或超量持仓警报时，系统自动调用本地系统层闹钟 API（如 `add_windows_alarm.py` 或 macOS `osascript` 提醒），实现硬性防错与极客物理提醒。
+### 3. Physical Audio-Visual Alarm and Dynamic Watchdog Sentinel (`alarm_watchdog.py`)
+- **Strong Audio-Visual Alert**: When grid trading triggers a stop-loss or over-position alert, the system automatically invokes the local system-level alarm API (such as `add_windows_alarm.py` or macOS `osascript` notification), achieving hard error prevention and geek-style physical alerts.
 
-### 4. 49,000+ 实时行情 Tick 代码解算器 (`tick_resolver.py`)
-- **权威代码转换**：基于 Redis `tick:latest` 内存缓存，毫秒级完成股票名称与 Standard Code (如 `600519.SH`) 的双向正向/反向解算，杜绝凭借记忆推断代码带来的误交易风险。
+### 4. 49,000+ Real-Time Market Tick Code Resolver (`tick_resolver.py`)
+- **Authoritative Code Conversion**: Based on the Redis `tick:latest` in-memory cache, completes bidirectional forward/reverse resolution between stock names and Standard Codes (e.g., `600519.SH`) at millisecond latency, eliminating the risk of erroneous trades caused by inferring codes from memory.
 
 ---
 
-## 三、 工程价值
+## III. Engineering Value
 
-这些轻量小工具磨平了交易操作中的微观摩擦，形成了从**交易界面挂载、SQL 安全查询、物理声光防错到代码解析**的全链路零故障防线。
+These lightweight utilities smooth out the micro-friction in trading operations, forming a full-chain zero-failure defense line spanning **trading UI mounting, secure SQL querying, physical audio-visual error prevention, and code resolution**.
 
-*(注：本小工具集锦文档已全面作商业名称、具体账户与环境凭据脱敏清洗)*
+*(Note: This utility collection document has been fully sanitized of business names, specific account and environment credentials)*

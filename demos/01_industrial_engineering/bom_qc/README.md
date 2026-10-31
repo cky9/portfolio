@@ -1,14 +1,16 @@
-# 🧩 BOM QC 非标物料归一化与相似度校验引擎
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
 
-> **商业价值**：工厂运行 10 年的老旧 ERP 中物料编码极其混乱，相同零件因不同员工录入存在大量错漏别字、空格、异名同物。本项目放弃高昂的云端大模型 API，采用纯 CPU 运行的 **Levenshtein 编辑距离算法** 与自学习 **别名表树 (Alias Tree)**，在毫秒级内实现高精度的物料非标对齐与自动映射。
+# 🧩 BOM QC Non-Standard Material Normalization & Similarity Validation Engine
 
-## 🚀 极速开箱试跑 (Zero Dependency Demo)
-无需安装任何三方包（使用 Python 原生内置库）：
+> **Business value**: Material codes in a 10-year-old legacy ERP are a mess—the same part has tons of typos, stray spaces, and aliases from different employees entering data. This project skips expensive cloud LLM APIs and instead uses a pure-CPU **Levenshtein edit distance algorithm** plus a self-learning **Alias Tree** to achieve high-accuracy non-standard material alignment and automatic mapping in milliseconds.
+
+## 🚀 Quick Start (Zero Dependency Demo)
+No third-party packages required (uses only Python's built-in standard library):
 ```bash
 python demo_run.py
 ```
 
-## 🛠️ 性能与指标
-- **单核吞吐**：> 15,000 条物料 / 秒；
-- **内存占用**：< 15MB 驻留内存；
-- **落地形态**：可作为无侵入旁路服务或 Excel/WPS 批量处理宏后端。
+## 🛠️ Performance & Metrics
+- **Single-core throughput**: > 15,000 materials / sec;
+- **Memory footprint**: < 15MB resident memory;
+- **Deployment form**: Can run as a non-intrusive sidecar service or as the backend for Excel/WPS batch-processing macros.

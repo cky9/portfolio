@@ -1,6 +1,8 @@
-# 📊 Glassmorphism 全景数字化态势看板
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
 
-> **视觉与前端能力实证**：纯原生前端技术栈（Vanilla CSS + HTML5 + Chart.js），采用深色暗黑模式与毛玻璃（Glassmorphism）高质感设计，直观呈现车间工时提效对比柱状图与系统综合能力雷达。
+# 📊 Glassmorphism Panoramic Digital Situation Dashboard
 
-## 🚀 极速开箱试跑
-无需任何 Node.js / NPM 打包构建，双击 `index.html` 即可在任意浏览器直接打开查看。
+> **Proof of visual and front-end capabilities**: Pure native front-end tech stack (Vanilla CSS + HTML5 + Chart.js), featuring dark mode and a high-quality Glassmorphism design, visually presenting a workshop work-hour efficiency comparison bar chart and a system comprehensive capability radar.
+
+## 🚀 Quick Start
+No Node.js / NPM packaging or build required—just double-click `index.html` to open and view it directly in any browser.

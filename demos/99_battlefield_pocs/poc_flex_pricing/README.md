@@ -1,16 +1,17 @@
-# ⚡ 战地敏捷原型：小批量柔性排单与智能报价 (Battlefield PoC)
+> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
 
-> **研发哲学**：AI 时代的系统都是有机生长的，绝非一次定型。本项目为深入离散制造（五金/服装/模具）现场后，在 4 小时内交付的最小概念验证（PoC）。
+# ⚡ Battlefield Agile Prototype: Small-Batch Flexible Scheduling & Smart Quoting (Battlefield PoC)
 
-## 🎯 业务痛点假设
-- **现场痛点**：小批量个性化订单越来越多，传统工厂按大货均价报价，导致“频繁停机换模调线，干得越多亏得越多”。
-- **目标预期**：建立动态均摊换线成本的阶梯报价模型，4 小时跑通逻辑闭环。
+> **R&D Philosophy**: In the AI era, systems grow organically—they're never set in stone on the first pass. This project is a minimum viable proof of concept (PoC) delivered within 4 hours after going on-site at discrete manufacturing operations (hardware/apparel/molds).
 
-## 🧪 核心验证成果 (Verification)
-1. 验证了将工时定额 SMV 与调机固定成本结合的自适应动态报价算法；
-2. 彻底消除了小批量报价拍脑袋的盲区。
+## 🎯 Business Pain Point Hypotheses
+- **On-the-ground pain**: Small-batch custom orders keep growing, but traditional factories quote at mass-production average prices—resulting in "constant downtime for mold changes and line retooling, where the more you produce, the more you lose."
+- **Target expectation**: Build a tiered quoting model that dynamically amortizes changeover costs, and close the logic loop within 4 hours.
 
-## 🚀 极速开箱试跑
+## 🧪 Core Verification Results (Verification)
+1. Validated an adaptive dynamic quoting algorithm that combines standard minute values (SMV) with fixed setup costs;
+2. Completely eliminated the blind spots of guesswork in small-batch quoting.
+
+## 🚀 Quick Start
 ```bash
 python demo_run.py
-```
