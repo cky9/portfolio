@@ -1,9 +1,13 @@
 # 🚀 Agile Digitalization & Full-Stack Edge Systems Portfolio
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/)
+[![Edge AI](https://img.shields.io/badge/Architecture-Edge--Native-green.svg)](#-i-industrial-engineering--shop-floor-edge-ai)
+
 >
 > *"Bridging physical shop-floor realities with zero-overhead agile engineering — Re-architecting legacy workflows via Industrial Engineering (IE), Edge AI, and Mission-Critical Real-time State Machines."*
 >
-> **Author & Systems Architect**: **Yan San (cky9)**  
+> **Author & Systems Architect**: **CK Yan (Yan San / @cky9)**  
 > **Role**: **Full-Stack Forward-Deployed Engineer (FDE) & Industrial Engineering Automation Specialist**  
 > **Core Philosophy**: Zero-overhead sidecar architecture. Rejecting bloated, expensive enterprise cloud contracts ($100k+ ERP/MES) in favor of lightweight, air-gapped, resilient local Python/Edge pipelines, high-concurrency memory streams, and deterministic domain algorithms.
 
@@ -189,4 +193,5 @@
 
 *   **Capabilities Available**: Shop-floor physical digital audits (Half-day rapid diagnostics), Edge AI & non-invasive sidecar system development, Custom GSD industrial line balancing setups.
 *   **GitHub**: [@cky9](https://github.com/cky9)
+*   **License**: Distributed under the [MIT License](LICENSE).
 *   **Issues / Collaboration**: Feel free to open an Issue or Pull Request on this repository.
