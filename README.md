@@ -145,7 +145,7 @@
     ```
 
 ### 3. Feishu × SiYuan 24/7 Autonomous Bi-directional Knowledge Synapse
-*   **Architecture Specification**: [Feishu SiYuan Copilot Architecture](03_智能体工作流与超级个人生产力/16_Feishu_SiYuan个人灵感回响中台与自主神经身心节律感知系统_脱敏版.md)
+*   **Architecture Specification**: [Feishu SiYuan Copilot Architecture](03_agentic_workflows/16_feishu_siyuan_knowledge_synapse_somatic_radar.md)
 *   **Engineering Impact**: Long-lived WebSocket daemon capturing fleeting mobile inspirations, parsing markdown blocks, writing directly to offline-first SiYuan kernels, and maintaining a somatic bio-feedback intuition log.
 
 ---
@@ -173,7 +173,7 @@
     ```
 
 ### 3. Multi-Tier High-Availability Data Flow (API ➔ Redis In-Memory ➔ MySQL Archival)
-*   **Architecture Blueprint**: [Three-Tier Quant Architecture](04_高可用实时数据流与金融级状态机/01_Y3TRADE量化交易与三层数据架构系统设计_脱敏版.md)
+*   **Architecture Blueprint**: [Three-Tier Quant Architecture](04_realtime_systems/01_three_tier_quant_trading_architecture.md)
 *   **Engineering Impact**: Memory pre-warming routines and hash stacking achieving sub-millisecond reader latencies, shielded by cascading fallback logic.
 
 ---
