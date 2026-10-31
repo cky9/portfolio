@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>企业级全景数字化态势看板 (Glassmorphism Dashboard)</title>
+    <title>Enterprise Telemetry & Operations Console (Glassmorphism Dashboard)</title>
     <!-- 引入 Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -121,44 +121,44 @@
 <body>
 
     <div class="header">
-        <h1>⚡ 工业工程与企业数字化敏捷控制台</h1>
-        <div class="badge">● 系统稳定运行 128 小时</div>
+        <h1>⚡ Industrial Engineering & Agile Operations Console</h1>
+        <div class="badge">● System Uptime: 128 Hours Healthy</div>
     </div>
 
     <!-- KPI 核心指标卡 -->
     <div class="kpi-grid">
         <div class="card">
-            <div class="card-title">IE 平均工时提效 (SMV)</div>
+            <div class="card-title">IE Average SMV Efficiency</div>
             <div class="card-value">-18.4%</div>
-            <div class="card-sub">↑ 动作浪费大幅削减</div>
+            <div class="card-sub">↑ Significant reduction in motion waste</div>
         </div>
         <div class="card">
-            <div class="card-title">BOM 脏物料自动归一率</div>
+            <div class="card-title">BOM Dirty SKU Auto-Normalization</div>
             <div class="card-value">99.2%</div>
-            <div class="card-sub">↑ 毫秒级编辑距离对齐</div>
+            <div class="card-sub">↑ Sub-ms Levenshtein alignment</div>
         </div>
         <div class="card">
-            <div class="card-title">RPA 本地数据清洗吞吐</div>
+            <div class="card-title">Local RPA Denoising Throughput</div>
             <div class="card-value">15.2k/s</div>
-            <div class="card-sub">● 0 外部 Token 费用</div>
+            <div class="card-sub">● $0 External Token Spend</div>
         </div>
         <div class="card">
-            <div class="card-title">状态机熔断与异常拦截</div>
-            <div class="card-value">0 脏读</div>
-            <div class="card-sub">● 金融级幂等性保障</div>
+            <div class="card-title">Circuit Breakers & Anomaly Intercepts</div>
+            <div class="card-value">0 Dirty Reads</div>
+            <div class="card-sub">● Financial-grade idempotency</div>
         </div>
     </div>
 
     <!-- 图表展示区 -->
     <div class="charts-grid">
         <div class="card">
-            <div class="card-title">车间装配工序动作耗时分布 (秒/循环)</div>
+            <div class="card-title">Assembly Motion Duration Distribution (sec/cycle)</div>
             <div class="chart-container">
                 <canvas id="barChart"></canvas>
             </div>
         </div>
         <div class="card">
-            <div class="card-title">数字化系统综合能力雷达评估</div>
+            <div class="card-title">System Capability Radar Assessment</div>
             <div class="chart-container">
                 <canvas id="radarChart"></canvas>
             </div>
@@ -171,15 +171,15 @@
         new Chart(ctxBar, {
             type: 'bar',
             data: {
-                labels: ['抓取物料', '对齐插接', '紧固螺钉', '目视自检', '贴标装箱'],
+                labels: ['Reach/Grasp', 'Align/Insert', 'Fasten Screws', 'Visual QC', 'Label/Package'],
                 datasets: [{
-                    label: '优化前工时 (s)',
+                    label: 'Before Optimization (s)',
                     data: [2.8, 4.5, 3.2, 2.0, 3.8],
                     backgroundColor: 'rgba(139, 148, 158, 0.4)',
                     borderColor: 'rgba(139, 148, 158, 0.8)',
                     borderWidth: 1
                 }, {
-                    label: '优化后工时 (s)',
+                    label: 'After Optimization (s)',
                     data: [1.8, 3.2, 2.1, 1.4, 2.6],
                     backgroundColor: 'rgba(46, 160, 67, 0.6)',
                     borderColor: 'rgba(46, 160, 67, 1)',
@@ -202,9 +202,9 @@
         new Chart(ctxRadar, {
             type: 'radar',
             data: {
-                labels: ['工时节拍', '数据清洗', '系统容灾', '0预算平替', 'RPA穿透', '智能体协同'],
+                labels: ['Cycle Takt', 'Data Cleaning', 'Fault Tolerance', '0-Budget Bypass', 'RPA Penetration', 'Agentic Workflows'],
                 datasets: [{
-                    label: '系统实测指标',
+                    label: 'System Benchmarks',
                     data: [92, 98, 96, 95, 90, 88],
                     backgroundColor: 'rgba(88, 166, 255, 0.25)',
                     borderColor: '#58a6ff',

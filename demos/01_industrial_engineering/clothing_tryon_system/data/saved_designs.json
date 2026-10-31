@@ -1,8 +1,8 @@
 [
   {
-    "name": "测试意式藏青条纹西装",
+    "name": "Bespoke Italian Navy Pinstripe Blazer",
     "styleId": "blazer",
-    "styleName": "高定意式收腰西装",
+    "styleName": "Tailored Italian Silhouette Blazer",
     "colors": {
       "body": "#0F172A",
       "collar": "#1E293B",
@@ -19,9 +19,9 @@
   },
   {
     "id": "design-170001",
-    "name": "极简燕麦风衣 - 晨雾驼",
+    "name": "Minimalist Wool Trench Coat - Camel",
     "styleId": "trench_coat",
-    "styleName": "经典双排扣风衣",
+    "styleName": "Classic Double-Breasted Trench",
     "category": "outerwear",
     "colors": {
       "body": "#D2B48C",
@@ -38,16 +38,16 @@
     "fit": "regular",
     "createdAt": "2026-10-28 10:20",
     "tags": [
-      "商务通勤",
-      "秋冬百搭",
-      "高级英伦"
+      "Business Casual",
+      "Autumn Essential",
+      "British Heritage"
     ]
   },
   {
     "id": "design-170002",
-    "name": "赛博机能廓形夹克 - 暗夜黑",
+    "name": "Cyberpunk Techwear Bomber Jacket - Onyx Black",
     "styleId": "bomber_jacket",
-    "styleName": "工装廓形飞行员夹克",
+    "styleName": "Oversized Utility Flight Jacket",
     "category": "outerwear",
     "colors": {
       "body": "#1E232A",
@@ -64,9 +64,9 @@
     "fit": "oversized",
     "createdAt": "2026-10-28 14:15",
     "tags": [
-      "机能潮牌",
-      "赛博朋克",
-      "防风防水"
+      "Techwear",
+      "Cyberpunk",
+      "Waterproof"
     ]
   }
 ]

@@ -1,7 +1,7 @@
 """
 Local Client SQLite Reverse Engineering & File Deduplication Tool
-本地客户端 SQLite 数据库逆向解析与海量多媒体排重工具 (脱敏演示版)
-运行方式: python demo_run.py
+Local client SQLite database metadata extraction and deduplication tool (Redacted Demo).
+Usage: python demo_run.py
 """
 import sqlite3
 import time
@@ -9,12 +9,12 @@ import hashlib
 
 def run_db_analysis():
     print("=" * 70)
-    print("💾 [数据库逆向解析] 启动本地客户端 SQLite 元数据极速抽取引擎...")
-    print("💡 对应方案：18_PB级私有多源多媒体资产智能治理与特征去重中台")
+    print("💾 [Database Extraction] Initializing client SQLite metadata extraction engine...")
+    print("💡 Architecture Spec: 18_PB-Scale Private Multimedia Asset Feature Deduplication Hub")
     print("=" * 70)
     time.sleep(0.4)
 
-    # 在内存中模拟客户端 170MB+ SQLite 数据库的表结构与元数据
+    # In-memory mock schema and metadata of client SQLite cache
     conn = sqlite3.connect(":memory:")
     cur = conn.cursor()
     cur.execute("""
@@ -28,15 +28,15 @@ def run_db_analysis():
     """)
 
     mock_files = [
-        (1, "2026_产线精益IE现场录像_01.mp4", 1024 * 1024 * 350, "e10adc3949ba59abbe56e057f20f883e", 1773000000),
-        (2, "2026_产线精益IE现场录像_01(副本).mp4", 1024 * 1024 * 350, "e10adc3949ba59abbe56e057f20f883e", 1773000010),
-        (3, "BOM物料比对规格总表_v2.xlsx", 1024 * 450, "c33367701511b4f6020ec61ded352059", 1773100000),
-        (4, "企业AI数字化避坑_EP01_4K.mov", 1024 * 1024 * 850, "4a7d1ed414474e4033ac29ccb8653d9b", 1773200000)
+        (1, "2026_assembly_line_ie_field_recording_01.mp4", 1024 * 1024 * 350, "e10adc3949ba59abbe56e057f20f883e", 1773000000),
+        (2, "2026_assembly_line_ie_field_recording_01(copy).mp4", 1024 * 1024 * 350, "e10adc3949ba59abbe56e057f20f883e", 1773000010),
+        (3, "bom_material_spec_crosscheck_v2.xlsx", 1024 * 450, "c33367701511b4f6020ec61ded352059", 1773100000),
+        (4, "enterprise_digital_agility_ep01_4k.mov", 1024 * 1024 * 850, "4a7d1ed414474e4033ac29ccb8653d9b", 1773200000)
     ]
     cur.executemany("INSERT INTO client_file_cache VALUES (?, ?, ?, ?, ?)", mock_files)
     conn.commit()
 
-    print(f"📥 成功接入客户端本地元数据表，开始执行【头中尾采样哈希 + 大小聚类】极速去重...\n")
+    print(f"📥 Connected to client local metadata schema, running head-middle-tail sampling hash deduplication...\n")
     time.sleep(0.3)
 
     cur.execute("""
@@ -50,12 +50,12 @@ def run_db_analysis():
     for row in duplicates:
         hash_val, count, total_size, names = row
         size_mb = total_size / (1024 * 1024)
-        print(f"⚠️  [发现重复冗余资产] 重复文件数: {count} 个 | 占用存储: {size_mb:.1f} MB")
-        print(f"    哈希校验值: {hash_val}")
-        print(f"    文件拓扑: {names}\n")
+        print(f"⚠️  [REDUNDANT ASSET FOUND] Duplicate Copies: {count} | Reclaimable Space: {size_mb:.1f} MB")
+        print(f"    MD5 Hash: {hash_val}")
+        print(f"    Topology: {names}\n")
 
     print("=" * 70)
-    print("🎉 逆向解算完成！纯单机每秒吞吐达 80,000+ 条记录，实现 0 网络传输下的极速排重。")
+    print("🎉 Analysis Complete! Single-node throughput exceeds 80,000+ records/sec with zero network overhead.")
     print("=" * 70)
 
 if __name__ == "__main__":

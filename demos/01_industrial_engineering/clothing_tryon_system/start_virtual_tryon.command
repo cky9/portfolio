@@ -1,6 +1,6 @@
 #!/bin/bash
 # ==============================================================================
-# 服装个性化设计与 AI 虚拟试穿平台 - macOS 双击一键启动脚本
+# Fashion AI Studio - macOS One-Click Launch Script
 # ==============================================================================
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -10,29 +10,28 @@ PORT=8765
 URL="http://127.0.0.1:$PORT"
 
 echo "=========================================================="
-echo "  👗 服装个性化设计与 AI 虚拟试穿平台 (Fashion AI Studio) "
+echo "  👗 Fashion AI Studio - Virtual Try-On Platform           "
 echo "=========================================================="
-echo "  📁 运行路径: $DIR"
-echo "  🌐 服务地址: $URL"
+echo "  📁 Working Directory: $DIR"
+echo "  🌐 Service Address:   $URL"
 echo "----------------------------------------------------------"
 
-# 检查端口是否被占用
+# Check if port is occupied
 PID=$(lsof -ti :$PORT)
 if [ ! -z "$PID" ]; then
-    echo "⚠️ 检测到端口 $PORT 已有进程 ($PID) 正在运行，准备重用/唤起服务..."
+    echo "⚠️ Detected process ($PID) running on port $PORT, reusing existing instance..."
 else
-    echo "🚀 正在启动服务后台引擎..."
+    echo "🚀 Starting backend engine..."
     PYTHONIOENCODING=utf-8 /usr/bin/python3 "$DIR/server.py" $PORT &
     SERVER_PID=$!
     sleep 1
 fi
 
-echo "✨ 正在自动打开系统默认浏览器体验..."
+echo "✨ Opening platform in default browser..."
 open "$URL"
 
 echo "=========================================================="
-echo "  平台运行中！按 Ctrl + C 可退出本窗口"
+echo "  Platform is running! Press Ctrl + C to exit."
 echo "=========================================================="
 
 wait
-
