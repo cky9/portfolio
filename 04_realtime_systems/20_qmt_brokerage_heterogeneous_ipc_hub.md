@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./20_qmt_brokerage_heterogeneous_ipc_hub_zh.md) ]**
-
 # Cross-Platform Distributed Collaborative Architecture for Quantitative Trading Systems Under Compliance Environment Adjustments (Redacted Version)
 
 > **Author/Architect**: QuantDev / Architecture Team  

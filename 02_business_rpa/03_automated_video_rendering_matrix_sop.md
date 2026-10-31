@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./03_automated_video_rendering_matrix_sop_zh.md) ]**
-
 # AI Short-Form Video End-to-End Automated Production and Content Matrix SOP (Sanitized Version)
 
 > **Author/Architect**: AI Content Automation / Full-Stack Team  
@@ -52,7 +50,7 @@ To ensure content depth and professionalism, the script matrix is built on four 
 - **Lightning-Fast Cut-Loss Discipline**: When a black-swan crisis hits, prioritize preserving a >70% cash defense line—don't agonize over any single trade's win or loss.
 
 ### 2. Pillar Two: Pre-Trade Setup & Tooling Locks
-- **Options Buyer Freezing-Point Discipline**: Only take extremely low-premium explosive潜伏 positions in options; contract 100% of daily energy into high-liquidity, high-quality large-cap stocks.
+- **Options Buyer Freezing-Point Discipline**: Only take extremely low-premium explosivelatent positioning positions in options; contract 100% of daily energy into high-liquidity, high-quality large-cap stocks.
 - **Physical Communication Channel Purge**: Physically remove global proxy contamination from the production trading environment; flatten loopback direct connections to a whitelist.
 
 ### 3. Pillar Three: Live Trading Debugging & Exception Troubleshooting

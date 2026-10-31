@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./02_non_invasive_edge_ai_factory_architecture_zh.md) ]**
-
 # Lightweight AI Digital Efficiency and Non-Invasive Architecture for Traditional Manufacturing Enterprises (Redacted Version)
 
 > **Author/Architect**: AI Full-Stack Architecture / Digital Transformation Team  

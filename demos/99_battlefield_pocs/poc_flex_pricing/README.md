@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
-
 # ⚡ Battlefield Agile Prototype: Small-Batch Flexible Scheduling & Smart Quoting (Battlefield PoC)
 
 > **R&D Philosophy**: In the AI era, systems grow organically—they're never set in stone on the first pass. This project is a minimum viable proof of concept (PoC) delivered within 4 hours after going on-site at discrete manufacturing operations (hardware/apparel/molds).

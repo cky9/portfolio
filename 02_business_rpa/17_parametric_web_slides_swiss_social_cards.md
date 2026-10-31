@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./17_parametric_web_slides_swiss_social_cards_zh.md) ]**
-
 # Parametric PPT and Swiss International Style Social Card Generation Engine Built on Modern Web Technologies (Sanitized Version)
 
 > **Author/Architect**: AI Full-Stack / Creative Technologist Team  

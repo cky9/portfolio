@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./14_mcp_agentic_workflow_proposal_system_zh.md) ]**
-
 # AI Agent Workflow and Precision Order Matching System Based on the MCP Protocol (Redacted Version)
 
 > **Author/Architect**: QuantDev / AI Full-Stack Team  

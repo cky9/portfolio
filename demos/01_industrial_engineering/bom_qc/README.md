@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
-
 # 🧩 BOM QC Non-Standard Material Normalization & Similarity Validation Engine
 
 > **Business value**: Material codes in a 10-year-old legacy ERP are a mess—the same part has tons of typos, stray spaces, and aliases from different employees entering data. This project skips expensive cloud LLM APIs and instead uses a pure-CPU **Levenshtein edit distance algorithm** plus a self-learning **Alias Tree** to achieve high-accuracy non-standard material alignment and automatic mapping in milliseconds.

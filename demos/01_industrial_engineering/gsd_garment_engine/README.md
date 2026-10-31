@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
-
 # 👔 Apparel IE - GSD Standard Time Analysis, Operation Costing & Production Line Scheduling System
 
 > **Business Value**: In traditional apparel export and garment manufacturing, when taking on new orders, IE engineers spend 1–3 days breaking down operations and calculating labor time. Small and mid-sized factories often quote by gut feel, frequently losing orders by quoting too high or losing money by quoting too low. This project is built on the **GSD (General Sewing Data)** international standard code library and sewing motion library to deliver second-level breakdown of style Tech Packs, Standard Minute Value (SMV) estimation, assembly line balancing and scheduling, and processing fee cost accounting.

@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
-
 # ⚡ QMT / XtQuant Broker-Grade Quantitative Trading SDK Knowledge Engineering & Hands-On Walkthrough
 
 > **Open-Source Project Home**: 🔗 [qmt-xtquant-knowledge-base-v1.0 (Gitee Open-Source Knowledge Base)](https://gitee.com/ckyan3/qmt-xtquant-knowledge-base-v1.0)  

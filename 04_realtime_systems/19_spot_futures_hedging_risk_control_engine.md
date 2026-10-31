@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./19_spot_futures_hedging_risk_control_engine_zh.md) ]**
-
 # Dual-Track Spot-Futures Hedging Decision Risk-Control Closed Loop and Full-Coverage Minute-Level Volume Benchmark System (Sanitized Version)
 
 > **Author/Architect**: QuantDev / Quantitative Risk Architecture Team  

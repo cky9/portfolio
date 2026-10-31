@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
-
 # 👗 Fashion AI Studio — Personalized Apparel Design & AI Virtual Try-On Platform
 
 > **Design inspiration & alignment**: A faithful replication and elevation of the "Sneaker Personalization & AI Virtual Try-On Platform" architecture and interaction philosophy, rebuilt as an end-to-end couture design and virtual try-on system for apparel.
@@ -22,14 +20,14 @@
 
 ### Option 1: One-Click Launch on macOS (Recommended)
 Double-click directly in Finder:
-- `/Users/ck/Desktop/小工具/启动服装AI试穿系统.command`
-- Or enter the directory and double-click `clothing_tryon_system/启动服装AI试穿系统.command`
+- `/Users/ck/Desktop/Tools/Launch Fashion AI Try-On System.command`
+- Or enter the directory and double-click `clothing_tryon_system/Launch Fashion AI Try-On System.command`
 
 The system automatically starts the background service and opens Safari / Chrome to `http://127.0.0.1:8765`.
 
 ### Option 2: Launch from the Terminal
 ```bash
-cd /Users/ck/Desktop/小工具/clothing_tryon_system
+cd /Users/ck/Desktop/Tools/clothing_tryon_system
 PYTHONIOENCODING=utf-8 /usr/bin/python3 server.py 8765
 ```
 Then visit in your browser: `http://127.0.0.1:8765`
@@ -44,7 +42,7 @@ Then visit in your browser: `http://127.0.0.1:8765`
 ```text
 clothing_tryon_system/
 ├── index.html                 # Main system interaction view
-├── 启动服装AI试穿系统.command    # macOS one-click launch executable script
+├── Launch Fashion AI Try-On System.command    # macOS one-click launch executable script
 ├── server.py                  # Lightweight self-contained backend service (port 8765)
 ├── css/
 │   └── style.css              # Premium dark-tech and fashion visual styling

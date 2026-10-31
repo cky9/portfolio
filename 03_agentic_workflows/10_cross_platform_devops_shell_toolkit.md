@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./10_cross_platform_devops_shell_toolkit_zh.md) ]**
-
 # Cross-Platform Environment Tuning and Automated Operations Shell Script Toolkit (Sanitized Version)
 
 > **Author / Operations Architect**: DevOps & Systems Engineering Team  

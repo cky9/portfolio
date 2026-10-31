@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./15_stem_knowledge_graph_dag_tutoring_system_zh.md) ]**
-
 # STEM K-12 Science Knowledge Graph DAG Traceability and Number-Form Integration Intelligent Diagnostic Tutoring System (Sanitized Version)
 
 > **Author/Architect**: AI Full-Stack / EdTech Engineering Team  

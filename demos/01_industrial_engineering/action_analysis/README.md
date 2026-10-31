@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
-
 # 🎥 Zero-Budget Worker Time & Motion Takt Analysis Tool (IE Motion Study)
 
 > **Business value**: Traditional time standards and IE motion analysis in physical manufacturing require purchasing expensive motion-capture equipment or spending massive manual effort with stopwatches. This project needs only a $15 phone stand to record video, runs a vision-based skeletal tracking algorithm on pure CPU, and automatically extracts worker assembly takt and calculates standard time (SMV).

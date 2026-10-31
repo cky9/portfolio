@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./09_mac_proxy_relay_anti_scraping_toolkit_zh.md) ]**
-
 # MAC Proxy Relay and Automated Anti-Scraping Toolkit (Sanitized Version)
 
 > **Author/Network Architect**: DevOps & Security Engineering Team  
@@ -13,20 +11,20 @@ In financial data scraping and automated intelligence collection scenarios, netw
 
 ```mermaid
 graph TD
-    subgraph 1. 网络代理与抓取层 (MAC Proxy Layer)
-        Client[数据抓取客户端 / OpenClaw] --> Proxy[MAC 代理 & 动态 IP 轮换中继]
-        Proxy -->|请求头伪装 & 限流避让| Target[外部金融情报源 / 问财选股]
+    subgraph 1. Network Proxy and Scraping Layer (MAC Proxy Layer)
+        Client[Data Scraping Client / OpenClaw] --> Proxy[MAC Proxy & Dynamic IP Rotation Relay]
+        Proxy -->|Request Header Spoofing & Rate-Limit Evasion| Target[External Financial Intelligence Source / WenCai Stock Picker]
     end
 
-    subgraph 2. 文本清洗与翻译层 (\fanyi721 Pipeline)
-        Target --> RawData[原始情报 / 多语言数据]
-        RawData --> Fanyi[\fanyi721 自动化清洗与多语种翻译引擎]
-        Fanyi --> Cleaned[标准化中文文本 / Markdown]
+    subgraph 2. Text Cleansing and Translation Layer (\fanyi721 Pipeline)
+        Target --> RawData[Raw Intelligence / Multilingual Data]
+        RawData --> Fanyi[\fanyi721 Automated Cleansing and Multilingual Translation Engine]
+        Fanyi --> Cleaned[Standardized Chinese Text / Markdown]
     end
 
-    subgraph 3. 持久化落盘层 (Archiving Layer)
-        Cleaned --> Saver[旧数据切片与增量落盘引擎]
-        Saver --> Disk[(MySQL / 本地文件历史归档)]
+    subgraph 3. Persistence and Archiving Layer (Archiving Layer)
+        Cleaned --> Saver[Legacy Data Slicing and Incremental Archiving Engine]
+        Saver --> Disk[(MySQL / Local File Historical Archive)]
     end
 ```
 
@@ -51,13 +49,13 @@ graph TD
 
 ```bash
 #!/usr/bin/env bash
-# 脱敏示例：MAC 代理与 \fanyi721 快速初始化与状态检查
+# Sanitized example: MAC proxy and \fanyi721 quick initialization and status check
 
-echo "🌐 正在配置 MAC 代理中继网络..."
+echo "🌐 Configuring MAC proxy relay network..."
 export HTTP_PROXY="http://127.0.0.1:7890"
 export HTTPS_PROXY="http://127.0.0.1:7890"
 
-echo "✅ 代理链路激活成功，启动 \fanyi721 数据清洗管道..."
+echo "✅ Proxy link activated successfully, starting \fanyi721 data cleansing pipeline..."
 python3 -m fanyi721_runner --input ./raw_data --output ./clean_data --archive-db
 ```
 

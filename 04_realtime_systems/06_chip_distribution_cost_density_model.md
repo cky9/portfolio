@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./06_chip_distribution_cost_density_model_zh.md) ]**
-
 # Chip Distribution and Cost-Peak Density Quantitative Model (Sanitized Version)
 
 > **Author/Quantitative Architect**: Quantitative Trading & Factor Engineering Team

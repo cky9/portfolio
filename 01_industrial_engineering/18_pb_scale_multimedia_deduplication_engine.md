@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./18_pb_scale_multimedia_deduplication_engine_zh.md) ]**
-
 # PB-Scale Private Multi-Source Multimedia Asset Intelligent Governance and Feature De-duplication Platform (Sanitized Version)
 
 > **Author/Architect**: AI Full-Stack / Data Infrastructure Team  

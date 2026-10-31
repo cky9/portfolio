@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./07_chan_theory_fractal_topological_factors_zh.md) ]**
-
 # Chan Theory Bi/Segment and Pivot Multi-Dimensional Quantitative Factor Model (Sanitized Version)
 
 > **Author / Quantitative Algorithm Engineer**: Quantitative Strategy & Algorithmic Research Team

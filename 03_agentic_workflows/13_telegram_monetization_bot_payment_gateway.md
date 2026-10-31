@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./13_telegram_monetization_bot_payment_gateway_zh.md) ]**
-
 # High-Concurrency Instant Messaging Service and Automated Membership Delivery Platform Architecture (Redacted Version)
 
 > **Author/Architect**: QuantDev / AI Full-Stack Team  

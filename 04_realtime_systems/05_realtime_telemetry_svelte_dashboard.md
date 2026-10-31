@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./05_realtime_telemetry_svelte_dashboard_zh.md) ]**
-
 # Panoramic Situational Awareness & Responsive Frontend Monitoring Dashboard (Redacted Version)
 
 > **Author/Frontend Architect**: Frontend & UI/UX Team  
@@ -22,19 +20,19 @@ In modern data monitoring and situational awareness scenarios, traditional tabul
 
 ```mermaid
 graph TD
-    subgraph 数据层 (Data & Reactive Stores)
-        WS[WebSocket / SSE 实时数据流] --> Stores[Svelte Stores / Writable]
-        REST[RESTful API 轮询] --> Stores
+    subgraph Data Layer (Data & Reactive Stores)
+        WS[WebSocket / SSE Real-time Data Stream] --> Stores[Svelte Stores / Writable]
+        REST[RESTful API Polling] --> Stores
     end
 
-    subgraph 组件化呈现层 (Component Architecture)
-        Stores --> AlertComp[高危告警卡片]
-        Stores --> GaugeComp[态势感知仪表盘]
-        Stores --> ChartComp[动能趋势图表组件]
+    subgraph Component Presentation Layer (Component Architecture)
+        Stores --> AlertComp[High-Risk Alert Card]
+        Stores --> GaugeComp[Situational Awareness Gauge]
+        Stores --> ChartComp[Momentum Trend Chart Component]
     end
 
-    subgraph 渲染与布局 (Tailwind Responsive Layout)
-        AlertComp --> Board[全景态势大屏 主界面]
+    subgraph Rendering & Layout (Tailwind Responsive Layout)
+        AlertComp --> Board[Panoramic Situational Awareness Dashboard Main Interface]
         GaugeComp --> Board
         ChartComp --> Board
     end
@@ -48,11 +46,11 @@ graph TD
 By forgoing bloated framework bundles and adopting Svelte's component-based development, the build output is exceptionally lean, improving First Contentful Paint (FCP) by over 70%.
 
 ```svelte
-<!-- 示例：脱敏态势感知组件模板 -->
+<!-- Example: Redacted Situational Awareness Component Template -->
 <script>
-  export let title = "大盘态势得分";
+  export let title = "Dashboard Situational Score";
   export let score = 0;
-  export let status = "震荡筑底";
+  export let status = "Oscillating Bottoming";
 </script>
 
 <div class="p-4 rounded-xl bg-slate-900/80 backdrop-blur border border-slate-800 shadow-2xl">

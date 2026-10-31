@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./01_three_tier_quant_trading_architecture_zh.md) ]**
-
 # Y3TRADE Quantitative Trading and Three-Tier Data Architecture System Design (Redacted Version)
 
 > **Author/Architect**: QuantDev / AI Full-Stack Team  
@@ -75,7 +73,7 @@ $$ \text{UP} = f(\text{Price}, \text{MA34}, \text{Volume}, \text{Volatility}) $$
 - **Cycle Division of Labor**:
   - `1d` (Daily): Determines position nature (core position / satellite position) and trend buy/sell points.
   - `1h` (Hourly): Swing bottom reversal confirmation and resistance level assessment.
-  - `5m / 1m` (Minute): T-trading pulse timing. Sell-side high抛 depends on **1m** pulse; automatic re-entry closing depends on **5m** lower bound.
+  - `5m / 1m` (Minute): T-trading pulse timing. Sell-side high-selling depends on **1m** pulse; automatic re-entry closing depends on **5m** lower bound.
 - **Resonance State Calculation**:
   Multi-cycle UP signals and fractals are weight-scored (`Strong Bull` / `Trend-Following Pullback` / `Lean Bull` / `Strong Pullback` / `Lean Bear` / `Strong Bear`).
   *When an instrument is in [Strong Bear / Lean Bear], the system red line prohibits any positive-T buy-first behavior, allowing only reverse-T high sells.*

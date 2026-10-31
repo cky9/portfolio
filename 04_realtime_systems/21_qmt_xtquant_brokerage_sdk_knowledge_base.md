@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./21_qmt_xtquant_brokerage_sdk_knowledge_base_zh.md) ]**
-
 # QMT / XtQuant Brokerage-Grade Quantitative Trading SDK Knowledge Engineering and Developer Middle Platform (Sanitized Version)
 
 > **Direct Link to Open-Source Repository**: 🔗 [qmt-xtquant-knowledge-base-v1.0 (Gitee Open-Source Project)](https://gitee.com/ckyan3/qmt-xtquant-knowledge-base-v1.0)  
@@ -15,7 +13,7 @@ When developing strategies and running live trading on the brokerage-official na
 1. **Fragmented official documentation**: Documentation is scattered across PDFs, community forums, and historical version changelogs; parameter types and enum codes (e.g., buy/sell direction `xtconstant.STOCK_BUY=23`) lack a unified, rapidly searchable specification;
 2. **Async traps in the underlying C++ bindings**: XtQuant wraps a low-level C++ dynamic link library in Python; main-thread blocking, cross-platform memory-mapping conflicts, and missed orders from callback event listeners can easily cause live-trading capital incidents;
 3. **Frequent hallucinations in AI large-model coding**: General-purpose LLMs (such as Claude, GPT-4) lack precise context for the latest XunTou XtQuant Python API signatures, and directly generated code often contains fabricated method names and incorrect argument formats;
-4. **Lack of out-of-the-box strategy architecture**: Beginners lack a base strategy framework (BaseStrategy) with full lifecycle management, along with scaffolding for disconnect self-healing and risk-control protection.
+4. **Lack of an out-of-the-box strategy architecture**: Beginners lack a base strategy framework (BaseStrategy) with full lifecycle management, along with scaffolding for disconnect self-healing and risk-control protection.
 
 To this end, this project has performed **industrial-grade panoramic knowledge organization and architectural refactoring** of QMT / XtQuant, building it into a complete knowledge engineering middle platform that is both suitable for quick reference by human developers and better adapted to AI Agent semantic retrieval (RAG-Ready).
 
@@ -25,23 +23,23 @@ To this end, this project has performed **industrial-grade panoramic knowledge o
 
 ```mermaid
 graph TD
-    A[QMT / XtQuant 券商底层内核] --> B[核心接口抽象层]
-    B --> C[xtdata 高频行情数据引擎]
-    B --> D[xttrader 交易与资金状态机]
+    A[QMT / XtQuant Brokerage Underlying Kernel] --> B[Core Interface Abstraction Layer]
+    B --> C[xtdata High-Frequency Market Data Engine]
+    B --> D[xttrader Trading and Capital State Machine]
     
-    C --> E[Level-2 逐笔/Tick 数据流获取]
-    C --> F[历史多周期 K 线本地缓存落盘]
-    C --> G[异构代码转换: 000001.SZ / 600000.SH]
+    C --> E[Level-2 Tick-by-Tick / Tick Data Stream Acquisition]
+    C --> F[Historical Multi-Period K-Line Local Cache Persistence]
+    C --> G[Heterogeneous Symbol Conversion: 000001.SZ / 600000.SH]
     
-    D --> H[多账户资金/持仓幂等查询]
-    D --> I[全生命周期订单回调调度]
-    D --> J[防穿透与滑点熔断拦截器]
+    D --> H[Multi-Account Capital / Position Idempotent Query]
+    D --> I[Full Lifecycle Order Callback Scheduling]
+    D --> J[Breach-Prevention and Slippage Circuit-Breaker Interceptor]
     
-    K[开发者与 AI 赋能中台] --> L[AI快速参考手册: RAG 结构化上下文]
-    K --> M[API 快速查询表: 核心参数与枚举]
-    K --> N[策略模板库: BaseStrategy 状态机脚手架]
+    K[Developer and AI Empowerment Middle Platform] --> L[AI Quick Reference Manual: RAG Structured Context]
+    K --> M[API Quick Reference Table: Core Parameters and Enums]
+    K --> N[Strategy Template Library: BaseStrategy State Machine Scaffolding]
     
-    L --> O[接入 Claude Code / 本地 Agent 0 幻觉自动编写策略]
+    L --> O[Integrate Claude Code / Local Agent for Zero-Hallucination Automatic Strategy Writing]
 ```
 
 ---
@@ -63,8 +61,8 @@ graph TD
 * **Physical breach-prevention safety specification**: Standardizes stock trading buy/sell enums and limit/market order types, completely eliminating manual argument-passing errors.
 
 ### 3. RAG-Ready: Structured Knowledge Design Optimized for AI Assistants
-* **AI Quick Reference Manual (`AI快速参考手册.md`)**: A highly compact Markdown structure designed specifically for injection into LLM context via prompts or RAG vector retrieval, completely eradicating AI API hallucinations when writing QMT code;
-* **API Quick Reference Table (`API快速查询表.md`)**: A collection of input parameter formats, return object schemas, and typical invocation snippets for core trading and market data methods.
+* **AI Quick Reference Manual (`AI Quick Reference Manual.md`)**: A highly compact Markdown structure designed specifically for injection into LLM context via prompts or RAG vector retrieval, completely eradicating AI API hallucinations when writing QMT code;
+* **API Quick Reference Table (`API Quick Reference Table.md`)**: A collection of input parameter formats, return object schemas, and typical invocation snippets for core trading and market data methods.
 
 ### 4. Production-Grade Strategy Scaffolding and General Utility Library
 * **`BaseStrategy` base strategy class**: Built-in event-driven loop, scheduled tasks (pre-market preparation, intraday monitoring, post-close review), exception capture, and state archiving;
@@ -77,12 +75,12 @@ graph TD
 This project is fully open-sourced on Gitee:
 * 🔗 **Repository URL**: [https://gitee.com/ckyan3/qmt-xtquant-knowledge-base-v1.0](https://gitee.com/ckyan3/qmt-xtquant-knowledge-base-v1.0)
 * 📁 **Repository Directory Structure**:
-  * `1.核心模块/`: xtdata data module, xttrader trading module, data cleaning and risk control engine;
-  * `2.示例代码/`: Basic market data retrieval, complete quantitative strategies, advanced high-frequency concurrency optimization;
-  * `3.配置文件/`: System environment and account templates;
-  * `4.工具函数/`: Configuration management, secure logging, general utility functions;
-  * `5.策略模板/`: Standard strategy templates such as dual moving average, Bollinger Bands, and RSI;
-  * `6.文档说明/`: Installation and configuration manual, official API interface details, core concepts and common pitfalls FAQ.
+  * `1.Core Modules/`: xtdata data module, xttrader trading module, data cleaning and risk control engine;
+  * `2.Example Code/`: Basic market data retrieval, complete quantitative strategies, advanced high-frequency concurrency optimization;
+  * `3.Configuration Files/`: System environment and account templates;
+  * `4.Utility Functions/`: Configuration management, secure logging, general utility functions;
+  * `5.Strategy Templates/`: Standard strategy templates such as dual moving average, Bollinger Bands, and RSI;
+  * `6.Documentation/`: Installation and configuration manual, official API interface details, core concepts and common pitfalls FAQ.
 
 ---
 

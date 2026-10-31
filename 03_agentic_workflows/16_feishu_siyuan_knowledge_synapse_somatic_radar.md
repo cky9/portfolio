@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./16_feishu_siyuan_knowledge_synapse_somatic_radar_zh.md) ]**
-
 # Feishu × SiYuan Personal Inspiration Echo Hub and Autonomic Nervous System Somatic Rhythm Sensing System (Redacted Version)
 
 > **Author/Architect**: AI Full-Stack / Personal Knowledge Engineering Team  

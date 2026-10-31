@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./04_financial_daemon_web_console_architecture_zh.md) ]**
-
 # Financial Data Daemon and Web Visualization Console Architecture (Redacted Version)
 
 > **Author/Architect**: Full-Stack Finance Architecture / AI System Team  
@@ -13,22 +11,22 @@ In financial quantitative and intelligence analysis systems, the system needs to
 
 ```mermaid
 graph TD
-    subgraph 1. 采集与守护进程 (Mac Finance Daemon)
-        DB_Mon[数据库健康与行情监控] --> Engine[多线程调度引擎]
-        News_Mon[全球新闻与公告抓取] --> Engine
-        Macro_Mon[宏观情报与避险因子] --> Engine
+    subgraph 1. Collection and Daemon Process (Mac Finance Daemon)
+        DB_Mon[Database Health and Market Monitoring] --> Engine[Multithreaded Scheduling Engine]
+        News_Mon[Global News and Announcement Scraping] --> Engine
+        Macro_Mon[Macro Intelligence and Safe-Haven Factors] --> Engine
     end
 
-    subgraph 2. 数据处理与简报生成
-        Engine --> Transformer[情报结构化清洗与分类]
-        Transformer --> Gen[简报自动生成器]
-        Gen --> Brief1[新闻每日简报 .md]
-        Gen --> Brief2[国际宏观情报简报 .md]
+    subgraph 2. Data Processing and Briefing Generation
+        Engine --> Transformer[Intelligence Structuring, Cleansing, and Classification]
+        Transformer --> Gen[Automated Briefing Generator]
+        Gen --> Brief1[Daily News Briefing .md]
+        Gen --> Brief2[International Macro Intelligence Briefing .md]
     end
 
-    subgraph 3. Web 交互与控制台 (Web Console)
-        Web[Web 控制台 (Flask/FastAPI/REST)] -->|兼容补丁与API| Engine
-        User[用户 / 运维终端] <-->|可视化看板 & 手动触发| Web
+    subgraph 3. Web Interaction and Console (Web Console)
+        Web[Web Console (Flask/FastAPI/REST)] -->|Compatibility Patch and API| Engine
+        User[User / Operations Terminal] <-->|Visualization Dashboard & Manual Trigger| Web
     end
 ```
 
@@ -42,7 +40,7 @@ graph TD
 - **Automated Briefing Rendering**: Cleanses news and intelligence data on a daily schedule, automatically generating incremental news briefings and international macro briefings in Markdown format.
 
 ```python
-# 示例：脱敏多线程守护进程核心逻辑
+# Example: Redacted multithreaded daemon core logic
 import threading
 import time
 
@@ -62,10 +60,10 @@ class FinanceDaemon:
     def _monitor_news_stream(self):
         while self.running:
             try:
-                # 抓取并解析最新情报
+                # Scrape and parse the latest intelligence
                 fetch_and_render_briefs()
             except Exception as e:
-                log_error(f"[Daemon Error] 新闻监控发生异常: {e}")
+                log_error(f"[Daemon Error] Exception occurred in news monitoring: {e}")
             time.sleep(self.interval)
 ```
 

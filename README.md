@@ -1,6 +1,5 @@
 # 🚀 Agile Digitalization & Full-Stack Edge Systems Portfolio
 
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./README_ZH.md) ]**
 >
 > *"Bridging physical shop-floor realities with zero-overhead agile engineering — Re-architecting legacy workflows via Industrial Engineering (IE), Edge AI, and Mission-Critical Real-time State Machines."*
 >
@@ -67,7 +66,7 @@
 *   **Launch Command**:
     ```bash
     cd demos/01_industrial_engineering/clothing_tryon_system && python server.py 8765
-    # Or double-click the macOS launcher: 启动服装AI试穿系统.command
+    # Or double-click the macOS launcher: start_virtual_tryon.command
     ```
 
 ### 6. Local SQLite Reverse-Engineering & PB-Scale Asset Deduplication `[Runnable Demo]`

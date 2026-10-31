@@ -1,5 +1,3 @@
-> **[ 🌐 English Version | 🇨🇳 [中文文档 (Chinese Version)](./11_quant_devops_tick_resolver_utilities_zh.md) ]**
-
 # Y3TRADE Quantitative Automated Operations & Utility Toolkit Collection (Sanitized Edition)
 
 > **Author/Quant Engineering Team**: QuantDev & Automated Trading Ops Team  
@@ -15,20 +13,20 @@ This project has sanitized, organized, and integrated the **four practical autom
 
 ```mermaid
 graph TD
-    subgraph 1. 交易客户端自愈与监控
-        PTrade_Mon[PTrade 自动化监控与自愈脚手架] -->|掉线检测 & 界面自动重连| Client[(PTrade 交易终端)]
+    subgraph 1. Trading Client Self-Healing and Monitoring
+        PTrade_Mon[PTrade Automated Monitoring and Self-Healing Scaffold] -->|Disconnection Detection & UI Auto-Reconnect| Client[(PTrade Trading Terminal)]
     end
 
-    subgraph 2. 数据查询与 SQL 安全桥接
-        SQL_Runner[安全 SQL 执行脚本 db_query_safe] -->|文件化 SQL 参数注入防护| MySQL[(MySQL 历史数据库)]
+    subgraph 2. Data Query and SQL Secure Bridge
+        SQL_Runner[Secure SQL Execution Script db_query_safe] -->|File-Based SQL Parameter Injection Protection| MySQL[(MySQL Historical Database)]
     end
 
-    subgraph 3. 动态盯盘与物理风控警报
-        Watchdog[动态盯盘哨兵 & 策略信号] -->|静默写入| Alarm[物理系统闹钟 & 三色声光警报]
+    subgraph 3. Dynamic Watchdog and Physical Risk Control Alarm
+        Watchdog[Dynamic Watchdog Sentinel & Strategy Signals] -->|Silent Write| Alarm[Physical System Alarm & Tri-Color Audio-Visual Alert]
     end
 
-    subgraph 4. 全市场行情映射
-        Resolver[Tick 权威代码解析器] -->|Redis tick:latest 映射| Redis[(Redis 内存库)]
+    subgraph 4. Full-Market Quote Mapping
+        Resolver[Tick Authoritative Code Resolver] -->|Redis tick:latest Mapping| Redis[(Redis In-Memory Store)]
     end
 ```
 
@@ -45,13 +43,13 @@ graph TD
 - **Automated Result Parsing**: Automatically converts SQL result sets into Pandas DataFrames or JSON structures for consumption by upper-layer strategies.
 
 ```python
-# 脱敏示意：安全 SQL 执行脚本调用
+# Sanitized illustration: Secure SQL execution script invocation
 import subprocess
 import json
 
 def run_safe_sql(sql_file_path):
     """
-    通过安全的脚本桥接器执行文件化 SQL
+    Execute file-based SQL through the secure script bridge
     """
     cmd = ["python3", "scripts/db_query_safe.py", "-f", sql_file_path]
     res = subprocess.run(cmd, capture_output=True, text=True, check=True)
