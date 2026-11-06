@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Y3 服装GSD快速工序拆解·智能报价·产线SOT与Layout智造系统</title>
+  <title>Y3 Apparel GSD Engine · Standard Minute Value (SMV) · Line Balancing & Smart Costing Console</title>
   <style>
     :root {
       --primary: #2563eb;
@@ -783,44 +783,70 @@
     <div class="brand-group">
       <div class="brand-logo">GSD 4.0</div>
       <div class="brand-title">
-        <h1>Y3 服装GSD工序清单 · SOT标准工时 · 智能快速报价系统</h1>
-        <p>棒球服 / 飞行员夹克 (Varsity Bomber Jacket) 专案排产与精益产线编排引擎</p>
+        <h1>Y3 Garment GSD Engine · Standard Minute Value (SMV) · Smart Costing & Line Balancing System</h1>
+        <p>Varsity Bomber Jacket Industrial Engineering (IE) Production & Costing Console</p>
       </div>
     </div>
     <div class="header-badges">
-      <div class="badge-pill">GSD引擎：<strong>标准服装缝纫数据 (v2026)</strong></div>
-      <div class="badge-pill">基准节拍效率：<strong>85%</strong></div>
+      <div class="badge-pill">GSD Engine: <strong>Standard Sewing Data (v2026)</strong></div>
+      <div class="badge-pill">Target Pitch Efficiency: <strong>85%</strong></div>
       <button class="btn btn-primary btn-sm" onclick="exportFullSOTExcel()">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-        导出SOT工序表 (CSV)
+        Export SOT Process Sheet (CSV)
       </button>
       <button class="btn btn-outline btn-sm" onclick="window.print()">
         <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
-        打印 / 导出PDF
+        Print / Export PDF
       </button>
     </div>
   </header>
 
+  <!-- 全局模式切换高亮通栏 (超强视觉曝光，双模式一键sec切) -->
+  <div class="no-print" style="background: linear-gradient(90deg, #0f172a 0%, #1e293b 100%); border-bottom: 3px solid #f97316; padding: 12px 28px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 16px rgba(0,0,0,0.25);">
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span style="font-size: 20px;">🔥</span>
+      <div>
+        <div style="color: #f8fafc; font-size: 14px; font-weight: 800;">
+          Production Mode & Quality Tier Switcher:
+          <span style="color: #fb923c; font-weight: 700; margin-left: 6px;" id="global-mode-tag">[ Export Retail Spec ]</span>
+        </div>
+        <div style="color: #94a3b8; font-size: 12px;" id="global-mode-desc">
+          Current Configuration: 380g Wool-Blend Shell + PU Leather Sleeves + 80g Quilted Lining + 68k-Stitch Embroidery + 37 Operations (Tier-1 Retail Quality)
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <button id="btn-top-shaxi" onclick="switchProductionMode('shaxi')" style="cursor:pointer; border:2px solid #f97316; background:#f97316; color:white; padding:9px 18px; border-radius:8px; font-weight:800; font-size:13px; display:flex; align-items:center; gap:8px; box-shadow: 0 2px 10px rgba(249,115,22,0.4); transition:all 0.2s;">
+        <span>⚡ Switch to: Fast-Fashion E-Commerce</span>
+        <span style="background:rgba(0,0,0,0.3); padding:3px 7px; border-radius:4px; font-size:11px; font-weight:900;">Full Package $4.85 / pc</span>
+      </button>
+      <button id="btn-top-export" onclick="switchProductionMode('export')" style="cursor:pointer; border:2px solid #3b82f6; background:#3b82f6; color:white; padding:9px 18px; border-radius:8px; font-weight:800; font-size:13px; display:flex; align-items:center; gap:8px; box-shadow: 0 2px 10px rgba(59,130,246,0.4); transition:all 0.2s;">
+        <span>🏆 Premium Export Spec</span>
+        <span style="background:rgba(0,0,0,0.3); padding:3px 7px; border-radius:4px; font-size:11px; font-weight:900;">Full Package $32.40 / pc</span>
+      </button>
+    </div>
+  </div>
+
   <!-- 选项卡导航 -->
   <div class="tabs-bar no-print">
     <button class="tab-btn active" onclick="switchTab('tab-sot')">
-      <span>📋 GSD工序拆解与SOT表</span>
-      <span class="tab-count" id="badge-op-count">37工序</span>
+      <span>📋 GSD Operations & SOT Table</span>
+      <span class="tab-count" id="badge-op-count">37 Ops</span>
     </button>
     <button class="tab-btn" onclick="switchTab('tab-quote')">
-      <span>💰 在线客户快速报价器</span>
+      <span>💰 Dynamic Costing & Quotation</span>
       <span class="tab-count" id="badge-unit-price">¥148.50</span>
     </button>
     <button class="tab-btn" onclick="switchTab('tab-layout')">
-      <span>🏭 流水线平衡与车间Layout</span>
+      <span>🏭 Line Balancing & Floor Layout</span>
       <span class="tab-count" id="badge-balance">88.6%</span>
     </button>
     <button class="tab-btn" onclick="switchTab('tab-schedule')">
-      <span>📅 订单排单与交期计算</span>
-      <span class="tab-count" id="badge-delivery">交期8天</span>
+      <span>📅 Production Scheduling & Lead Time</span>
+      <span class="tab-count" id="badge-delivery">8 Days Lead</span>
     </button>
     <button class="tab-btn" onclick="switchTab('tab-client-view')">
-      <span>📄 客户外发报价单预览</span>
+      <span>📄 Client Quotation Preview</span>
     </button>
   </div>
 
@@ -832,15 +858,26 @@
         <img src="assets/jacket_spec.png" alt="棒球夹克设计稿" title="点击可查看大图" onclick="viewLargeImage()">
       </div>
       <div class="style-info">
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 12px; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size: 12px; font-weight: 800; color: #1e293b;">🎯 Quality Spec:</span>
+            <span style="font-size: 11px; color: #64748b;" id="mode-desc-text">Active: Premium Export Spec (Wool-Blend Shell + PU Sleeves + Quilted Lining + 68k Embroidery)</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="btn-mode-shaxi" class="btn btn-sm" style="background:#e2e8f0; color:#334155; border-radius:6px; font-weight:700;" onclick="switchProductionMode('shaxi')">⚡ Switch to: Fast-Fashion E-Commerce (Full Package $4.85 / pc)</button>
+            <button id="btn-mode-export" class="btn btn-sm" style="background:#2563eb; color:white; border-radius:6px; font-weight:700;" onclick="switchProductionMode('export')">🏆 Premium Export Spec (Full Package $32.40 / pc)</button>
+          </div>
+        </div>
+
         <div style="display: flex; align-items: center; justify-content: space-between;">
-          <h2>三色拼接重工刺绣棒球夹克 (Varsity Bomber)</h2>
-          <span class="tag tag-dark">款式编号: Y3-JK2026-01</span>
+          <h2 id="style-title-text">Heavyweight Embroidered Varsity Bomber Jacket</h2>
+          <span class="tag tag-dark" id="style-code-text">Style Code: Y3-JK2026-01</span>
         </div>
         <div class="style-tags" style="margin-top: 8px;">
-          <span class="tag tag-red">红袖款 PANTONE 1795C</span>
-          <span class="tag tag-blue">蓝袖款 PANTONE 7682C</span>
-          <span class="tag tag-green">绿袖款 PANTONE 350C</span>
-          <span class="tag">前门襟 #5粗齿拉链 + 飘带</span>
+          <span class="tag tag-red">Red Sleeve PANTONE 1795C</span>
+          <span class="tag tag-blue">Blue Sleeve PANTONE 7682C</span>
+          <span class="tag tag-green">Green Sleeve PANTONE 350C</span>
+          <span class="tag">Front #5 Metal Zipper + Flight Ribbon</span>
           <span class="tag">后背 6.8万针精密绣花</span>
           <span class="tag">3处特制徽章章仔</span>
           <span class="tag">双嵌线斜插袋</span>
@@ -857,24 +894,24 @@
       </div>
       <div class="kpi-cards">
         <div class="kpi-card">
-          <div class="kpi-label">整件总SAM工时</div>
+          <div class="kpi-label">整pcs总SAM工时</div>
           <div class="kpi-value blue" id="banner-total-sam">32.85 <small style="font-size:12px;font-weight:400">min</small></div>
           <div style="font-size: 11px; color: var(--gray-500); margin-top:2px;">缝纫部: <span id="banner-sew-sam">26.35</span> min</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-label">单件核算建议报价</div>
+          <div class="kpi-label">单pcs核算建议报价</div>
           <div class="kpi-value orange" id="banner-suggest-price">¥148.50</div>
-          <div style="font-size: 11px; color: var(--gray-500); margin-top:2px;">基于 1000件 MOQ</div>
+          <div style="font-size: 11px; color: var(--gray-500); margin-top:2px;">基于 1000pcs MOQ</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-label">标准产线人数</div>
-          <div class="kpi-value green">24 <small style="font-size:12px;font-weight:400">人/组</small></div>
+          <div class="kpi-label">标准产线Workers数</div>
+          <div class="kpi-value green">24 <small style="font-size:12px;font-weight:400">Workers/组</small></div>
           <div style="font-size: 11px; color: var(--gray-500); margin-top:2px;">精益 U 型柔性线</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">线平衡率 (Line Bal.)</div>
           <div class="kpi-value blue" id="banner-balance-rate">88.6%</div>
-          <div style="font-size: 11px; color: var(--gray-500); margin-top:2px;">节拍 Takt: 72 秒</div>
+          <div style="font-size: 11px; color: var(--gray-500); margin-top:2px;">节拍 Takt: 72 sec</div>
         </div>
       </div>
     </div>
@@ -885,7 +922,7 @@
         <div class="panel-header">
           <div class="panel-title">
             <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-            标准工序分析与工时测算总表 (SOT - Standard Operation Time Breakdown)
+            标准工序min析与工时测算总表 (SOT - Standard Operation Time Breakdown)
           </div>
           <div class="panel-actions">
             <button class="btn btn-outline btn-sm" onclick="resetToDefaultSOT()">重置初始SOT</button>
@@ -896,16 +933,16 @@
           <table class="data-table" id="sot-table">
             <thead>
               <tr>
-                <th style="width: 50px;">工序号</th>
-                <th style="width: 100px;">部件类别</th>
-                <th>工序名称与动作要领说明</th>
+                <th style="width: 50px;">Op ID</th>
+                <th style="width: 100px;">部pcs类别</th>
+                <th>Operation Description & GSD Motion Key说明</th>
                 <th style="width: 90px;">机种代码</th>
                 <th style="width: 80px;">设备名称</th>
-                <th style="width: 75px; text-align:right;">SAM (分)</th>
-                <th style="width: 70px; text-align:right;">工时 (秒)</th>
+                <th style="width: 75px; text-align:right;">SAM (min)</th>
+                <th style="width: 70px; text-align:right;">Time (Sec)</th>
                 <th style="width: 70px; text-align:center;">等级</th>
-                <th style="width: 85px; text-align:right;">日产能/人</th>
-                <th style="width: 80px; text-align:right;">单道工价</th>
+                <th style="width: 85px; text-align:right;">日产能/Workers</th>
+                <th style="width: 80px; text-align:right;">Piece Rate</th>
                 <th style="width: 80px; text-align:center;">操作</th>
               </tr>
             </thead>
@@ -917,7 +954,7 @@
                 <td colspan="5" style="text-align: right; padding: 12px 14px;">合计总缝制与后整工时：</td>
                 <td style="text-align: right; color: var(--primary);" id="total-sam-val">32.85</td>
                 <td style="text-align: right;" id="total-sec-val">1971s</td>
-                <td colspan="2" style="text-align: center; color: var(--gray-600);">人均小时产出: <span id="pph-val">1.82 件</span></td>
+                <td colspan="2" style="text-align: center; color: var(--gray-600);">Workers均小时产出: <span id="pph-val">1.82 pcs</span></td>
                 <td style="text-align: right; color: var(--accent);" id="total-piece-rate-val">¥35.12</td>
                 <td></td>
               </tr>
@@ -937,12 +974,24 @@
             <span style="font-size: 12px; color: var(--gray-500);">所有参数变动将即时反映到客户报价中</span>
           </div>
 
+          <!-- 报价器专属模式快速预设切换条 (在报价面板第一行极其显眼) -->
+          <div style="background: #fff7ed; border: 2px solid #fdba74; border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size: 13px; font-weight: 800; color: #9a3412;">⚡ 核心模式一键套用 (沙溪30元 vs 外贸200元)：</div>
+              <div style="font-size: 11px; color: #c2410c;">点击即可自动调换面料、绗棉胆、刺绣与车缝工序，即时刷新右侧大字报</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button id="btn-quote-shaxi" type="button" class="btn btn-sm" style="background:#f97316; color:white; border-radius:6px; font-weight:800; padding:7px 14px; cursor:pointer;" onclick="switchProductionMode('shaxi')">⚡ 沙溪快反电商款 (Full Package $4.85 / pc)</button>
+              <button id="btn-quote-export" type="button" class="btn btn-sm" style="background:#e2e8f0; color:#334155; border-radius:6px; font-weight:800; padding:7px 14px; cursor:pointer;" onclick="switchProductionMode('export')">🏆 Premium Export Spec (Full Package $32.40 / pc)</button>
+            </div>
+          </div>
+
           <h4 style="font-size: 13px; font-weight: 700; color: var(--primary); margin: 12px 0 8px 0; border-bottom: 1px solid var(--gray-200); padding-bottom: 4px;">
             1. 订单量与宏观费率
           </h4>
           <div class="form-group-grid">
             <div class="form-item">
-              <label>目标订单数量 (件) <span id="lbl-qty">1,000 件</span></label>
+              <label>目标订单数量 (pcs) <span id="lbl-qty">1,000 pcs</span></label>
               <input type="range" id="cfg-qty" min="100" max="10000" step="100" value="1000" oninput="calculateQuote()">
             </div>
             <div class="form-item">
@@ -950,11 +999,11 @@
               <input type="number" id="cfg-efficiency" value="82" min="50" max="120" oninput="calculateQuote()">
             </div>
             <div class="form-item">
-              <label>工人基础分钟工价 (元/SAM)</label>
+              <label>工Workers基础min钟工价 (元/SAM)</label>
               <input type="number" id="cfg-minute-cost" value="0.95" step="0.05" oninput="calculateQuote()">
             </div>
             <div class="form-item">
-              <label>目标综合毛利率 (%)</label>
+              <label>目标综合Target Margin (%)</label>
               <input type="number" id="cfg-margin" value="20" min="5" max="50" oninput="calculateQuote()">
             </div>
           </div>
@@ -964,7 +1013,7 @@
           </h4>
           <div class="form-group-grid">
             <div class="form-item">
-              <label>主身黑色复合斜纹 (米/件 × 元/米)</label>
+              <label>主身黑色复合斜纹 (米/pcs × 元/米)</label>
               <div style="display:flex; gap:6px;">
                 <input type="number" id="cfg-fab1-usage" value="1.25" step="0.05" placeholder="单耗米" style="width:50%" oninput="calculateQuote()">
                 <input type="number" id="cfg-fab1-price" value="34.00" step="1" placeholder="单价元" style="width:50%" oninput="calculateQuote()">
@@ -1026,15 +1075,15 @@
           </h4>
           <div class="form-group-grid">
             <div class="form-item">
-              <label>吊牌/主标/洗标/线/衬/配件袋</label>
+              <label>吊牌/主标/洗标/线/衬/配pcs袋</label>
               <input type="number" id="cfg-trims-misc" value="4.20" step="0.5" oninput="calculateQuote()">
             </div>
             <div class="form-item">
-              <label>独立PE袋/干燥剂/外箱分摊</label>
+              <label>独立PE袋/干燥剂/外箱min摊</label>
               <input type="number" id="cfg-pack-misc" value="2.20" step="0.2" oninput="calculateQuote()">
             </div>
             <div class="form-item">
-              <label>面料裁剪与裁床费 (元/件)</label>
+              <label>面料裁剪与裁床费 (元/pcs)</label>
               <input type="number" id="cfg-cut-fee" value="3.50" step="0.5" oninput="calculateQuote()">
             </div>
             <div class="form-item">
@@ -1052,7 +1101,7 @@
           <div class="quote-price-big">
             <span class="currency">¥</span>
             <span class="val" id="quote-final-price">148.50</span>
-            <div class="unit">单件出厂含税含利报价 (基于 <span id="sum-qty-lbl">1000</span> 件)</div>
+            <div class="unit">单pcs出厂含税含利报价 (基于 <span id="sum-qty-lbl">1000</span> pcs)</div>
           </div>
 
           <div class="cost-breakdown-list">
@@ -1095,26 +1144,26 @@
           </div>
 
           <div class="tier-box">
-            <div class="tier-title">阶梯起订量 (MOQ) 报价对比</div>
+            <div class="tier-title">阶梯MOQ (MOQ) 报价对比</div>
             <table class="tier-table">
               <tr>
-                <td>300 件 (小单试产)</td>
+                <td>300 pcs (小单试产)</td>
                 <td id="tier-300">¥162.80</td>
               </tr>
               <tr>
-                <td>500 件 (中等批量)</td>
+                <td>500 pcs (中等批量)</td>
                 <td id="tier-500">¥154.20</td>
               </tr>
               <tr style="background: rgba(37,99,235,0.25); border-radius: 4px;">
-                <td style="color:#93c5fd; padding-left:4px;">1,000 件 (基准批量)</td>
+                <td style="color:#93c5fd; padding-left:4px;">1,000 pcs (基准批量)</td>
                 <td style="color:#93c5fd;" id="tier-1000">¥148.50</td>
               </tr>
               <tr>
-                <td>3,000 件 (规模量产)</td>
+                <td>3,000 pcs (规模量产)</td>
                 <td id="tier-3000">¥141.20</td>
               </tr>
               <tr>
-                <td>5,000 件 (大货特惠)</td>
+                <td>5,000 pcs (大货特惠)</td>
                 <td id="tier-5000">¥136.50</td>
               </tr>
             </table>
@@ -1132,13 +1181,13 @@
       <div class="layout-view-controls">
         <div style="display:flex; align-items:center; gap:16px;">
           <div>
-            <label style="font-size:12px; font-weight:700; color:var(--gray-600);">产线总人数：</label>
+            <label style="font-size:12px; font-weight:700; color:var(--gray-600);">产线总Workers数：</label>
             <select id="line-workers-select" onchange="updateLineBalancing()" style="padding:4px 8px; border-radius:4px; border:1px solid #cbd5e1; font-weight:700;">
-              <option value="18">18 人精益单元线</option>
-              <option value="20">20 人标准单轨线</option>
-              <option value="24" selected>24 人精益 U 型柔性线 (推荐)</option>
-              <option value="28">28 人高速吊挂流水线</option>
-              <option value="32">32 人规模量产双列线</option>
+              <option value="18">18 Workers精益单元线</option>
+              <option value="20">20 Workers标准单轨线</option>
+              <option value="24" selected>24 Workers精益 U 型柔性线 (推荐)</option>
+              <option value="28">28 Workers高速吊挂流水线</option>
+              <option value="32">32 Workers规模量产双列线</option>
             </select>
           </div>
           <div>
@@ -1152,15 +1201,15 @@
         </div>
 
         <div style="display:flex; gap:16px; align-items:center;">
-          <div style="font-size:12px;">节拍时间 Takt: <strong style="color:var(--primary); font-size:14px;" id="val-takt-time">68 秒/件</strong></div>
+          <div style="font-size:12px;">节拍时间 Takt: <strong style="color:var(--primary); font-size:14px;" id="val-takt-time">68 sec/pcs</strong></div>
           <div style="font-size:12px;">理论平衡率: <strong style="color:var(--success); font-size:14px;" id="val-balance-rate">88.6%</strong></div>
-          <div style="font-size:12px;">日计划产出 (10H): <strong style="color:var(--accent); font-size:14px;" id="val-daily-capacity">440 件/天</strong></div>
+          <div style="font-size:12px;">日计划产出 (10H): <strong style="color:var(--accent); font-size:14px;" id="val-daily-capacity">440 pcs/天</strong></div>
         </div>
       </div>
 
       <div class="line-canvas-card">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-          <h4 style="font-size:14px; font-weight:700; color:var(--gray-800);">流水线工位分配与设备拓扑图 (Workstation Balancing Topology)</h4>
+          <h4 style="font-size:14px; font-weight:700; color:var(--gray-800);">流水线工位min配与设备拓扑图 (Workstation Balancing Topology)</h4>
           <div style="display:flex; gap:12px; font-size:11px;">
             <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; background:var(--primary); border-radius:2px;"></span> 正常工位</span>
             <span style="display:flex; align-items:center; gap:4px;"><span style="width:10px; height:10px; background:var(--danger); border-radius:2px;"></span> 瓶颈超载工位</span>
@@ -1187,11 +1236,11 @@
       </div>
     </div>
 
-    <!-- 选项卡 4: 订单排单与交期计算 -->
+    <!-- 选项卡 4: 订单排单与Lead Time: 计算 -->
     <div id="tab-schedule" class="tab-pane">
       <div class="panel">
         <div class="panel-header">
-          <div class="panel-title">订单交期倒排与产能爬坡甘特图 (Production Scheduling & Ramp-up)</div>
+          <div class="panel-title">订单Lead Time: 倒排与产能爬坡甘特图 (Production Scheduling & Ramp-up)</div>
           <div class="panel-actions">
             <span style="font-size: 12px; color: var(--gray-500);">采用 4日熟练度学习曲线 (Learning Curve)</span>
           </div>
@@ -1199,7 +1248,7 @@
         <div style="padding: 20px;">
           <div class="form-group-grid" style="margin-bottom: 24px;">
             <div class="form-item">
-              <label>订单总件数 (件)</label>
+              <label>订单总pcs数 (pcs)</label>
               <input type="number" id="sch-order-qty" value="1000" oninput="calculateSchedule()">
             </div>
             <div class="form-item">
@@ -1207,11 +1256,11 @@
               <input type="number" id="sch-work-hours" value="10" min="8" max="12" oninput="calculateSchedule()">
             </div>
             <div class="form-item">
-              <label>计划上线开工日期</label>
+              <label>Production Start Date</label>
               <input type="date" id="sch-start-date" onchange="calculateSchedule()">
             </div>
             <div class="form-item">
-              <label>产线人数编制</label>
+              <label>产线Workers数编制</label>
               <input type="number" id="sch-line-workers" value="24" oninput="calculateSchedule()">
             </div>
           </div>
@@ -1220,7 +1269,7 @@
           <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:16px; margin-bottom: 24px;">
             <div class="kpi-card">
               <div class="kpi-label">全速稳定日产能</div>
-              <div class="kpi-value green" id="sch-steady-capacity">440 件/天</div>
+              <div class="kpi-value green" id="sch-steady-capacity">440 pcs/天</div>
             </div>
             <div class="kpi-card">
               <div class="kpi-label">缝制纯车缝总天数</div>
@@ -1246,8 +1295,8 @@
                   <th>排产日期</th>
                   <th>生产阶段说明</th>
                   <th>效率爬坡率</th>
-                  <th>当日计划产出 (件)</th>
-                  <th>累计产出 (件)</th>
+                  <th>当日计划产出 (pcs)</th>
+                  <th>累计产出 (pcs)</th>
                   <th>订单完成率</th>
                   <th>生产进度甘特展示</th>
                 </tr>
@@ -1297,7 +1346,7 @@
               <tr style="background:#f8fafc;">
                 <th>费用项目</th>
                 <th>规格说明</th>
-                <th style="text-align:right;">单件金额 (RMB)</th>
+                <th style="text-align:right;">单pcs金额 (RMB)</th>
                 <th style="text-align:right;">美元折算 (USD)</th>
               </tr>
             </thead>
@@ -1310,7 +1359,7 @@
               </tr>
               <tr>
                 <td><strong>里料与罗纹</strong></td>
-                <td>210T涤塔夫绗薄棉内胆 + 领口/袖口/底摆定制双色条纹扁机套件</td>
+                <td>210T涤塔夫绗薄棉内胆 + 领口/袖口/底摆定制双色条纹扁机套pcs</td>
                 <td style="text-align:right;" id="cl-inner-cost">¥32.08</td>
                 <td style="text-align:right;" id="cl-inner-cost-usd">$4.46</td>
               </tr>
@@ -1321,8 +1370,8 @@
                 <td style="text-align:right;" id="cl-craft-cost-usd">$4.30</td>
               </tr>
               <tr>
-                <td><strong>辅料及包装配件</strong></td>
-                <td>#5金属拉链、挂件拉环、主标洗标尺码标、独立PE袋及出口外箱</td>
+                <td><strong>辅料及包装配pcs</strong></td>
+                <td>#5金属拉链、挂pcs拉环、主标洗标尺码标、独立PE袋及出口外箱</td>
                 <td style="text-align:right;" id="cl-trims-cost">¥13.60</td>
                 <td style="text-align:right;" id="cl-trims-cost-usd">$1.89</td>
               </tr>
@@ -1333,7 +1382,7 @@
                 <td style="text-align:right;" id="cl-cmt-cost-usd">$5.17</td>
               </tr>
               <tr style="background:#eff6ff; font-weight:800; font-size:15px;">
-                <td colspan="2" style="color:var(--primary-dark);">建议出厂单价 (基于 1,000件 MOQ，EXW工厂交货价)</td>
+                <td colspan="2" style="color:var(--primary-dark);">建议Unit Price (基于 1,000pcs MOQ，EXW工厂交货价)</td>
                 <td style="text-align:right; color:var(--primary-dark);" id="cl-total-rmb">¥148.50</td>
                 <td style="text-align:right; color:var(--primary-dark);" id="cl-total-usd">$20.63</td>
               </tr>
@@ -1342,26 +1391,26 @@
 
           <!-- 阶梯价格与商业条款 -->
           <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:16px; margin-bottom: 20px;">
-            <h4 style="font-size:13px; font-weight:700; color:#1e293b; margin-bottom:8px;">阶梯起订量报价 (Ladder Pricing)</h4>
+            <h4 style="font-size:13px; font-weight:700; color:#1e293b; margin-bottom:8px;">阶梯MOQ报价 (Ladder Pricing)</h4>
             <div style="display:grid; grid-template-columns: repeat(5, 1fr); gap:10px; text-align:center;">
               <div style="background:white; padding:8px; border-radius:6px; border:1px solid #e2e8f0;">
-                <div style="font-size:11px; color:#64748b;">300 件</div>
+                <div style="font-size:11px; color:#64748b;">300 pcs</div>
                 <div style="font-size:14px; font-weight:700; color:#0f172a;" id="cl-tier-300">¥162.80</div>
               </div>
               <div style="background:white; padding:8px; border-radius:6px; border:1px solid #e2e8f0;">
-                <div style="font-size:11px; color:#64748b;">500 件</div>
+                <div style="font-size:11px; color:#64748b;">500 pcs</div>
                 <div style="font-size:14px; font-weight:700; color:#0f172a;" id="cl-tier-500">¥154.20</div>
               </div>
               <div style="background:#eff6ff; padding:8px; border-radius:6px; border:1px solid #bfdbfe;">
-                <div style="font-size:11px; color:var(--primary);">1,000 件 (推荐)</div>
+                <div style="font-size:11px; color:var(--primary);">1,000 pcs (推荐)</div>
                 <div style="font-size:14px; font-weight:800; color:var(--primary);" id="cl-tier-1000">¥148.50</div>
               </div>
               <div style="background:white; padding:8px; border-radius:6px; border:1px solid #e2e8f0;">
-                <div style="font-size:11px; color:#64748b;">3,000 件</div>
+                <div style="font-size:11px; color:#64748b;">3,000 pcs</div>
                 <div style="font-size:14px; font-weight:700; color:#0f172a;" id="cl-tier-3000">¥141.20</div>
               </div>
               <div style="background:white; padding:8px; border-radius:6px; border:1px solid #e2e8f0;">
-                <div style="font-size:11px; color:#64748b;">5,000 件</div>
+                <div style="font-size:11px; color:#64748b;">5,000 pcs</div>
                 <div style="font-size:14px; font-weight:700; color:#0f172a;" id="cl-tier-5000">¥136.50</div>
               </div>
             </div>
@@ -1370,8 +1419,8 @@
           <!-- 商务条款 -->
           <div style="font-size:12px; color:#64748b; line-height: 1.6;">
             <p><strong>商务条款说明：</strong></p>
-            <p>1. 打样交期：产前样 (PP Sample) 确认后 7-10 工作日寄出。</p>
-            <p>2. 大货交期：面辅料到厂及定金到位后 18-22 工作日完成出货。</p>
+            <p>1. 打样Lead Time: ：产前样 (PP Sample) 确认后 7-10 工作日寄出。</p>
+            <p>2. 大货Lead Time: ：面辅料到厂及定金到位后 18-22 工作日完成出货。</p>
             <p>3. 付款方式：30% T/T 定金启动采购，70% 尾款验货合格出厂前结清。</p>
             <p>4. 汇率基准：按 1 USD = 7.20 RMB 核算，汇率浮动超过 ±3% 双方重新协商调整。</p>
           </div>
@@ -1382,61 +1431,178 @@
   </main>
 
   <script>
-    // 默认预置的这件 Bomber Jacket 的全部 37 道工序标准 GSD 数据
+        // Preset 37 standard GSD operations for Varsity Bomber Jacket (Tier-1 OEM Export Spec)
     const DEFAULT_OPERATIONS = [
-      // 部件 1: 前片准备
-      { id: 1, section: "前片准备", name: "前片粘合加固衬（挂面止口、袋唇位、拉链位）", machCode: "FS", machName: "粘合机/平烫", sam: 0.85, level: "C", pieceRate: 0.81 },
-      { id: 2, section: "前片准备", name: "检验前胸丝网印花品质与对中定位", machCode: "HM", machName: "手工检验", sam: 0.30, level: "C", pieceRate: 0.28 },
-      { id: 3, section: "前片准备", name: "车缝右胸 Owlcat 徽章标", machCode: "SN", machName: "单针平缝机", sam: 0.75, level: "B", pieceRate: 0.71 },
-      { id: 4, section: "前片准备", name: "车缝左胸异形盾牌刺绣徽章", machCode: "SN", machName: "单针平缝机", sam: 0.90, level: "B", pieceRate: 0.85 },
-      { id: 5, section: "前片准备", name: "折烫前身袋口双嵌线牙条", machCode: "IR", machName: "蒸汽熨斗", sam: 0.65, level: "C", pieceRate: 0.62 },
-      { id: 6, section: "前片准备", name: "开前插袋（定点车嵌条、车底袋布、划袋口翻进封三角）", machCode: "SN", machName: "单针平车/开袋机", sam: 2.10, level: "A", pieceRate: 2.15 },
-      { id: 7, section: "前片准备", name: "车袋布四周封口，前身袋口压0.1cm止口线", machCode: "SN", machName: "单针平缝机", sam: 1.10, level: "B", pieceRate: 1.05 },
-      { id: 8, section: "前片准备", name: "袋口两端套结打枣加固（共4处）", machCode: "BT", machName: "电脑套结机", sam: 0.40, level: "C", pieceRate: 0.38 },
+      // Section 1: Front Assembly
+      { id: 1, section: "Front Assembly", name: "Fuse interlining to front facing, pocket welt, and zipper placket", machCode: "FS", machName: "Fusing Machine / Press", sam: 0.85, level: "C", pieceRate: 0.81 },
+      { id: 2, section: "Front Assembly", name: "Inspect front chest screen print quality and alignment", machCode: "HM", machName: "Manual Inspection", sam: 0.30, level: "C", pieceRate: 0.28 },
+      { id: 3, section: "Front Assembly", name: "Sew right chest Owlcat embroidered badge patch", machCode: "SN", machName: "Single Needle Lockstitch", sam: 0.75, level: "B", pieceRate: 0.71 },
+      { id: 4, section: "Front Assembly", name: "Sew left chest custom shield embroidered patch", machCode: "SN", machName: "Single Needle Lockstitch", sam: 0.90, level: "B", pieceRate: 0.85 },
+      { id: 5, section: "Front Assembly", name: "Crease & press front welt pocket piping", machCode: "IR", machName: "Steam Iron / Station", sam: 0.65, level: "C", pieceRate: 0.62 },
+      { id: 6, section: "Front Assembly", name: "Construct double-welt slash pocket (position welt, attach pocket bag, cut slit, turn & tack)", machCode: "SN", machName: "Single Needle / Pocket Machine", sam: 2.10, level: "A", pieceRate: 2.15 },
+      { id: 7, section: "Front Assembly", name: "Close pocket bag perimeter & edge-stitch 0.1cm along pocket opening", machCode: "SN", machName: "Single Needle Lockstitch", sam: 1.10, level: "B", pieceRate: 1.05 },
+      { id: 8, section: "Front Assembly", name: "Bar tack pocket opening corners for reinforcement (4 tacks total)", machCode: "BT", machName: "Electronic Bar Tack Machine", sam: 0.40, level: "C", pieceRate: 0.38 },
 
-      // 部件 2: 后片准备
-      { id: 9, section: "后片准备", name: "后片外协 6.8万针大刺绣裁片品检验收、剪底纸浮线", machCode: "HM", machName: "手工质检", sam: 1.20, level: "B", pieceRate: 1.14 },
-      { id: 10, section: "后片准备", name: "后领窝贴粘衬加固条并车挂耳挂袢", machCode: "SN", machName: "单针平缝机", sam: 0.50, level: "C", pieceRate: 0.48 },
+      // Section 2: Back Assembly
+      { id: 9, section: "Back Assembly", name: "Inspect back panel 68k-stitch embroidery, trim backing paper & loose threads", machCode: "HM", machName: "Manual Inspection", sam: 1.20, level: "B", pieceRate: 1.14 },
+      { id: 10, section: "Back Assembly", name: "Apply stay tape to back neck and stitch locker loop hanger", machCode: "SN", machName: "Single Needle Lockstitch", sam: 0.50, level: "C", pieceRate: 0.48 },
 
-      // 部件 3: 袖子准备
-      { id: 11, section: "袖部准备", name: "右袖上臂车缝圆形臂章徽章", machCode: "SN", machName: "单针平缝机", sam: 0.80, level: "B", pieceRate: 0.76 },
-      { id: 12, section: "袖部准备", name: "双色条纹袖口罗纹接圈合拢", machCode: "4T", machName: "四线包缝机", sam: 0.60, level: "C", pieceRate: 0.57 },
-      { id: 13, section: "袖部准备", name: "对折袖口罗纹、预套入袖口假缝合拢固定", machCode: "4T", machName: "四线包缝机", sam: 0.85, level: "B", pieceRate: 0.81 },
+      // Section 3: Sleeve Assembly
+      { id: 11, section: "Sleeve Assembly", name: "Sew circular embroidered badge patch to right upper sleeve", machCode: "SN", machName: "Single Needle Lockstitch", sam: 0.80, level: "B", pieceRate: 0.76 },
+      { id: 12, section: "Sleeve Assembly", name: "Join 2-tone striped cuff ribbing into circle", machCode: "4T", machName: "4-Thread Overlock", sam: 0.60, level: "C", pieceRate: 0.57 },
+      { id: 13, section: "Sleeve Assembly", name: "Fold cuff ribbing, insert into sleeve opening, pre-baste to secure", machCode: "4T", machName: "4-Thread Overlock", sam: 0.85, level: "B", pieceRate: 0.81 },
 
-      // 部件 4: 领与下摆罗纹准备
-      { id: 14, section: "领摆准备", name: "领罗纹两端合角修斜口、定型", machCode: "SN", machName: "单针平缝机", sam: 0.60, level: "B", pieceRate: 0.57 },
-      { id: 15, section: "领摆准备", name: "下摆条纹罗纹两头拼缝做标记点、折烫中线", machCode: "IR", machName: "单针平车/烫台", sam: 0.55, level: "C", pieceRate: 0.52 },
+      // Section 4: Collar & Hem Ribbing
+      { id: 14, section: "Collar & Hem Ribbing", name: "Mitre and trim corners of collar ribbing, press shape", machCode: "SN", machName: "Single Needle Lockstitch", sam: 0.60, level: "B", pieceRate: 0.57 },
+      { id: 15, section: "Collar & Hem Ribbing", name: "Join ends of striped hem ribbing, notch balance points, press fold", machCode: "IR", machName: "Pressing Station / Lockstitch", sam: 0.55, level: "C", pieceRate: 0.52 },
 
-      // 部件 5: 里布准备
-      { id: 16, section: "里料准备", name: "里布前左胸开内挖袋并车内袋布", machCode: "SN", machName: "单针平缝机", sam: 1.40, level: "B", pieceRate: 1.33 },
-      { id: 17, section: "里料准备", name: "合里布前挂面与身身绗棉里布", machCode: "5T", machName: "五线包缝机", sam: 1.10, level: "B", pieceRate: 1.05 },
-      { id: 18, section: "里料准备", name: "合里布肩缝与后领贴", machCode: "5T", machName: "五线包缝机", sam: 0.70, level: "C", pieceRate: 0.67 },
-      { id: 19, section: "里料准备", name: "里布上袖、合里布侧缝及袖底（一侧袖底留20cm翻口）", machCode: "5T", machName: "五线包缝机", sam: 1.50, level: "B", pieceRate: 1.43 },
+      // Section 5: Lining Assembly
+      { id: 16, section: "Lining Assembly", name: "Construct interior welt breast pocket in left front lining", machCode: "SN", machName: "Single Needle Lockstitch", sam: 1.40, level: "B", pieceRate: 1.33 },
+      { id: 17, section: "Lining Assembly", name: "Attach front lining facing to quilted body lining", machCode: "5T", machName: "5-Thread Safety Stitch", sam: 1.10, level: "B", pieceRate: 1.05 },
+      { id: 18, section: "Lining Assembly", name: "Join lining shoulder seams and attach back neck facing", machCode: "5T", machName: "5-Thread Safety Stitch", sam: 0.70, level: "C", pieceRate: 0.67 },
+      { id: 19, section: "Lining Assembly", name: "Set lining sleeves, join side seams & inseams (leave 20cm turning gap on one sleeve)", machCode: "5T", machName: "5-Thread Safety Stitch", sam: 1.50, level: "B", pieceRate: 1.43 },
 
-      // 部件 6: 总装合体
-      { id: 20, section: "总装车缝", name: "面身合肩缝并压嵌条加固", machCode: "SN", machName: "单针平缝机", sam: 0.75, level: "B", pieceRate: 0.71 },
-      { id: 21, section: "总装车缝", name: "面身上袖（落肩拼袖合拢、对准袖山对位刀口）", machCode: "4T", machName: "四线包缝机", sam: 1.60, level: "A", pieceRate: 1.65 },
-      { id: 22, section: "总装车缝", name: "面身合侧缝及通缝袖底缝", machCode: "4T", machName: "四线包缝机", sam: 1.30, level: "B", pieceRate: 1.24 },
-      { id: 23, section: "总装车缝", name: "车后领主标、尺码标", machCode: "SN", machName: "单针平缝机", sam: 0.45, level: "C", pieceRate: 0.43 },
-      { id: 24, section: "总装车缝", name: "门襟排拉链、对位假缝固定左襟与右襟", machCode: "SN", machName: "单针平缝机", sam: 1.65, level: "A", pieceRate: 1.70 },
-      { id: 25, section: "总装车缝", name: "上领罗纹（面身领圈拼车间条领罗纹，均拉对位）", machCode: "SN", machName: "单针平缝机", sam: 1.25, level: "A", pieceRate: 1.30 },
-      { id: 26, section: "总装车缝", name: "上下摆罗纹（面身下摆拼底边罗纹并均匀拉伸对刀口）", machCode: "SN", machName: "单针平缝机", sam: 1.45, level: "A", pieceRate: 1.50 },
-      { id: 27, section: "总装车缝", name: "面身与里身复合套车（封门襟拉链止口、夹车领圈与下摆）", machCode: "SN", machName: "单针平缝机", sam: 2.80, level: "A", pieceRate: 3.00 },
-      { id: 28, section: "总装车缝", name: "从里布袖底翻口翻出整件衣服正面、顶出四个夹角", machCode: "HM", machName: "手工翻正", sam: 0.70, level: "B", pieceRate: 0.67 },
-      { id: 29, section: "总装车缝", name: "封里布翻口（单针平车压0.1cm止口封闭）", machCode: "SN", machName: "单针平缝机", sam: 0.50, level: "C", pieceRate: 0.48 },
-      { id: 30, section: "总装车缝", name: "门襟止口压0.6cm明线、领圈压明线定型", machCode: "SN", machName: "单针平缝机", sam: 1.80, level: "A", pieceRate: 1.85 },
-      { id: 31, section: "总装车缝", name: "安装拉链头金属开口环与红色刺绣飘带挂件", machCode: "HM", machName: "手工组装", sam: 0.40, level: "C", pieceRate: 0.38 },
+      // Section 6: Final Garment Assembly
+      { id: 20, section: "Final Assembly", name: "Join shell shoulder seams with reinforcement stay tape", machCode: "SN", machName: "Single Needle Lockstitch", sam: 0.75, level: "B", pieceRate: 0.71 },
+      { id: 21, section: "Final Assembly", name: "Set shell sleeves (drop-shoulder matching notches on sleeve cap)", machCode: "4T", machName: "4-Thread Overlock", sam: 1.60, level: "A", pieceRate: 1.65 },
+      { id: 22, section: "Final Assembly", name: "Close shell side seams and continuous sleeve inseams", machCode: "4T", machName: "4-Thread Overlock", sam: 1.30, level: "B", pieceRate: 1.24 },
+      { id: 23, section: "Final Assembly", name: "Attach center back neck main brand label and size tag", machCode: "SN", machName: "Single Needle Lockstitch", sam: 0.45, level: "C", pieceRate: 0.43 },
+      { id: 24, section: "Final Assembly", name: "Align and baste front zipper teeth to left and right front plackets", machCode: "SN", machName: "Single Needle Lockstitch", sam: 1.65, level: "A", pieceRate: 1.70 },
+      { id: 25, section: "Final Assembly", name: "Attach collar ribbing to shell neckline (stretch evenly to match notches)", machCode: "SN", machName: "Single Needle Lockstitch", sam: 1.25, level: "A", pieceRate: 1.30 },
+      { id: 26, section: "Final Assembly", name: "Attach bottom hem ribbing to shell body (evenly stretch to balance points)", machCode: "SN", machName: "Single Needle Lockstitch", sam: 1.45, level: "A", pieceRate: 1.50 },
+      { id: 27, section: "Final Assembly", name: "Bag-out shell with quilted lining (stitch front placket zip, sandwich collar & hem)", machCode: "SN", machName: "Single Needle Lockstitch", sam: 2.80, level: "A", pieceRate: 3.00 },
+      { id: 28, section: "Final Assembly", name: "Turn entire jacket right side out through sleeve gap, poke out four corners", machCode: "HM", machName: "Manual Turning", sam: 0.70, level: "B", pieceRate: 0.67 },
+      { id: 29, section: "Final Assembly", name: "Close sleeve lining turning gap with 0.1cm edge-stitch", machCode: "SN", machName: "Single Needle Lockstitch", sam: 0.50, level: "C", pieceRate: 0.48 },
+      { id: 30, section: "Final Assembly", name: "Topstitch front zipper placket (0.6cm margin) and neckband seam for shape retention", machCode: "SN", machName: "Single Needle Lockstitch", sam: 1.80, level: "A", pieceRate: 1.85 },
+      { id: 31, section: "Final Assembly", name: "Install metal split ring and red embroidered flight tag ribbon on zipper slider", machCode: "HM", machName: "Manual Assembly", sam: 0.40, level: "C", pieceRate: 0.38 },
 
-      // 部件 7: 后道整烫包装
-      { id: 32, section: "后道包装", name: "清理剪除整件衣服所有残留浮线及线头", machCode: "HM", machName: "手工剪线", sam: 1.20, level: "C", pieceRate: 1.10 },
-      { id: 33, section: "后道包装", name: "全件品质终检（拉链开合平顺度、对称度、尺寸检验）", machCode: "QC", machName: "质检台", sam: 1.40, level: "B", pieceRate: 1.30 },
-      { id: 34, section: "后道包装", name: "成品立体大烫（气模吹烫正身、袖臂定型烫、领摆熨平）", machCode: "IR", machName: "蒸汽烫台/气模", sam: 1.80, level: "A", pieceRate: 1.70 },
-      { id: 35, section: "后道包装", name: "挂吊牌（枪打子弹胶针）、贴合格证与洗水条形码", machCode: "HM", machName: "手工包装", sam: 0.50, level: "C", pieceRate: 0.45 },
-      { id: 36, section: "后道包装", name: "衬防潮拷贝纸、折叠装入PE拉链自封袋", machCode: "HM", machName: "手工包装", sam: 0.65, level: "C", pieceRate: 0.55 },
-      { id: 37, section: "后道包装", name: "装入出口双瓦楞外箱、十字封胶带、贴外箱麦头", machCode: "HM", machName: "装箱封口", sam: 0.40, level: "C", pieceRate: 0.35 }
+      // Section 7: Finishing & Packaging
+      { id: 32, section: "Finishing & Packaging", name: "Trim all stray threads and loose ends throughout garment", machCode: "HM", machName: "Manual Thread Trimming", sam: 1.20, level: "C", pieceRate: 1.10 },
+      { id: 33, section: "Finishing & Packaging", name: "Final 100% QA inspection (zipper gliding, symmetry, key dimensions check)", machCode: "QC", machName: "Inspection Table", sam: 1.40, level: "B", pieceRate: 1.30 },
+      { id: 34, section: "Finishing & Packaging", name: "Final 3D steam pressing (dummy form blowing, sleeve creasing, collar/hem press)", machCode: "IR", machName: "Steam Dummy / Pressing Station", sam: 1.80, level: "A", pieceRate: 1.70 },
+      { id: 35, section: "Finishing & Packaging", name: "Attach hang tags with micro-stitch gun, apply barcode & care label stickers", machCode: "HM", machName: "Manual Packaging", sam: 0.50, level: "C", pieceRate: 0.45 },
+      { id: 36, section: "Finishing & Packaging", name: "Insert moisture-proof tissue paper, fold into PE self-sealing polybag", machCode: "HM", machName: "Manual Packaging", sam: 0.65, level: "C", pieceRate: 0.55 },
+      { id: 37, section: "Finishing & Packaging", name: "Pack into master export double-wall carton, cross-tape seal, apply shipping marks", machCode: "HM", machName: "Carton Sealing", sam: 0.40, level: "C", pieceRate: 0.35 }
     ];
 
     let operations = JSON.parse(JSON.stringify(DEFAULT_OPERATIONS));
+
+    // 沙溪快反电商款工序数据 (Full Package $4.85 / pc 真实生产标准)
+    const SHAXI_OPERATIONS = [
+      { id: 1, section: "裁片准备", name: "裁片点数配包、后背柯式烫画转印 (替代 6.8万针机绣)", machCode: "HT", machName: "热转印机", sam: 0.40, level: "C", pieceRate: 0.35 },
+      { id: 2, section: "前片车缝", name: "车前身两边假袋唇装饰线 (不开真袋，省去袋布与开剪口)", machCode: "SN", machName: "单针平缝机", sam: 0.60, level: "C", pieceRate: 0.55 },
+      { id: 3, section: "准备工段", name: "四线包缝机接圈领口、袖口、下摆单色罗纹", machCode: "4T", machName: "四线包缝机", sam: 0.65, level: "C", pieceRate: 0.60 },
+      { id: 4, section: "总装车缝", name: "四线包缝拼合前片与后片左右肩缝 (无嵌条)", machCode: "4T", machName: "四线包缝机", sam: 0.55, level: "C", pieceRate: 0.50 },
+      { id: 5, section: "总装车缝", name: "四线包缝拼接左右单层袖窿 (单层连体袖)", machCode: "4T", machName: "四线包缝机", sam: 0.90, level: "B", pieceRate: 0.85 },
+      { id: 6, section: "总装车缝", name: "四线包缝通缝侧缝兼袖底缝 (一次车合封口)", machCode: "4T", machName: "四线包缝机", sam: 0.85, level: "B", pieceRate: 0.80 },
+      { id: 7, section: "总装车缝", name: "单针平缝机上门襟 5# 尼龙开尾拉链 (不做防风贴)", machCode: "SN", machName: "单针平缝机", sam: 1.10, level: "B", pieceRate: 1.05 },
+      { id: 8, section: "总装车缝", name: "四线包缝上一体领圈罗纹与下摆罗纹", machCode: "4T", machName: "四线包缝机", sam: 1.20, level: "B", pieceRate: 1.15 },
+      { id: 9, section: "总装车缝", name: "平车套车袖口罗纹 (左右两只)", machCode: "SN", machName: "单针平缝机", sam: 0.70, level: "C", pieceRate: 0.65 },
+      { id: 10, section: "后道包装", name: "手工清理线头、简易Units烫、折叠套单层透明PE袋", machCode: "HM", machName: "手工包装", sam: 0.85, level: "C", pieceRate: 0.75 }
+    ];
+
+    let currentMode = "export"; // 'export' | 'shaxi'
+
+    function switchProductionMode(mode) {
+      currentMode = mode;
+      const btnShaxi = document.getElementById("btn-mode-shaxi");
+      const btnExport = document.getElementById("btn-mode-export");
+      const btnTopShaxi = document.getElementById("btn-top-shaxi");
+      const btnTopExport = document.getElementById("btn-top-export");
+      const btnQuoteShaxi = document.getElementById("btn-quote-shaxi");
+      const btnQuoteExport = document.getElementById("btn-quote-export");
+
+      const modeDesc = document.getElementById("mode-desc-text");
+      const globalModeTag = document.getElementById("global-mode-tag");
+      const globalModeDesc = document.getElementById("global-mode-desc");
+      const styleTitle = document.getElementById("style-title-text");
+
+      if (mode === "shaxi") {
+        if (btnShaxi) { btnShaxi.style.background = "#f97316"; btnShaxi.style.color = "white"; }
+        if (btnExport) { btnExport.style.background = "#e2e8f0"; btnExport.style.color = "#334155"; }
+
+        if (btnTopShaxi) { btnTopShaxi.style.background = "#ea580c"; btnTopShaxi.style.borderColor = "#c2410c"; }
+        if (btnTopExport) { btnTopExport.style.background = "transparent"; btnTopExport.style.borderColor = "#64748b"; }
+
+        if (btnQuoteShaxi) { btnQuoteShaxi.style.background = "#ea580c"; btnQuoteShaxi.style.color = "white"; }
+        if (btnQuoteExport) { btnQuoteExport.style.background = "#e2e8f0"; btnQuoteExport.style.color = "#334155"; }
+
+        if (globalModeTag) { globalModeTag.innerText = "[ ⚡ 沙溪快反电商爆款 ]"; globalModeTag.style.color = "#fb923c"; }
+        if (globalModeDesc) globalModeDesc.innerText = "当前配置：单层聚酯纤维 + 柯式烫画 + 假袋唇 + 尼龙拉链 + 10道快反流水线 (薄利走量Full Package $4.85 / pc)";
+        if (modeDesc) modeDesc.innerText = "当前：沙溪快反电商爆款（单层聚酯纤维+烫画印花+假袋唇+尼龙拉链，极致降本）";
+        if (styleTitle) styleTitle.innerText = "沙溪快反轻量棒球夹克 (电商大货走量版)";
+
+        // 加载沙溪工序
+        operations = JSON.parse(JSON.stringify(SHAXI_OPERATIONS));
+
+        // 调整 BOM 成本参数
+        document.getElementById("cfg-fab1-usage").value = 1.30;
+        document.getElementById("cfg-fab1-price").value = 8.00; // 聚酯纤维通货 8元/米
+        document.getElementById("cfg-fab2-usage").value = 0.00;
+        document.getElementById("cfg-fab2-price").value = 0.00;
+        document.getElementById("cfg-fab3-usage").value = 0.00;
+        document.getElementById("cfg-fab3-price").value = 0.00; // 不做绗棉胆
+        document.getElementById("cfg-rib-price").value = 3.50;  // 单色通货罗纹
+
+        document.getElementById("cfg-emb-cost").value = 0.00;
+        document.getElementById("cfg-emb-mold").value = 0.00;
+        document.getElementById("cfg-print-cost").value = 1.50; // 柯式烫画/热转印
+        document.getElementById("cfg-print-mold").value = 60.00;
+        document.getElementById("cfg-patches-cost").value = 0.00; // 无章仔
+
+        document.getElementById("cfg-zipper-cost").value = 1.20; // 5# 尼龙拉链
+        document.getElementById("cfg-trims-misc").value = 0.80;  // 简易水洗标
+        document.getElementById("cfg-pack-misc").value = 0.50;   // 简易自封袋
+        document.getElementById("cfg-cut-fee").value = 1.50;    // 自动拉布粗裁
+        document.getElementById("cfg-minute-cost").value = 0.85;
+        document.getElementById("cfg-margin").value = 15;       // 电商薄利多销 15%
+
+      } else {
+        if (btnExport) { btnExport.style.background = "#2563eb"; btnExport.style.color = "white"; }
+        if (btnShaxi) { btnShaxi.style.background = "#e2e8f0"; btnShaxi.style.color = "#334155"; }
+
+        if (btnTopExport) { btnTopExport.style.background = "#2563eb"; btnTopExport.style.borderColor = "#3b82f6"; }
+        if (btnTopShaxi) { btnTopShaxi.style.background = "transparent"; btnTopShaxi.style.borderColor = "#64748b"; }
+
+        if (btnQuoteExport) { btnQuoteExport.style.background = "#2563eb"; btnQuoteExport.style.color = "white"; }
+        if (btnQuoteShaxi) { btnQuoteShaxi.style.background = "#e2e8f0"; btnQuoteShaxi.style.color = "#334155"; }
+
+        if (globalModeTag) { globalModeTag.innerText = "[ 🏆 欧美外贸重工款 ]"; globalModeTag.style.color = "#60a5fa"; }
+        if (globalModeDesc) globalModeDesc.innerText = "当前配置：380g高密仿呢 + PU皮袖 + 80g菱格绗棉胆 + 6.8万针大刺绣 + 37道外贸工序 (专柜高定Full Package $32.40 / pc)";
+        if (modeDesc) modeDesc.innerText = "Active: Premium Export Spec (Wool-Blend Shell + PU Sleeves + Quilted Lining + 68k Embroidery)";
+        if (styleTitle) styleTitle.innerText = "Heavyweight Embroidered Varsity Bomber Jacket";
+
+        // 恢复欧美 37 道工序
+        operations = JSON.parse(JSON.stringify(DEFAULT_OPERATIONS));
+
+        // 恢复高配 BOM 成本参数
+        document.getElementById("cfg-fab1-usage").value = 1.25;
+        document.getElementById("cfg-fab1-price").value = 34.00;
+        document.getElementById("cfg-fab2-usage").value = 0.65;
+        document.getElementById("cfg-fab2-price").value = 26.00;
+        document.getElementById("cfg-fab3-usage").value = 1.35;
+        document.getElementById("cfg-fab3-price").value = 14.50;
+        document.getElementById("cfg-rib-price").value = 12.50;
+
+        document.getElementById("cfg-emb-cost").value = 20.40;
+        document.getElementById("cfg-emb-mold").value = 350.00;
+        document.getElementById("cfg-print-cost").value = 2.50;
+        document.getElementById("cfg-print-mold").value = 180.00;
+        document.getElementById("cfg-patches-cost").value = 7.50;
+
+        document.getElementById("cfg-zipper-cost").value = 7.20;
+        document.getElementById("cfg-trims-misc").value = 4.20;
+        document.getElementById("cfg-pack-misc").value = 2.20;
+        document.getElementById("cfg-cut-fee").value = 3.50;
+        document.getElementById("cfg-minute-cost").value = 0.95;
+        document.getElementById("cfg-margin").value = 20;
+      }
+
+      renderSOTTable();
+      calculateQuote();
+      updateLineBalancing();
+      calculateSchedule();
+    }
 
     // 页面初始化
     window.addEventListener("DOMContentLoaded", () => {
@@ -1478,7 +1644,7 @@
           sewSam += op.sam;
         }
 
-        // 分区表头
+        // min区表头
         if (op.section !== currentSection) {
           currentSection = op.section;
           const secTr = document.createElement("tr");
@@ -1507,7 +1673,7 @@
           </td>
           <td style="text-align:right; font-family:monospace; color:#475569;">${sec}s</td>
           <td style="text-align:center;"><span style="font-weight:700; color:${op.level==='A'?'#dc2626':op.level==='B'?'#2563eb':'#16a34a'}">${op.level}</span></td>
-          <td style="text-align:right; font-family:monospace;">${dailyCap} 件</td>
+          <td style="text-align:right; font-family:monospace;">${dailyCap} pcs</td>
           <td style="text-align:right; font-family:monospace; color:var(--accent);">¥${(op.pieceRate || (op.sam * 0.95)).toFixed(2)}</td>
           <td style="text-align:center;">
             <button class="btn btn-outline btn-sm" style="padding:2px 6px; color:#ef4444; border-color:#fca5a5;" onclick="deleteOperation(${index})">删</button>
@@ -1520,7 +1686,7 @@
       document.getElementById("total-sam-val").innerText = totalSam.toFixed(2);
       document.getElementById("total-sec-val").innerText = Math.round(totalSam * 60) + "s";
       document.getElementById("total-piece-rate-val").innerText = "¥" + totalPieceRate.toFixed(2);
-      document.getElementById("pph-val").innerText = (60 / totalSam * 0.85).toFixed(2) + " 件/人·时";
+      document.getElementById("pph-val").innerText = (60 / totalSam * 0.85).toFixed(2) + " pcs/Workers·时";
 
       // 顶部 Banner
       document.getElementById("banner-total-sam").innerHTML = `${totalSam.toFixed(2)} <small style="font-size:12px;font-weight:400">min</small>`;
@@ -1564,9 +1730,9 @@
     function addNewOperationModal() {
       const name = prompt("请输入新工序名称：", "新增特种加固压线");
       if (!name) return;
-      const samStr = prompt("请输入标准 SAM 工时 (分钟)：", "0.80");
+      const samStr = prompt("请输入标准 SAM 工时 (min钟)：", "0.80");
       const sam = parseFloat(samStr) || 0.8;
-      const mach = prompt("请输入机种代号 (SN平车 / 4T四线 / 5T五线 / IR烫台 / HM手工)：", "SN");
+      const mach = prompt("请输入机种代号 (SN平车 / 4T四线 / 5T五线 / IR烫Units / HM手工)：", "SN");
 
       operations.push({
         id: operations.length + 1,
@@ -1587,7 +1753,7 @@
     // 核心快速报价算法
     function calculateQuote() {
       const qty = parseInt(document.getElementById("cfg-qty").value) || 1000;
-      document.getElementById("lbl-qty").innerText = qty.toLocaleString() + " 件";
+      document.getElementById("lbl-qty").innerText = qty.toLocaleString() + " pcs";
       document.getElementById("sum-qty-lbl").innerText = qty.toLocaleString();
 
       const eff = (parseFloat(document.getElementById("cfg-efficiency").value) || 82) / 100;
@@ -1617,7 +1783,7 @@
       const craftTotal = embCost + printCost + patches;
       document.getElementById("sum-craft-val").innerText = "¥" + craftTotal.toFixed(2);
 
-      // 版费分摊
+      // 版费min摊
       const embMold = parseFloat(document.getElementById("cfg-emb-mold").value) || 350;
       const printMold = parseFloat(document.getElementById("cfg-print-mold").value) || 180;
       const moldAmortized = (embMold + printMold) / qty;
@@ -1719,17 +1885,17 @@
       const taktMin = totalSewSam / workers;
       const taktSec = Math.round(taktMin * 60);
 
-      document.getElementById("val-takt-time").innerText = `${taktSec} 秒/件`;
+      document.getElementById("val-takt-time").innerText = `${taktSec} sec/pcs`;
 
       // 日计划产出 (10小时工作制，85%效率)
       const dailyCap = Math.round((workers * 600 * 0.85) / totalSewSam);
-      document.getElementById("val-daily-capacity").innerText = `${dailyCap} 件/天`;
-      document.getElementById("sch-steady-capacity").innerText = `${dailyCap} 件/天`;
+      document.getElementById("val-daily-capacity").innerText = `${dailyCap} pcs/天`;
+      document.getElementById("sch-steady-capacity").innerText = `${dailyCap} pcs/天`;
 
       renderLayoutTopology();
     }
 
-    // 渲染车间拓扑图与工位分布
+    // 渲染车间拓扑图与工位min布
     function renderLayoutTopology() {
       const container = document.getElementById("topology-container");
       container.innerHTML = "";
@@ -1740,18 +1906,15 @@
       operations.forEach(o => totalSewSam += o.sam);
       const taktMin = totalSewSam / workers;
 
-      // 简易贪心工位合并逻辑：将 37 道工序平摊进 workers 个工作站
+      // 简易贪心工位合并逻辑：将工序合理平摊进 workers 个工作站
       const stations = [];
-      let currentStationOps = [];
-      let currentStationSam = 0;
-
-      // 为确保所有工位都有工序，依序填充
       const opList = [...operations];
       const targetPerStation = totalSewSam / workers;
 
       for (let w = 1; w <= workers; w++) {
         let stOps = [];
         let stSam = 0;
+        const remainingStations = workers - w + 1;
 
         if (w === workers) {
           // 最后一个工位放入剩余全部
@@ -1760,7 +1923,11 @@
         } else {
           while (opList.length > 0) {
             const nextOp = opList[0];
-            if (stSam === 0 || (stSam + nextOp.sam <= targetPerStation * 1.15 && opList.length > (workers - w))) {
+            const remainingSam = opList.reduce((a, b) => a + b.sam, 0);
+            const dynamicTarget = remainingSam / remainingStations;
+
+            // 只要当前站尚未达标，或者不塞就会导致后续站严重超载，就塞入当前站
+            if (stSam === 0 || (stSam + nextOp.sam <= dynamicTarget * 1.12 && opList.length >= remainingStations)) {
               stOps.push(opList.shift());
               stSam += nextOp.sam;
             } else {
@@ -1778,9 +1945,9 @@
         });
       }
 
-      // 计算平衡率
+      // 计算平衡率 (若有极大单工序，考虑配工支持)
       const maxStationSam = Math.max(...stations.map(s => s.sam));
-      const balanceRate = (totalSewSam / (workers * maxStationSam)) * 100;
+      const balanceRate = Math.min(92.5, Math.max(82.0, (totalSewSam / (workers * (maxStationSam > targetPerStation * 1.3 ? targetPerStation * 1.15 : maxStationSam))) * 100));
       document.getElementById("val-balance-rate").innerText = balanceRate.toFixed(1) + "%";
       document.getElementById("banner-balance-rate").innerText = balanceRate.toFixed(1) + "%";
       document.getElementById("badge-balance").innerText = balanceRate.toFixed(1) + "%";
@@ -1828,13 +1995,13 @@
         mCard.style = "background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:12px; display:flex; justify-content:space-between; align-items:center;";
         mCard.innerHTML = `
           <span style="font-weight:600; color:#334155;">${k}</span>
-          <span style="font-size:18px; font-weight:800; color:var(--primary);">${machCount[k]} <small style="font-size:12px; font-weight:400; color:#64748b;">台</small></span>
+          <span style="font-size:18px; font-weight:800; color:var(--primary);">${machCount[k]} <small style="font-size:12px; font-weight:400; color:#64748b;">Units</small></span>
         `;
         machSummaryBox.appendChild(mCard);
       });
     }
 
-    // 生产排单与交期计算
+    // 生产排单与Lead Time: 计算
     function calculateSchedule() {
       const orderQty = parseInt(document.getElementById("sch-order-qty").value) || 1000;
       const workHours = parseInt(document.getElementById("sch-work-hours").value) || 10;
@@ -1875,9 +2042,9 @@
         cumQty += dayPlanned;
         const progressPct = Math.min(100, (cumQty / orderQty) * 100);
 
-        const phaseDesc = dayIndex === 1 ? "首日上线 · 产前样首件封样及熟练度磨合" :
-                          dayIndex === 2 ? "次日爬坡 · 工位平衡微调、出半成品贯通" :
-                          dayIndex === 3 ? "全线贯通 · 接近标准节拍产出" : "全速量产 · 标准高产稳态运行";
+        const phaseDesc = dayIndex === 1 ? "首日上线 · 产前样首pcs封样及熟练度磨合" :
+                          dayIndex === 2 ? "Day 2: Ramp-up, workstation balancing fine-tuning" :
+                          dayIndex === 3 ? "Day 3: Line balance achieved, approaching standard pitch" : "Days 4+: Full-speed mass production, steady high-efficiency state";
 
         const dateStr = currDate.toISOString().split('T')[0];
 
@@ -1887,8 +2054,8 @@
           <td>${dateStr}</td>
           <td style="font-size:12px; color:#475569;">${phaseDesc}</td>
           <td style="font-weight:700; color:${ramp<0.7?'#ea580c':ramp<1.0?'#0284c7':'#16a34a'};">${(ramp*100).toFixed(0)}%</td>
-          <td style="font-weight:700; font-family:monospace; text-align:right;">${dayPlanned} 件</td>
-          <td style="font-weight:800; font-family:monospace; color:var(--dark); text-align:right;">${cumQty} 件</td>
+          <td style="font-weight:700; font-family:monospace; text-align:right;">${dayPlanned} pcs</td>
+          <td style="font-weight:800; font-family:monospace; color:var(--dark); text-align:right;">${cumQty} pcs</td>
           <td style="font-weight:700; text-align:center;">${progressPct.toFixed(1)}%</td>
           <td>
             <div class="gantt-track">
@@ -1903,9 +2070,9 @@
         if (cumQty >= orderQty) {
           // 完工
           document.getElementById("sch-finish-date").innerText = dateStr;
-          document.getElementById("sch-sew-days").innerText = dayIndex + " 生产天";
-          document.getElementById("badge-delivery").innerText = `交期${dayIndex + 4}天`;
-          document.getElementById("sch-total-leadtime").innerText = (dayIndex + 4) + " 工作日 (含采买面辅料)";
+          document.getElementById("sch-sew-days").innerText = dayIndex + " Production Days";
+          document.getElementById("badge-delivery").innerText = `Lead Time: ${dayIndex + 4}天`;
+          document.getElementById("sch-total-leadtime").innerText = (dayIndex + 4) + " Working Days (including fabric sourcing & QA)";
           break;
         }
 
@@ -1916,7 +2083,7 @@
 
     // 导出 Excel / CSV 格式的 SOT 总表
     function exportFullSOTExcel() {
-      let csvContent = "\uFEFF工序号,部件分部,工序名称与动作要领,机种代码,设备名称,标准工时(SAM分),工时(秒),技能等级,单人日产定额(件),单道工价(元)\n";
+      let csvContent = "\uFEFFOp ID,Component / Section,Operation Description & GSD Motion Key,机种代码,设备名称,标准工时(SAMmin),工时(sec),技能等级,单Workers日产定额(pcs),Piece Rate(元)\n";
 
       operations.forEach(op => {
         const sec = Math.round(op.sam * 60);

@@ -127,6 +127,10 @@
     | :---: | :---: |
     | ![Swiss Style Clean Cover](docs/images/cover_swiss_audit.jpg) | ![Isometric AI Cover](docs/images/cover_isometric_ai.jpg) |
 
+### 6. Enterprise Split-Tunneling Gateway & 30-Second Anti-Deadlock Watchdog (OpenWrt)
+*   **Architecture Specification**: [Enterprise Split-Tunneling Gateway](02_business_rpa/27_enterprise_split_tunneling_gateway_anti_deadlock_watchdog.md)
+*   **Engineering Impact**: Resolves hardware crypto offload crashes (`kmod-cryptodev` on ARM64 MT7981B), `ipset` pre-load blackholes, source-IP DNS mismatches, and QUIC/UDP-443 head-of-line blocking for high-throughput cross-border R&D networks.
+
 ---
 
 ## ⚡ III. Agentic Copilots & Extreme Productivity
@@ -150,6 +154,33 @@
 ### 3. Feishu × SiYuan 24/7 Autonomous Bi-directional Knowledge Synapse
 *   **Architecture Specification**: [Feishu SiYuan Copilot Architecture](03_agentic_workflows/16_feishu_siyuan_knowledge_synapse_somatic_radar.md)
 *   **Engineering Impact**: Long-lived WebSocket daemon capturing fleeting mobile inspirations, parsing markdown blocks, writing directly to offline-first SiYuan kernels, and maintaining a somatic bio-feedback intuition log.
+
+### 4. Multi-Channel Agentic Session Distillation & Incremental Memory Ledger `[Runnable Demo]`
+*   **Architecture Specification**: [Multi-Channel Agentic Memory Distillation](03_agentic_workflows/24_multi_channel_agentic_memory_distillation_ledger.md)
+*   **Source Code**: `demos/03_agentic_tools/memory_distiller/demo_run.py`
+*   **Engineering Impact**: Harvests engineering insights across IDE JSONL transcripts, CLI SQLite thread stores, and mobile vector databases. Enforces pre-flight regex PII sanitization, incremental `distilled_ledger.json` deduplication, timestamp anti-hallucination locks, and deterministic multi-track routing.
+*   **Run Command**:
+    ```bash
+    python demos/03_agentic_tools/memory_distiller/demo_run.py
+    ```
+
+### 5. 7×24 Python Daemon Memory Governance, Singleton Lock & Self-Healing Watchdog `[Runnable Demo]`
+*   **Architecture Specification**: [Daemon Memory Governance & Watchdog](03_agentic_workflows/25_daemon_memory_leak_diagnostics_self_healing_watchdog.md)
+*   **Source Code**: `demos/03_agentic_tools/daemon_watchdog/demo_run.py`
+*   **Engineering Impact**: Eliminates multi-gigabyte dynamic module reload memory leaks, prevents IDE `Code 5` stdout pipe deadlocks, enforces non-blocking `fcntl.flock` singletons, and implements an 800MB RSS self-healing watchdog.
+*   **Run Command**:
+    ```bash
+    python demos/03_agentic_tools/daemon_watchdog/demo_run.py
+    ```
+
+### 6. Zero-Server HMAC-SHA256 Offline Software Licensing & Machine Fingerprinting `[Runnable Demo]`
+*   **Architecture Specification**: [Zero-Server Offline Software Licensing](03_agentic_workflows/26_zero_server_hmac_offline_software_licensing.md)
+*   **Source Code**: `demos/03_agentic_tools/offline_license_lock/demo_run.py`
+*   **Engineering Impact**: Binds on-premise software deliverables to OS hardware UUID fingerprints using constant-time `HMAC-SHA256` cryptographic signatures and expiration enforcement—requiring zero cloud license servers.
+*   **Run Command**:
+    ```bash
+    python demos/03_agentic_tools/offline_license_lock/demo_run.py
+    ```
 
 ---
 
@@ -178,6 +209,24 @@
 ### 3. Multi-Tier High-Availability Data Flow (API ➔ Redis In-Memory ➔ MySQL Archival)
 *   **Architecture Blueprint**: [Three-Tier Quant Architecture](04_realtime_systems/01_three_tier_quant_trading_architecture.md)
 *   **Engineering Impact**: Memory pre-warming routines and hash stacking achieving sub-millisecond reader latencies, shielded by cascading fallback logic.
+
+### 4. Slot-Based Multi-Horizon Execution State Machine & Snapshot-Diff Order Reconciliation `[Runnable Demo]`
+*   **Architecture Specification**: [Slot-Based Execution State Machine](04_realtime_systems/22_slot_based_execution_state_machine_reconciliation.md)
+*   **Source Code**: `demos/04_realtime_engine/slot_state_machine/demo_run.py`
+*   **Engineering Impact**: Replaces error-prone coarse-grained net counters with a Two-Layer Container + Horizon Slot (`5m/15m`) architecture. Features snapshot-set diffing order binding (zero historical misbinding), cross-horizon direction mutexes, partial-fill lot splitting, and `UNBOUND` fail-closed quota locks.
+*   **Run Command**:
+    ```bash
+    python demos/04_realtime_engine/slot_state_machine/demo_run.py
+    ```
+
+### 5. Singleflight C-SDK Concurrency Gate & Sub-5μs Lock-Free Dual-Source Snapshot Bus `[Runnable Demo]`
+*   **Architecture Specification**: [Singleflight Concurrency Gate & Snapshot Bus](04_realtime_systems/23_singleflight_concurrency_gate_lockfree_snapshot_bus.md)
+*   **Source Code**: `demos/04_realtime_engine/singleflight_gate/demo_run.py`
+*   **Engineering Impact**: Protects non-thread-safe native C/C++ SDKs from 200-thread stampedes by coalescing identical in-flight requests via `Singleflight + Semaphore(3) + Future` (99.5% I/O reduction, `0.02s` completion), paired with `4.5μs` stale-while-revalidate snapshot reads.
+*   **Run Command**:
+    ```bash
+    python demos/04_realtime_engine/singleflight_gate/demo_run.py
+    ```
 
 ---
 
